@@ -1,0 +1,4 @@
+attrdict>=2.0.0
+agavepy==0.7.3
+requests>=2.20.0
+tenacity>=5.0.2
