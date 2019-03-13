@@ -75,6 +75,7 @@ setup(
     long_description_content_type="text/x-rst",
     url="https://github.com/SD2E/bacanora",
     install_requires=get_requirements(),
+    tests_require=get_requirements()+['hashids'],
     dependency_links=get_links(),
     packages=find_packages(),
     license="BSD",

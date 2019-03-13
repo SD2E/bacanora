@@ -2,6 +2,9 @@ import os
 import datetime
 import shutil
 
+import logging
+logger = logging.getLogger(__name__)
+
 class DirectOperationFailed(Exception):
     pass
 
@@ -43,7 +46,7 @@ def direct_get(file_to_download, local_filename, system_id='data-sd2e-community'
             file_to_download = file_to_download[1:]
         full_path = os.path.join(prefix, file_to_download)
         temp_local_filename = local_filename + '-' + str(int(datetime.datetime.utcnow().timestamp()))
-        print('DIRECT_GET: {}'.format(full_path))
+        logger.debug('DIRECT_GET: {}'.format(full_path))
         if os.path.exists(full_path):
             shutil.copy(os.path.join(prefix, file_to_download), temp_local_filename)
         else:
@@ -70,7 +73,7 @@ def direct_put(file_to_upload, destination_path, system_id='data-sd2e-community'
         filename_atomic = filename + '-' + str(int(datetime.datetime.utcnow().timestamp()))
         atomic_dest_path = os.path.join(full_dest_path, filename_atomic)
         final_dest_path = os.path.join(full_dest_path, filename)
-        print('DIRECT_PUT: {}'.format(atomic_dest_path))
+        logger.debug('DIRECT_PUT: {}'.format(atomic_dest_path))
         if os.path.exists(full_dest_path):
             shutil.copy(file_to_upload, atomic_dest_path)
         else:
