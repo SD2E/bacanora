@@ -99,7 +99,7 @@ def upload(agave_client, file_to_upload, destination_path,
             raise AgaveError(
                 "Error uploading {}: {}".format(file_to_upload, e))
     if autogrant:
-        return grant(agave_client, destination_path)
+        return grant(agave_client, destination_path, system_id=system_id)
     else:
         return True
 
