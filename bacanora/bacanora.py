@@ -3,13 +3,16 @@ import json
 import re
 import sys
 import tempfile
-from pprint import pprint
+from pprint import pformat
 from attrdict import AttrDict
 from agavepy.agave import AgaveError
 from requests.exceptions import HTTPError
 from tenacity import retry, retry_if_exception_type
 from tenacity import stop_after_delay
 from tenacity import wait_exponential
+
+import logging
+logger = logging.getLogger(__name__)
 
 from . import agaveutils
 from .direct import direct_get, direct_put, DirectOperationFailed
@@ -30,7 +33,7 @@ def download(agave_client, file_to_download, local_filename, system_id='data-sd2
         direct_get(file_to_download, local_filename,
                    system_id='data-sd2e-community')
     except DirectOperationFailed as exc:
-        pprint(exc)
+        logger.info(pformat(exc))
         # Download using Agave API call
         try:
             downloadFileName = os.path.join(PWD, local_filename)
@@ -76,7 +79,7 @@ def upload(agave_client, file_to_upload, destination_path, system_id='data-sd2e-
     try:
         direct_put(file_to_upload, destination_path, system_id='data-sd2e-community')
     except DirectOperationFailed as exc:
-        pprint(exc)
+        logger.info(pformat(exc))
         try:
             agave_client.files.importData(systemId=system_id,
                                           filePath=destination_path,

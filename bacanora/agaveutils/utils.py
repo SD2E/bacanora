@@ -10,6 +10,10 @@ from __future__ import print_function
 import re
 import os
 import time
+
+import logging
+logger = logging.getLogger(__name__)
+
 from agavepy.agave import Agave
 from attrdict import AttrDict
 
@@ -41,11 +45,11 @@ def get_api_server(ag):
         try:
             return ag.token.api_server
         except Exception as e:
-            print("ag.token was None: {}".format(e))
+            logger.error("ag.token was None: {}".format(e))
             pass
         return None
     else:
-        print("Used hard-coded value for API server")
+        logger.info("Used hard-coded value for API server")
         return None
 
 
@@ -57,11 +61,11 @@ def get_api_token(ag):
         try:
             return ag.token.token_info.get('access_token')
         except Exception as e:
-            print("ag.token was None: {}".format(e))
+            logger.error("ag.token was None: {}".format(e))
             pass
         return None
     else:
-        print("Failed to retriev API access_token")
+        logger.error("Failed to retriev API access_token")
         return ""
 
 
@@ -73,8 +77,8 @@ def get_api_username(ag):
         try:
             return ag.username
         except Exception as e:
-            print("ag was None: {}".format(e))
+            logger.error("ag was None: {}".format(e))
         return None
     else:
-        print("No username could be determined")
+        logger.error("No username could be determined")
         return None
