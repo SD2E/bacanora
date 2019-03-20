@@ -1,4 +1,7 @@
 from os import environ
+from . import logger as loggermodule
+
+logger = loggermodule.getLogger(__name__)
 
 __all__ = ['ABACO', 'JUPYTER', 'HPC', 'LOCALHOST', 'ALL', 'detect']
 
@@ -26,11 +29,13 @@ class BacanoraRuntime(str):
         value = str(value).lower()
         setattr(cls, 'description', DEFINITIONS.get(value))
         if value not in list(DEFINITIONS.keys()):
-            raise LinkageError('"{}" is not a valid {}'.format(value, cls.__name__))
+            raise ValueError('"{}" is not a valid {}'.format(value, cls.__name__))
         return str.__new__(cls, value)
 
 def detect():
     for runtime, variable in VARIABLES.items():
         if variable in environ:
+            logger.debug('runtime: {}'.format(runtime))
             return BacanoraRuntime(runtime)
+    logger.debug('runtime: {}'.format(DEFAULT_RUNTIME))
     return BacanoraRuntime(DEFAULT_RUNTIME)

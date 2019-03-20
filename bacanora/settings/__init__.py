@@ -30,3 +30,7 @@ RETRY_MAX_DELAY = int(os.environ.get(
 # Re-raise original exception on failure
 RETRY_RERAISE = parse_boolean(os.environ.get(
     'BACANORA_RETRY_RERAISE', '1'))
+
+LOG_LEVEL = os.environ.get('BACANORA_LOG_LEVEL', 'DEBUG')
+LOG_VERBOSE = parse_boolean(os.environ.get(
+    'BACANORA_LOG_VERBOSE', '1'))

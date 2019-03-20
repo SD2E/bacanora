@@ -1,9 +1,10 @@
 import os
 import datetime
 import shutil
-import logging
 from . import runtimes
-logger = logging.getLogger(__name__)
+from . import logger as loggermodule
+
+logger = loggermodule.getLogger(__name__)
 
 class DirectOperationFailed(Exception):
     pass
@@ -21,11 +22,13 @@ class StorageSystems():
                                             os.path.expanduser('~'), 'sd2e-community')}}
 
 def abs_path(agave_file_path, system_id='data-sd2e-community'):
+    logger.debug('agave_file_path: {}'.format(agave_file_path))
     environ = runtimes.detect()
     prefix = get_prefix(system_id, environ)
     if agave_file_path.startswith('/'):
         agave_file_path = agave_file_path[1:]
     full_path = os.path.join(prefix, agave_file_path)
+    logger.debug('abs_path: {}'.format(full_path))
     return full_path
 
 def get_prefix(storage_system, environment):
