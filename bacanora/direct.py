@@ -1,8 +1,8 @@
 import os
 import datetime
 import shutil
-
 import logging
+from . import runtimes
 logger = logging.getLogger(__name__)
 
 class DirectOperationFailed(Exception):
@@ -20,6 +20,14 @@ class StorageSystems():
                                         'jupyter': os.path.join(
                                             os.path.expanduser('~'), 'sd2e-community')}}
 
+def abs_path(agave_file_path, system_id='data-sd2e-community'):
+    environ = runtimes.detect()
+    prefix = get_prefix(system_id, environ)
+    if agave_file_path.startswith('/'):
+        agave_file_path = agave_file_path[1:]
+    full_path = os.path.join(prefix, agave_file_path)
+    return full_path
+
 def get_prefix(storage_system, environment):
     try:
         return StorageSystems.prefixes[storage_system][environment]
@@ -27,30 +35,15 @@ def get_prefix(storage_system, environment):
         raise UnknownStorageSystem(
             'Bacanora mapping for {} is not defined'.format(storage_system))
 
-def detect_runtime():
-    if 'REACTORS_VERSION' in os.environ:
-        return 'abaco'
-    elif 'JUPYTERHUB_USER' in os.environ:
-        return 'jupyter'
-    elif 'TACC_DOMAIN' in os.environ:
-        return 'hpc'
-    else:
-        return 'abaco'
-        # raise UnknownRuntime('Not a Bacanora-enabled runtime')
-
 def direct_get(file_to_download, local_filename, system_id='data-sd2e-community'):
     try:
-        environ = detect_runtime()
-        prefix = get_prefix(system_id, environ)
-        if file_to_download.startswith('/'):
-            file_to_download = file_to_download[1:]
-        full_path = os.path.join(prefix, file_to_download)
+        full_path = abs_path(file_to_download)
         temp_local_filename = local_filename + '-' + str(int(datetime.datetime.utcnow().timestamp()))
         logger.debug('DIRECT_GET: {}'.format(full_path))
         if os.path.exists(full_path):
-            shutil.copy(os.path.join(prefix, file_to_download), temp_local_filename)
+            shutil.copy(full_path, temp_local_filename)
         else:
-            raise DirectOperationFailed('Failed to download file')
+            raise DirectOperationFailed('Remote source does not exist')
         try:
             os.rename(temp_local_filename, local_filename)
         except Exception as rexc:
@@ -62,13 +55,8 @@ def direct_get(file_to_download, local_filename, system_id='data-sd2e-community'
 
 def direct_put(file_to_upload, destination_path, system_id='data-sd2e-community'):
     try:
-        environ = detect_runtime()
 
-        prefix = get_prefix(system_id, environ)
-        if destination_path.startswith('/'):
-            destination_path = destination_path[1:]
-        full_dest_path = os.path.join(prefix, destination_path)
-
+        full_dest_path = abs_path(destination_path)
         filename = os.path.basename(file_to_upload)
         filename_atomic = filename + '-' + str(int(datetime.datetime.utcnow().timestamp()))
         atomic_dest_path = os.path.join(full_dest_path, filename_atomic)
@@ -77,7 +65,7 @@ def direct_put(file_to_upload, destination_path, system_id='data-sd2e-community'
         if os.path.exists(full_dest_path):
             shutil.copy(file_to_upload, atomic_dest_path)
         else:
-            raise DirectOperationFailed('Failed to upload file')
+            raise DirectOperationFailed('Remote destination does not exist')
         try:
             os.rename(atomic_dest_path, final_dest_path)
         except Exception as exc:
@@ -86,3 +74,41 @@ def direct_put(file_to_upload, destination_path, system_id='data-sd2e-community'
         raise UnknownRuntime(uexc)
     except UnknownStorageSystem as ustor:
         raise UnknownStorageSystem(ustor)
+
+def exists(path_to_test, system_id='data-sd2e-community'):
+    full_dest_path = abs_path(path_to_test)
+    try:
+        if os.path.exists(full_dest_path):
+            return True
+        else:
+            return False
+    except Exception:
+        raise DirectOperationFailed('Unhandled failure with os.path.exists()')
+
+def isfile(path_to_test, system_id='data-sd2e-community'):
+    full_dest_path = abs_path(path_to_test)
+    try:
+        if os.path.isfile(full_dest_path):
+            return True
+        else:
+            return False
+    except Exception:
+        raise DirectOperationFailed('Unhandled failure with os.path.isdir()')
+
+def isdir(path_to_test, system_id='data-sd2e-community'):
+    full_dest_path = abs_path(path_to_test)
+    try:
+        if os.path.isdir(full_dest_path):
+            return True
+        else:
+            return False
+    except Exception:
+        raise DirectOperationFailed('Unhandled failure with os.path.isdir()')
+
+def mkdir(path_to_make, system_id='data-sd2e-community'):
+    full_dest_path = abs_path(path_to_make)
+    try:
+        os.makedirs(full_dest_path)
+        return True
+    except Exception:
+        raise DirectOperationFailed('Exception encountered with os.makedirs()')

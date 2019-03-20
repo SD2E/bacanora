@@ -273,3 +273,42 @@ def wait_for_file_status(agaveClient, agaveWatchPath,
     raise Exception(
         "Status transition for {} exceeded {} sec. Last status: {}".format(
             agaveWatchPath, maxTime, stat))
+
+
+def exists(agaveClient, agaveAbsolutePath, systemId, formats=None):
+    """Check if a path exists on an Agave storage resource
+
+    Args:
+        agaveAbsolutePath (str): An Agave absolute path
+        systemId (str, optional): The storage system against which to resolve the POSIX path
+
+    Raises:
+        AgaveHelperError: The function has failed due an API error
+
+    Returns:
+        bool: Whether the path exists or not
+    """
+    if formats is None:
+        formats = ('folder', 'raw')
+    try:
+        path_format = agaveClient.files.list(
+            filePath=agaveAbsolutePath,
+            systemId=systemId,
+            limit=2)[0].get('format', None)
+        if path_format in formats:
+            return True
+        else:
+            return False
+    except HTTPError as herr:
+        if herr.response.status_code == 404:
+            return False
+        else:
+            raise HTTPError(herr)
+    except Exception:
+        raise
+
+def isfile(agaveClient, agaveAbsolutePath, systemId):
+    return exists(agaveClient, agaveAbsolutePath, systemId, formats=['raw'])
+
+def isdir(agaveClient, agaveAbsolutePath, systemId):
+    return exists(agaveClient, agaveAbsolutePath, systemId, formats=['folder'])
