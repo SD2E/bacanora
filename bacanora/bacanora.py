@@ -20,7 +20,6 @@ from .direct import DirectOperationFailed
 DEFAULT_STORAGE_SYSTEM = 'data-sd2e-community'
 RETRY_MAX_DELAY  = settings.RETRY_MAX_DELAY
 RETRY_RERAISE = settings.RETRY_RERAISE
-VERBOSE_LOGGING = settings.LOG
 
 PWD = os.getcwd()
 logger = loggermodule.get_logger(__name__)
