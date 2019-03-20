@@ -1,4 +1,0 @@
-[
-  "tests/test_download.py::test_downloads",
-  "tests/test_upload.py::test_uploads"
-]

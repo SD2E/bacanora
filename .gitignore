@@ -1,3 +1,14 @@
 __pycache__
 .eggs
 *egg-info
+build/
+env/
+dist/
+.vscode/
+*.pyc
+__pycache__
+tmp.*
+*egg-info/
+.pytest_cache/
+docs/_build/
+.env
