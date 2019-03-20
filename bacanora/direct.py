@@ -35,7 +35,7 @@ def get_prefix(storage_system, environment):
         raise UnknownStorageSystem(
             'Bacanora mapping for {} is not defined'.format(storage_system))
 
-def direct_get(file_to_download, local_filename, system_id='data-sd2e-community'):
+def get(file_to_download, local_filename, system_id='data-sd2e-community'):
     try:
         full_path = abs_path(file_to_download)
         temp_local_filename = local_filename + '-' + str(int(datetime.datetime.utcnow().timestamp()))
@@ -53,7 +53,7 @@ def direct_get(file_to_download, local_filename, system_id='data-sd2e-community'
     except UnknownStorageSystem as ustor:
         raise UnknownStorageSystem(ustor)
 
-def direct_put(file_to_upload, destination_path, system_id='data-sd2e-community'):
+def put(file_to_upload, destination_path, system_id='data-sd2e-community'):
     try:
 
         full_dest_path = abs_path(destination_path)
