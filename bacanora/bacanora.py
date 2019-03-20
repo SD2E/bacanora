@@ -23,7 +23,7 @@ RETRY_RERAISE = settings.RETRY_RERAISE
 VERBOSE_LOGGING = settings.LOG
 
 PWD = os.getcwd()
-logger = loggermodule.getLogger(__name__)
+logger = loggermodule.get_logger(__name__)
 
 @retry(retry=retry_if_exception_type(AgaveError), reraise=RETRY_RERAISE,
        stop=stop_after_delay(RETRY_MAX_DELAY), wait=wait_exponential(multiplier=2, max=64))

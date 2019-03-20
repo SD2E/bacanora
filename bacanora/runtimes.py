@@ -1,7 +1,7 @@
 from os import environ
 from . import logger as loggermodule
 
-logger = loggermodule.getLogger(__name__)
+logger = loggermodule.get_logger(__name__)
 
 __all__ = ['ABACO', 'JUPYTER', 'HPC', 'LOCALHOST', 'ALL', 'detect']
 

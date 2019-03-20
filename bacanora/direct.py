@@ -4,7 +4,7 @@ import shutil
 from . import runtimes
 from . import logger as loggermodule
 
-logger = loggermodule.getLogger(__name__)
+logger = loggermodule.get_logger(__name__)
 
 class DirectOperationFailed(Exception):
     pass
