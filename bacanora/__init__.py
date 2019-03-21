@@ -1,1 +1,3 @@
-from .bacanora import download, upload, grant, isdir, isfile, exists, mkdir
+from .bacanora import (download, upload, grant, isdir, isfile,
+                       exists, mkdir, delete)
+

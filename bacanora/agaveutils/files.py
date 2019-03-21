@@ -312,3 +312,15 @@ def isfile(agaveClient, agaveAbsolutePath, systemId):
 
 def isdir(agaveClient, agaveAbsolutePath, systemId):
     return exists(agaveClient, agaveAbsolutePath, systemId, formats=['folder'])
+
+def delete(agaveClient, agaveAbsolutePath, systemId):
+    try:
+        agaveClient.files.delete(filePath=agaveAbsolutePath, systemId=systemId)
+    except HTTPError as herr:
+        if herr.response.status_code == 404:
+            return False
+        else:
+            raise HTTPError(herr)
+    except Exception:
+        raise
+    return True

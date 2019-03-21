@@ -166,3 +166,17 @@ def mkdir(agave_client, path_to_make, system_id=DEFAULT_STORAGE_SYSTEM):
         return agaveutils.files.mkdir(agave_client,
                                       path_to_make,
                                       systemId=system_id)
+
+@retry(stop=stop_after_delay(RETRY_MAX_DELAY), reraise=RETRY_RERAISE,
+       wait=wait_exponential(multiplier=2, max=64))
+def delete(agave_client, path_to_rm, system_id=DEFAULT_STORAGE_SYSTEM, recursive=True):
+    if not exists(agave_client, path_to_rm, system_id=DEFAULT_STORAGE_SYSTEM):
+        logger.warning('Path {} did not exist to rm()'.format(path_to_rm))
+        return True
+    try:
+        return direct.delete(path_to_rm, system_id=system_id, recursive=recursive)
+    except DirectOperationFailed as exc:
+        logger.debug(pformat(exc))
+        return agaveutils.files.delete(agave_client,
+                                       path_to_rm,
+                                       systemId=system_id)

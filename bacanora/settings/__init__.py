@@ -33,4 +33,4 @@ RETRY_RERAISE = parse_boolean(os.environ.get(
 
 LOG_LEVEL = os.environ.get('BACANORA_LOG_LEVEL', 'DEBUG')
 LOG_VERBOSE = parse_boolean(os.environ.get(
-    'BACANORA_LOG_VERBOSE', '1'))
+    'BACANORA_LOG_VERBOSE', '0'))

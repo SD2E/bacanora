@@ -115,3 +115,18 @@ def mkdir(path_to_make, system_id='data-sd2e-community'):
         return True
     except Exception:
         raise DirectOperationFailed('Exception encountered with os.makedirs()')
+
+def delete(path_to_rm, system_id='data-sd2e-community', recursive=True):
+    full_dest_path = abs_path(path_to_rm)
+    try:
+        if os.path.isfile(full_dest_path):
+            os.remove(full_dest_path)
+            return True
+        elif os.path.isdir(full_dest_path):
+            shutil.rmtree(full_dest_path)
+            return True
+        else:
+            raise ValueError(
+                'path {} is not a file or directory'.format(path_to_rm))
+    except Exception:
+        raise DirectOperationFailed('Exception encountered removing path')
