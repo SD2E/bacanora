@@ -27,7 +27,7 @@ logger = loggermodule.get_logger(__name__)
 
 @retry(retry=retry_if_exception_type(AgaveError), reraise=RETRY_RERAISE,
        stop=stop_after_delay(RETRY_MAX_DELAY), wait=wait_exponential(multiplier=2, max=64))
-def download(agave_client, file_to_download, local_filename, system_id=DEFAULT_STORAGE_SYSTEM):
+def download(agave_client, file_to_download, local_filename=None, system_id=DEFAULT_STORAGE_SYSTEM):
     """Download a file from Agave files API
 
     Arguments:
@@ -39,10 +39,15 @@ def download(agave_client, file_to_download, local_filename, system_id=DEFAULT_S
     Returns:
         str: Name of downloaded file
     """
+    logger.info('bacanora.download()')
+    # Allow for override
+    if local_filename is None:
+        local_filename = os.path.basename(file_to_download)
     try:
         direct.get(file_to_download, local_filename, system_id=system_id)
     except DirectOperationFailed as exc:
-        logger.info(pformat(exc))
+        logger.info('using Agave API')
+        logger.debug(pformat(exc))
         # Download using Agave API call
         try:
             downloadFileName = os.path.join(PWD, local_filename)
@@ -90,10 +95,12 @@ def upload(agave_client, file_to_upload, destination_path,
     Returns:
         bool: True on success
     """
+    logger.info('bacanora.upload()')
     try:
         direct.put(file_to_upload, destination_path, system_id=system_id)
     except DirectOperationFailed as exc:
-        logger.info(pformat(exc))
+        logger.info('using Agave API')
+        logger.debug(pformat(exc))
         try:
             agave_client.files.importData(systemId=system_id,
                                           filePath=destination_path,
@@ -125,6 +132,8 @@ def grant(agave_client, pems_grant_target, system_id=DEFAULT_STORAGE_SYSTEM,
     Returns:
         bool: True on success
     """
+    logger.info('bacanora.grant()')
+    logger.info('using Agave API')
     try:
         pemBody = {'username': username,
                    'permission': permission,
@@ -153,9 +162,11 @@ def exists(agave_client, path_to_test, system_id=DEFAULT_STORAGE_SYSTEM):
     Returns:
         bool: True on existence
     """
+    logger.info('bacanora.exists()')
     if direct.exists(path_to_test, system_id=system_id):
         return True
     else:
+        logger.info('using Agave API')
         return agaveutils.exists(agave_client, path_to_test, systemId=system_id)
 
 @retry(stop=stop_after_delay(RETRY_MAX_DELAY), reraise=RETRY_RERAISE,
@@ -171,9 +182,11 @@ def isfile(agave_client, path_to_test, system_id=DEFAULT_STORAGE_SYSTEM):
     Returns:
         bool: True if target is a file
     """
+    logger.info('bacanora.isfile()')
     if direct.isfile(path_to_test, system_id=system_id):
         return True
     else:
+        logger.info('using Agave API')
         return agaveutils.isfile(agave_client, path_to_test, systemId=system_id)
 
 @retry(stop=stop_after_delay(RETRY_MAX_DELAY), reraise=RETRY_RERAISE,
@@ -189,9 +202,11 @@ def isdir(agave_client, path_to_test, system_id=DEFAULT_STORAGE_SYSTEM):
     Returns:
         bool: True if target is a directory
     """
+    logger.info('bacanora.isdir()')
     if direct.isdir(path_to_test, system_id=system_id):
         return True
     else:
+        logger.info('using Agave API')
         return agaveutils.isdir(agave_client, path_to_test, systemId=system_id)
 
 @retry(stop=stop_after_delay(RETRY_MAX_DELAY), reraise=RETRY_RERAISE,
@@ -207,12 +222,14 @@ def mkdir(agave_client, path_to_make, system_id=DEFAULT_STORAGE_SYSTEM):
     Returns:
         bool: True on success
     """
+    logger.info('bacanora.mkdir()')
     if isdir(agave_client, path_to_make, system_id=system_id):
         return True
     try:
         return direct.mkdir(path_to_make, system_id=system_id)
     except DirectOperationFailed as exc:
-        logger.info(pformat(exc))
+        logger.info('using Agave API')
+        logger.debug(pformat(exc))
         return agaveutils.files.mkdir(agave_client,
                                       path_to_make,
                                       systemId=system_id)
@@ -230,12 +247,14 @@ def delete(agave_client, path_to_rm, system_id=DEFAULT_STORAGE_SYSTEM, recursive
     Returns:
         bool: True on success
     """
+    logger.info('bacanora.delete()')
     if not exists(agave_client, path_to_rm, system_id=DEFAULT_STORAGE_SYSTEM):
-        logger.warning('Path {} did not exist to rm()'.format(path_to_rm))
+        logger.warning('Path {} did not exist to delete!'.format(path_to_rm))
         return True
     try:
         return direct.delete(path_to_rm, system_id=system_id, recursive=recursive)
     except DirectOperationFailed as exc:
+        logger.info('using Agave API')
         logger.debug(pformat(exc))
         return agaveutils.files.delete(agave_client,
                                        path_to_rm,
