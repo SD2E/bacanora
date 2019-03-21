@@ -43,6 +43,9 @@ def download(agave_client, file_to_download, local_filename=None, system_id=DEFA
     # Allow for override
     if local_filename is None:
         local_filename = os.path.basename(file_to_download)
+
+    downloadFileName = os.path.join(PWD, local_filename)
+
     try:
         direct.get(file_to_download, local_filename, system_id=system_id)
     except DirectOperationFailed as exc:
@@ -67,17 +70,20 @@ def download(agave_client, file_to_download, local_filename=None, system_id=DEFA
                 os.rename(f.name, downloadFileName)
             except Exception as rexc:
                 raise OSError('Atomic rename failed after download', rexc)
-            return downloadFileName
+
         except (HTTPError, AgaveError) as http_err:
             try:
-                os.unlink(f.name)
+                os.unlink(downloadFileName)
             except Exception:
+                logger.exception('Failed to unlink {}'.format(downloadFileName))
                 pass
             if re.compile('404 Client Error').search(str(http_err)):
                 raise HTTPError('404 Not Found') from http_err
             else:
                 http_err_resp = agaveutils.process_agave_httperror(http_err)
                 raise AgaveError(http_err_resp) from http_err
+
+    return local_filename
 
 @retry(retry=retry_if_exception_type(AgaveError), reraise=RETRY_RERAISE,
        stop=stop_after_delay(RETRY_MAX_DELAY), wait=wait_exponential(multiplier=2, max=64))
