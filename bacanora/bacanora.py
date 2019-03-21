@@ -20,6 +20,7 @@ from .direct import DirectOperationFailed
 DEFAULT_STORAGE_SYSTEM = 'data-sd2e-community'
 RETRY_MAX_DELAY  = settings.RETRY_MAX_DELAY
 RETRY_RERAISE = settings.RETRY_RERAISE
+FILES_BLOCK_SIZE = settings.FILES_BLOCK_SIZE
 
 PWD = os.getcwd()
 logger = loggermodule.get_logger(__name__)
@@ -27,13 +28,16 @@ logger = loggermodule.get_logger(__name__)
 @retry(retry=retry_if_exception_type(AgaveError), reraise=RETRY_RERAISE,
        stop=stop_after_delay(RETRY_MAX_DELAY), wait=wait_exponential(multiplier=2, max=64))
 def download(agave_client, file_to_download, local_filename, system_id=DEFAULT_STORAGE_SYSTEM):
-    """Implements Agave files.download
+    """Download a file from Agave files API
 
     Arguments:
         agave_client (Agave): An active Agave client
         file_to_download (str): Absolute path of file to download
         local_filename (str): Local name of file once downloaded
         system_id (str, optional): Storage system where file is located [data-sd2e-community]
+
+    Returns:
+        str: Name of downloaded file
     """
     try:
         direct.get(file_to_download, local_filename, system_id=system_id)
@@ -50,7 +54,7 @@ def download(agave_client, file_to_download, local_filename, system_id=DEFAULT_S
             if isinstance(rsp, dict):
                 raise AgaveError(
                     "Failed to download {}".format(file_to_download))
-            for block in rsp.iter_content(2048):
+            for block in rsp.iter_content(FILES_BLOCK_SIZE):
                 if not block:
                     break
                 f.write(block)
@@ -74,7 +78,7 @@ def download(agave_client, file_to_download, local_filename, system_id=DEFAULT_S
        stop=stop_after_delay(RETRY_MAX_DELAY), wait=wait_exponential(multiplier=2, max=64))
 def upload(agave_client, file_to_upload, destination_path,
           system_id=DEFAULT_STORAGE_SYSTEM, autogrant=False):
-    """Implements Agave files.upload and optional permission grant
+    """Upload a file using Agave files, with optional world:READ grant
 
     Arguments:
         agave_client (Agave): An active Agave client
@@ -82,6 +86,9 @@ def upload(agave_client, file_to_upload, destination_path,
         destination_path (str): Absolute path on destination storage system
         system_id (str, optional): Storage system where file is located [data-sd2e-community]
         autogrant (bool, optional): Whether to automatically grant world read to uploaded file [False]
+
+    Returns:
+        bool: True on success
     """
     try:
         direct.put(file_to_upload, destination_path, system_id=system_id)
@@ -106,7 +113,7 @@ def upload(agave_client, file_to_upload, destination_path,
        wait=wait_exponential(multiplier=2, max=64))
 def grant(agave_client, pems_grant_target, system_id=DEFAULT_STORAGE_SYSTEM,
           username='world', permission='READ'):
-    """Failure-resistant Agave files.pems.update
+    """Grant Agave file permissions
 
     Arguments:
         agave_client (Agave): An active Agave client
@@ -114,6 +121,9 @@ def grant(agave_client, pems_grant_target, system_id=DEFAULT_STORAGE_SYSTEM,
         system_id (str, optional): Storage system where file is located [data-sd2e-community]
         username (str, optional): Username to grant permission to [world]
         permission (str, optional): Permission to grant [READ]
+
+    Returns:
+        bool: True on success
     """
     try:
         pemBody = {'username': username,
@@ -133,6 +143,16 @@ def grant(agave_client, pems_grant_target, system_id=DEFAULT_STORAGE_SYSTEM,
 @retry(stop=stop_after_delay(RETRY_MAX_DELAY), reraise=RETRY_RERAISE,
        wait=wait_exponential(multiplier=2, max=64))
 def exists(agave_client, path_to_test, system_id=DEFAULT_STORAGE_SYSTEM):
+    """Test for existence of a file or directory
+
+    Arguments:
+        agave_client (Agave): An active Agave client
+        path_to_test (str): Agave-absolute path to test
+        system_id (str, optional): Storage system where file is located [data-sd2e-community]
+
+    Returns:
+        bool: True on existence
+    """
     if direct.exists(path_to_test, system_id=system_id):
         return True
     else:
@@ -141,6 +161,16 @@ def exists(agave_client, path_to_test, system_id=DEFAULT_STORAGE_SYSTEM):
 @retry(stop=stop_after_delay(RETRY_MAX_DELAY), reraise=RETRY_RERAISE,
        wait=wait_exponential(multiplier=2, max=64))
 def isfile(agave_client, path_to_test, system_id=DEFAULT_STORAGE_SYSTEM):
+    """Determine if a path points to a file
+
+    Arguments:
+        agave_client (Agave): An active Agave client
+        path_to_test (str): Agave-absolute path to test
+        system_id (str, optional): Storage system where file is located [data-sd2e-community]
+
+    Returns:
+        bool: True if target is a file
+    """
     if direct.isfile(path_to_test, system_id=system_id):
         return True
     else:
@@ -149,6 +179,16 @@ def isfile(agave_client, path_to_test, system_id=DEFAULT_STORAGE_SYSTEM):
 @retry(stop=stop_after_delay(RETRY_MAX_DELAY), reraise=RETRY_RERAISE,
        wait=wait_exponential(multiplier=2, max=64))
 def isdir(agave_client, path_to_test, system_id=DEFAULT_STORAGE_SYSTEM):
+    """Determine if a path points to a directory
+
+    Arguments:
+        agave_client (Agave): An active Agave client
+        path_to_test (str): Agave-absolute path to test
+        system_id (str, optional): Storage system where file is located [data-sd2e-community]
+
+    Returns:
+        bool: True if target is a directory
+    """
     if direct.isdir(path_to_test, system_id=system_id):
         return True
     else:
@@ -157,6 +197,16 @@ def isdir(agave_client, path_to_test, system_id=DEFAULT_STORAGE_SYSTEM):
 @retry(stop=stop_after_delay(RETRY_MAX_DELAY), reraise=RETRY_RERAISE,
        wait=wait_exponential(multiplier=2, max=64))
 def mkdir(agave_client, path_to_make, system_id=DEFAULT_STORAGE_SYSTEM):
+    """Make a new directory on the specified storage system
+
+    Arguments:
+        agave_client (Agave): An active Agave client
+        path_to_make (str): Agave-absolute path to create
+        system_id (str, optional): Storage system where file is located [data-sd2e-community]
+
+    Returns:
+        bool: True on success
+    """
     if isdir(agave_client, path_to_make, system_id=system_id):
         return True
     try:
@@ -170,6 +220,16 @@ def mkdir(agave_client, path_to_make, system_id=DEFAULT_STORAGE_SYSTEM):
 @retry(stop=stop_after_delay(RETRY_MAX_DELAY), reraise=RETRY_RERAISE,
        wait=wait_exponential(multiplier=2, max=64))
 def delete(agave_client, path_to_rm, system_id=DEFAULT_STORAGE_SYSTEM, recursive=True):
+    """Delete a path on the specified storage system
+
+    Arguments:
+        agave_client (Agave): An active Agave client
+        path_to_rm (str): Agave-absolute path to remove
+        system_id (str, optional): Storage system where file is located [data-sd2e-community]
+
+    Returns:
+        bool: True on success
+    """
     if not exists(agave_client, path_to_rm, system_id=DEFAULT_STORAGE_SYSTEM):
         logger.warning('Path {} did not exist to rm()'.format(path_to_rm))
         return True
