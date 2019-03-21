@@ -24,7 +24,7 @@ STORAGE_SYSTEM = os.environ.get(
 
 # Maximum delay before marking a tenacity-wrapped call as failed
 RETRY_MAX_DELAY = int(os.environ.get(
-    'BACANORA_RETRY_MAX_DELAY ', '360'))
+    'BACANORA_RETRY_MAX_DELAY ', '90'))
 
 # Whether to re-raise original exception on tenacity timeout
 RETRY_RERAISE = parse_boolean(os.environ.get(
