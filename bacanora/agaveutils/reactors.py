@@ -3,19 +3,21 @@ Functions for working with TACC Reactors
 """
 import re
 import os
-import time
 from agavepy.agave import Agave, AgaveError
+
 from attrdict import AttrDict
 from tenacity import retry, retry_if_exception_type
 from tenacity import stop_after_delay
 from tenacity import wait_exponential
-from pprint import pprint
 
-MAX_ELAPSED = 300
-MAX_RETRIES = 5
+from .. import logger as loggermodule
+from .. import settings
 
-# TODO: Support nonces
-# TODO: Support sending URL parameters
+logger = loggermodule.get_logger(__name__)
+
+RETRY_MAX_DELAY = settings.RETRY_MAX_DELAY
+RETRY_RERAISE = settings.RETRY_RERAISE
+
 # TODO: Support binary FIFO?
 
 
@@ -23,20 +25,34 @@ class ExecutionNotComplete(AgaveError):
     pass
 
 
-def message_reactor(agaveClient,
-                    actorId,
-                    message,
-                    environment={},
-                    ignoreErrors=True,
-                    sync=False,
-                    senderTags=True,
-                    timeOut=MAX_ELAPSED):
+@retry(
+    retry=retry_if_exception_type(AgaveError),
+    reraise=RETRY_RERAISE,
+    stop=stop_after_delay(RETRY_MAX_DELAY),
+    wait=wait_exponential(multiplier=1, max=8))
+def send_message(agaveClient,
+                 actorId,
+                 message,
+                 environment={},
+                 ignoreErrors=True,
+                 sync=False,
+                 senderTags=True,
+                 **kwargs):
     """
-    Send a message to an Abaco actor by its ID
+    Send a message to an Abaco actor by its actorId (or actorAlias)
 
     Returns execution ID. If ignoreErrors is True, this is fire-and-forget.
-    Otherwise, failures raise an Exception to handled by the caller.
+    Otherwise, failures raise an Exception to be handled by the caller.
     """
+    logger.debug('message destination: {}'.format(actorId))
+
+    # agaveClient.nonce form overrides explicit passing of 'nonce' in kwargs
+    if getattr(agaveClient, 'nonce', None) is not None:
+        kwargs['nonce'] = getattr(agaveClient, 'nonce')
+
+    if kwargs.get('nonce', None) is not None:
+        logger.debug('Using Abaco nonce to send message')
+
     SPECIAL_VARS = {
         '_abaco_actor_id': 'x_src_actor_id',
         '_abaco_execution_id': 'x_src_execution_id',
@@ -53,41 +69,40 @@ def message_reactor(agaveClient,
     execution = {}
     try:
         execution = agaveClient.actors.sendMessage(
-            actorId=actorId, body={'message': message}, environment=pass_envs)
-    except Exception as e:
-        errorMessage = "Error messaging actor {}: {}".format(actorId, e)
-        if ignoreErrors:
-            pass
-        else:
-            raise Exception(errorMessage)
+            actorId=actorId,
+            body={'message': message},
+            environment=pass_envs,
+            **kwargs)
+    except Exception:
+        logger.exception('Failed to message {}'.format(actorId))
+        if ignoreErrors is False:
+            raise
 
     execId = execution.get('executionId', None)
+    logger.debug('executionId: {}'.format(execId))
 
     if sync is False:
-        try:
-            return execId
-        except Exception as e:
-            errorMessage = " Message to {} failed: {}".format(actorId, e)
-            if ignoreErrors:
-                pass
-            else:
-                raise Exception(errorMessage)
+        return execId
     else:
-        return await_execution(
-            agaveClient, actorId=actorId, executionId=execId)
+        logger.debug('Awaiting actor/exec: {} {}'.format(actorId, execId))
+        return await_actor_execution(
+            agaveClient, actorId=actorId, executionId=execId, **kwargs)
 
 
 @retry(
     retry=retry_if_exception_type(AgaveError),
-    reraise=True,
-    stop=stop_after_delay(60),
-    wait=wait_exponential(multiplier=1, max=16))
-def await_execution(agaveClient, actorId, executionId):
+    reraise=RETRY_RERAISE,
+    stop=stop_after_delay(RETRY_MAX_DELAY),
+    wait=wait_exponential(multiplier=1, max=8))
+def await_actor_execution(agaveClient, actorId, executionId, **kwargs):
+    # agaveClient.nonce form overrides explicit passing of 'nonce' in kwargs
+    if getattr(agaveClient, 'nonce', None) is not None:
+        kwargs['nonce'] = getattr(agaveClient, 'nonce')
     try:
         execution_resp = agaveClient.actors.getExecution(
-            actorId=actorId, executionId=executionId)
-        pprint(execution_resp)
+            actorId=actorId, executionId=executionId, **kwargs)
         status = execution_resp.get('status', 'UNKNOWN')
+        logger.debug('status: {}'.format(status))
         if status in ['COMPLETE', 'FAILED', 'ERROR']:
             return True
         else:
