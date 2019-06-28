@@ -1,6 +1,6 @@
 import os
 import shutil
-from ..utils import current_time, normalize, normpath
+from ..utils import nanoseconds, microseconds, normalize, normpath
 from .. import logger as loggermodule
 from .. import settings
 from .utils import abs_path
@@ -19,7 +19,8 @@ def get(file_path,
         local_filename=None,
         atomic=True,
         agave=None):
-    """Copy a path from its resolved physical location to the local host
+    """Emulate a Tapis download by copying a path from its resolved physical
+    location to the local host
     """
     try:
         posix_path = abs_path(file_path, system_id=system_id, agave=agave)
@@ -30,7 +31,7 @@ def get(file_path,
 
         # Stage download to filename-TIMESTAMP then rename into place
         if atomic:
-            temp_fname = local_filename + '-' + str(current_time())
+            temp_fname = local_filename + '-' + str(nanoseconds)
         else:
             temp_fname = local_filename
 
@@ -54,6 +55,7 @@ def get(file_path,
         else:
             raise DirectOperationFailed('Source does not exist')
 
+        # Rename or copy the tempfile into place
         if atomic:
             try:
                 if settings.DEBUG_MODE is False:

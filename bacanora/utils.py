@@ -2,7 +2,9 @@ import os
 import datetime
 import re
 
-__all__ = ['current_time', 'normpath', 'normalize']
+__all__ = [
+    'current_time', 'normpath', 'normalize', 'microseconds', 'nanoseconds'
+]
 
 
 def current_time():
@@ -12,6 +14,17 @@ def current_time():
     """
     return datetime.datetime.fromtimestamp(
         int(datetime.datetime.utcnow().timestamp() * 1000) / 1000)
+
+
+def microseconds():
+    """Current time in microseconds as ``int``
+    """
+    return int(round(datetime.datetime.utcnow().timestamp() * 1000 * 1000))
+
+
+def nanoseconds():
+    return int(
+        round(datetime.datetime.utcnow().timestamp() * 1000 * 1000 * 1000))
 
 
 def normalize(filepath):

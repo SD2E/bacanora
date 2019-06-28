@@ -5,9 +5,7 @@ from ..stores import StorageSystem
 from .. import runtimes
 from .. import logger as loggermodule
 from ..utils import *
-
-# Methods
-from .download import get
+from .operations import *
 
 logger = loggermodule.get_logger(__name__)
 
@@ -17,31 +15,6 @@ def abs_path(file_path, system_id='data-sd2e-community', agave=None):
     environ = runtimes.detect()
     s = StorageSystem(system_id, agave=agave)
     return s.runtime_dir(environ, file_path)
-
-
-def put(file_to_upload, destination_path, system_id='data-sd2e-community'):
-    try:
-
-        full_dest_path = abs_path(destination_path)
-        filename = os.path.basename(file_to_upload)
-        filename_atomic = filename + '-' + str(
-            int(datetime.datetime.utcnow().timestamp()))
-        atomic_dest_path = os.path.join(full_dest_path, filename_atomic)
-        final_dest_path = os.path.join(full_dest_path, filename)
-        logger.debug('DIRECT_PUT: {}'.format(atomic_dest_path))
-        if os.path.exists(full_dest_path):
-            shutil.copy(file_to_upload, atomic_dest_path)
-        else:
-            raise DirectOperationFailed('Remote destination does not exist')
-        try:
-            os.rename(atomic_dest_path, final_dest_path)
-        except Exception as exc:
-            raise DirectOperationFailed('Atomic rename failed after upload',
-                                        exc)
-    except UnknownRuntime as uexc:
-        raise UnknownRuntime(uexc)
-    except UnknownStorageSystem as ustor:
-        raise UnknownStorageSystem(ustor)
 
 
 def exists(path_to_test, system_id='data-sd2e-community'):
