@@ -173,9 +173,40 @@ class StorageSystem(str):
     def localhost_dir(self):
         return os.getcwd()
 
-    @classmethod
-    def agave_path_uri(self, path):
-        return 'agave://' + self + normalize(path)
+    def agave_canonical_uri(self, path):
+        """Return a agave-canonical URI for a path on the StorageSystem
+        """
+        uri = 'agave://{}/{}'.format(self.system_id, normalize(path))
+        return uri
+
+    def agave_http_uri(self, path, downloadable=False):
+        """Return a HTTPS URI for a path on the StorageSystem
+        """
+        if downloadable:
+            context = 'download'
+        else:
+            context = 'media'
+        uri = '{}files/v2/{}/system/{}/{}'.format(settings.TACC_API_SERVER,
+                                                  context, self.system_id,
+                                                  normalize(path))
+        return uri
+
+    def jupyterhub_http_uri(self, path, username='{User}'):
+        """Return a JupyterHub-canonical URI for a path on the StorageSystem
+        """
+        path = self.runtime_dir(runtimes.JUPYTER, path)
+        uri = '{}{}'.format(settings.TACC_JUPYTER_SERVER, path)
+        return uri
+
+    def sftp_uri(self, path, username='<username>'):
+        """Returns an SFTP uri for HPC systems
+
+        Note: Implements RFC-3986 (expired) encoding for SFTP URIs
+        """
+        path = self.runtime_dir(runtimes.HPC, path)
+        uri = 'sftp://{}@{}/{}'.format(username, self.ssh_host,
+                                       normalize(path))
+        return uri
 
     @classmethod
     def jupyter_path_uri(self, path):

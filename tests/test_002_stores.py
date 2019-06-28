@@ -80,3 +80,52 @@ def test_stores_runtime_dir(agave, runtime, system_id, file_path, result):
     ss = stores.StorageSystem(system_id, agave=agave)
     ss_path = ss.runtime_dir(runtime, file_path)
     assert ss_path.startswith(result)
+
+
+@pytest.mark.parametrize(
+    "system_id, file_path, result",
+    [('data-sd2e-community', '/sample', 'agave://data-sd2e-community/sample'),
+     ('data-tacc-work-sd2eadm', '/share',
+      'agave://data-tacc-work-sd2eadm/share')])
+def test_agave_canoncial_uri(agave, system_id, file_path, result):
+    uri = stores.StorageSystem(
+        system_id, agave=agave).agave_canonical_uri(file_path)
+    assert uri == result
+
+
+@pytest.mark.parametrize("system_id, file_path, result", [
+    ('data-sd2e-community', '/sample',
+     'https://api.sd2e.org/files/v2/media/system/data-sd2e-community/sample'),
+    ('data-tacc-work-sd2eadm', '/share',
+     'https://api.sd2e.org/files/v2/media/system/data-tacc-work-sd2eadm/share')
+])
+def test_agave_http_uri(agave, system_id, file_path, result):
+    uri = stores.StorageSystem(
+        system_id, agave=agave).agave_http_uri(file_path)
+    assert uri == result
+
+
+@pytest.mark.parametrize(
+    "system_id, file_path, result",
+    [('data-sd2e-community', '/sample',
+      'https://jupyter.sd2e.org/user/{User}/tree/sd2e-community/sample'),
+     ('data-tacc-work-sd2eadm', '/share',
+      'https://jupyter.sd2e.org/user/sd2eadm/tree/tacc-work/share')])
+def test_jupyterhub_http_uri(agave, system_id, file_path, result):
+    uri = stores.StorageSystem(
+        system_id, agave=agave).jupyterhub_http_uri(file_path)
+    assert uri == result
+
+
+@pytest.mark.parametrize("system_id, file_path, result", [
+    ('data-sd2e-community', '/sample',
+     'sftp://tacobot@data.sd2e.org:22/work/projects/SD2E-Community/prod/data/sample'
+     ),
+    ('data-tacc-work-sd2eadm', '/share',
+     'sftp://tacobot@users-data.sd2e.org:2222/work/05201/sd2eadm/share')
+])
+def test_jupyterhub_http_uri(agave, system_id, file_path, result):
+    uri = stores.StorageSystem(
+        system_id, agave=agave).sftp_uri(
+            file_path, username='tacobot')
+    assert uri == result
