@@ -38,7 +38,8 @@ def test_direct_get_local_cwd(agave, file_path, system_id, test_pass):
       'data-projects-safegenes', 'dawnofman.jpg', True)])
 def test_direct_get_local_named(agave, file_path, system_id, local_filename,
                                 test_pass):
-
+    """Download operation functions in a localhost runtime
+    """
     local_fname = local_filename
     local_dest_dir = os.path.dirname(local_fname)
     if local_dest_dir == '':
@@ -70,6 +71,9 @@ def test_direct_get_local_named(agave, file_path, system_id, local_filename,
       'data-projects-safegenes', 'dawnofman.jpg', True)])
 def test_direct_get_local_no_atomic(agave, monkeypatch, file_path, system_id,
                                     local_filename, test_pass):
+    """Download operation functions in a localhost runtime without
+    atomic operation support
+    """
     local_fname = local_filename
     local_dest_dir = os.path.dirname(local_fname)
     if local_dest_dir == '':

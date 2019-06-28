@@ -19,6 +19,8 @@ from bacanora import utils
       '/tests/data/direct/sample/tacc-cloud', 'data-sd2e-community', True)])
 def test_direct_put_local(agave, file_path, destination_dir, system_id,
                           test_pass):
+    """Direct mode upload works in localhost runtime
+    """
     local_dest_dir = utils.normalize(destination_dir)
     if test_pass:
         direct.put(
@@ -42,6 +44,9 @@ def test_direct_put_local(agave, file_path, destination_dir, system_id,
       '/tests/data/direct/sample/tacc-cloud', 'data-sd2e-community', True)])
 def test_direct_put_local_no_atomic(agave, file_path, destination_dir,
                                     system_id, test_pass):
+    """Direct mode upload works in localhost runtime without
+    atomic operation support
+    """
     local_dest_dir = utils.normalize(destination_dir)
     if test_pass:
         direct.put(

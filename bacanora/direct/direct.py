@@ -17,39 +17,6 @@ def abs_path(file_path, system_id='data-sd2e-community', agave=None):
     return s.runtime_dir(environ, file_path)
 
 
-def exists(path_to_test, system_id='data-sd2e-community'):
-    full_dest_path = abs_path(path_to_test)
-    try:
-        if os.path.exists(full_dest_path):
-            return True
-        else:
-            return False
-    except Exception:
-        raise DirectOperationFailed('Unhandled failure with os.path.exists()')
-
-
-def isfile(path_to_test, system_id='data-sd2e-community'):
-    full_dest_path = abs_path(path_to_test)
-    try:
-        if os.path.isfile(full_dest_path):
-            return True
-        else:
-            return False
-    except Exception:
-        raise DirectOperationFailed('Unhandled failure with os.path.isdir()')
-
-
-def isdir(path_to_test, system_id='data-sd2e-community'):
-    full_dest_path = abs_path(path_to_test)
-    try:
-        if os.path.isdir(full_dest_path):
-            return True
-        else:
-            return False
-    except Exception:
-        raise DirectOperationFailed('Unhandled failure with os.path.isdir()')
-
-
 def mkdir(path_to_make, system_id='data-sd2e-community'):
     full_dest_path = abs_path(path_to_make)
     try:
