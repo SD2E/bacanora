@@ -122,7 +122,10 @@ def test_jupyterhub_http_uri(agave, system_id, file_path, result):
      'sftp://tacobot@data.sd2e.org:22/work/projects/SD2E-Community/prod/data/sample'
      ),
     ('data-tacc-work-sd2eadm', '/share',
-     'sftp://tacobot@users-data.sd2e.org:2222/work/05201/sd2eadm/share')
+     'sftp://tacobot@users-data.sd2e.org:2222/work/05201/sd2eadm/share'),
+    ('data-projects-safegenes', '/uploads',
+     'sftp://tacobot@cloud.corral.tacc.utexas.edu:2222/work/projects/DARPA-SD2-Partners/safegenes/uploads'
+     )
 ])
 def test_jupyterhub_http_uri(agave, system_id, file_path, result):
     uri = stores.StorageSystem(
