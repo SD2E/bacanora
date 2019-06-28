@@ -11,23 +11,30 @@ from tenacity import retry, retry_if_exception_type
 from tenacity import stop_after_delay
 from tenacity import wait_exponential
 
-from . import agaveutils
+from . import tapis
 from . import direct
 from . import logger as loggermodule
 from . import settings
 from .direct import DirectOperationFailed
 
 DEFAULT_STORAGE_SYSTEM = 'data-sd2e-community'
-RETRY_MAX_DELAY  = settings.RETRY_MAX_DELAY
+RETRY_MAX_DELAY = settings.RETRY_MAX_DELAY
 RETRY_RERAISE = settings.RETRY_RERAISE
 FILES_BLOCK_SIZE = settings.FILES_BLOCK_SIZE
 
 PWD = os.getcwd()
 logger = loggermodule.get_logger(__name__)
 
-@retry(retry=retry_if_exception_type(AgaveError), reraise=RETRY_RERAISE,
-       stop=stop_after_delay(RETRY_MAX_DELAY), wait=wait_exponential(multiplier=2, max=64))
-def download(agave_client, file_to_download, local_filename=None, system_id=DEFAULT_STORAGE_SYSTEM):
+
+@retry(
+    retry=retry_if_exception_type(AgaveError),
+    reraise=RETRY_RERAISE,
+    stop=stop_after_delay(RETRY_MAX_DELAY),
+    wait=wait_exponential(multiplier=2, max=64))
+def download(agave_client,
+             file_to_download,
+             local_filename=None,
+             system_id=DEFAULT_STORAGE_SYSTEM):
     """Download a file from Agave files API
 
     Arguments:
@@ -57,8 +64,8 @@ def download(agave_client, file_to_download, local_filename=None, system_id=DEFA
             # Implements atomic download
             f = tempfile.NamedTemporaryFile('wb', delete=False, dir=PWD)
             # with open(downloadFileName, 'wb') as f:
-            rsp = agave_client.files.download(systemId=system_id,
-                                              filePath=file_to_download)
+            rsp = agave_client.files.download(
+                systemId=system_id, filePath=file_to_download)
             if isinstance(rsp, dict):
                 raise AgaveError(
                     "Failed to download {}".format(file_to_download))
@@ -75,20 +82,28 @@ def download(agave_client, file_to_download, local_filename=None, system_id=DEFA
             try:
                 os.unlink(downloadFileName)
             except Exception:
-                logger.exception('Failed to unlink {}'.format(downloadFileName))
+                logger.exception(
+                    'Failed to unlink {}'.format(downloadFileName))
                 pass
             if re.compile('404 Client Error').search(str(http_err)):
                 raise HTTPError('404 Not Found') from http_err
             else:
-                http_err_resp = agaveutils.process_agave_httperror(http_err)
+                http_err_resp = tapis.process_agave_httperror(http_err)
                 raise AgaveError(http_err_resp) from http_err
 
     return local_filename
 
-@retry(retry=retry_if_exception_type(AgaveError), reraise=RETRY_RERAISE,
-       stop=stop_after_delay(RETRY_MAX_DELAY), wait=wait_exponential(multiplier=2, max=64))
-def upload(agave_client, file_to_upload, destination_path,
-          system_id=DEFAULT_STORAGE_SYSTEM, autogrant=False):
+
+@retry(
+    retry=retry_if_exception_type(AgaveError),
+    reraise=RETRY_RERAISE,
+    stop=stop_after_delay(RETRY_MAX_DELAY),
+    wait=wait_exponential(multiplier=2, max=64))
+def upload(agave_client,
+           file_to_upload,
+           destination_path,
+           system_id=DEFAULT_STORAGE_SYSTEM,
+           autogrant=False):
     """Upload a file using Agave files, with optional world:READ grant
 
     Arguments:
@@ -108,24 +123,31 @@ def upload(agave_client, file_to_upload, destination_path,
         logger.info('using Agave API')
         logger.debug(pformat(exc))
         try:
-            agave_client.files.importData(systemId=system_id,
-                                          filePath=destination_path,
-                                          fileToUpload=open(file_to_upload, 'rb'))
+            agave_client.files.importData(
+                systemId=system_id,
+                filePath=destination_path,
+                fileToUpload=open(file_to_upload, 'rb'))
         except HTTPError as h:
-            http_err_resp = agaveutils.process_agave_httperror(h)
+            http_err_resp = tapis.process_agave_httperror(h)
             raise Exception(http_err_resp)
         except Exception as e:
-            raise AgaveError(
-                "Error uploading {}: {}".format(file_to_upload, e))
+            raise AgaveError("Error uploading {}: {}".format(
+                file_to_upload, e))
     if autogrant:
         return grant(agave_client, destination_path, system_id=system_id)
     else:
         return True
 
-@retry(stop=stop_after_delay(RETRY_MAX_DELAY), reraise=RETRY_RERAISE,
-       wait=wait_exponential(multiplier=2, max=64))
-def grant(agave_client, pems_grant_target, system_id=DEFAULT_STORAGE_SYSTEM,
-          username='world', permission='READ'):
+
+@retry(
+    stop=stop_after_delay(RETRY_MAX_DELAY),
+    reraise=RETRY_RERAISE,
+    wait=wait_exponential(multiplier=2, max=64))
+def grant(agave_client,
+          pems_grant_target,
+          system_id=DEFAULT_STORAGE_SYSTEM,
+          username='world',
+          permission='READ'):
     """Grant Agave file permissions
 
     Arguments:
@@ -141,22 +163,26 @@ def grant(agave_client, pems_grant_target, system_id=DEFAULT_STORAGE_SYSTEM,
     logger.info('bacanora.grant()')
     logger.info('using Agave API')
     try:
-        pemBody = {'username': username,
-                   'permission': permission,
-                   'recursive': False}
-        agave_client.files.updatePermissions(systemId=system_id,
-                                             filePath=pems_grant_target,
-                                             body=pemBody)
+        pemBody = {
+            'username': username,
+            'permission': permission,
+            'recursive': False
+        }
+        agave_client.files.updatePermissions(
+            systemId=system_id, filePath=pems_grant_target, body=pemBody)
     except HTTPError as h:
-        http_err_resp = agaveutils.process_agave_httperror(h)
+        http_err_resp = tapis.process_agave_httperror(h)
         raise Exception(http_err_resp)
     except Exception as e:
-        raise AgaveError(
-            "Error setting permissions on {}: {}".format(pems_grant_target, e))
+        raise AgaveError("Error setting permissions on {}: {}".format(
+            pems_grant_target, e))
     return True
 
-@retry(stop=stop_after_delay(RETRY_MAX_DELAY), reraise=RETRY_RERAISE,
-       wait=wait_exponential(multiplier=2, max=64))
+
+@retry(
+    stop=stop_after_delay(RETRY_MAX_DELAY),
+    reraise=RETRY_RERAISE,
+    wait=wait_exponential(multiplier=2, max=64))
 def exists(agave_client, path_to_test, system_id=DEFAULT_STORAGE_SYSTEM):
     """Test for existence of a file or directory
 
@@ -173,10 +199,13 @@ def exists(agave_client, path_to_test, system_id=DEFAULT_STORAGE_SYSTEM):
         return True
     else:
         logger.info('using Agave API')
-        return agaveutils.exists(agave_client, path_to_test, systemId=system_id)
+        return tapis.exists(agave_client, path_to_test, systemId=system_id)
 
-@retry(stop=stop_after_delay(RETRY_MAX_DELAY), reraise=RETRY_RERAISE,
-       wait=wait_exponential(multiplier=2, max=64))
+
+@retry(
+    stop=stop_after_delay(RETRY_MAX_DELAY),
+    reraise=RETRY_RERAISE,
+    wait=wait_exponential(multiplier=2, max=64))
 def isfile(agave_client, path_to_test, system_id=DEFAULT_STORAGE_SYSTEM):
     """Determine if a path points to a file
 
@@ -193,10 +222,13 @@ def isfile(agave_client, path_to_test, system_id=DEFAULT_STORAGE_SYSTEM):
         return True
     else:
         logger.info('using Agave API')
-        return agaveutils.isfile(agave_client, path_to_test, systemId=system_id)
+        return tapis.isfile(agave_client, path_to_test, systemId=system_id)
 
-@retry(stop=stop_after_delay(RETRY_MAX_DELAY), reraise=RETRY_RERAISE,
-       wait=wait_exponential(multiplier=2, max=64))
+
+@retry(
+    stop=stop_after_delay(RETRY_MAX_DELAY),
+    reraise=RETRY_RERAISE,
+    wait=wait_exponential(multiplier=2, max=64))
 def isdir(agave_client, path_to_test, system_id=DEFAULT_STORAGE_SYSTEM):
     """Determine if a path points to a directory
 
@@ -213,10 +245,13 @@ def isdir(agave_client, path_to_test, system_id=DEFAULT_STORAGE_SYSTEM):
         return True
     else:
         logger.info('using Agave API')
-        return agaveutils.isdir(agave_client, path_to_test, systemId=system_id)
+        return tapis.isdir(agave_client, path_to_test, systemId=system_id)
 
-@retry(stop=stop_after_delay(RETRY_MAX_DELAY), reraise=RETRY_RERAISE,
-       wait=wait_exponential(multiplier=2, max=64))
+
+@retry(
+    stop=stop_after_delay(RETRY_MAX_DELAY),
+    reraise=RETRY_RERAISE,
+    wait=wait_exponential(multiplier=2, max=64))
 def mkdir(agave_client, path_to_make, system_id=DEFAULT_STORAGE_SYSTEM):
     """Make a new directory on the specified storage system
 
@@ -236,13 +271,18 @@ def mkdir(agave_client, path_to_make, system_id=DEFAULT_STORAGE_SYSTEM):
     except DirectOperationFailed as exc:
         logger.info('using Agave API')
         logger.debug(pformat(exc))
-        return agaveutils.files.mkdir(agave_client,
-                                      path_to_make,
-                                      systemId=system_id)
+        return tapis.files.mkdir(
+            agave_client, path_to_make, systemId=system_id)
 
-@retry(stop=stop_after_delay(RETRY_MAX_DELAY), reraise=RETRY_RERAISE,
-       wait=wait_exponential(multiplier=2, max=64))
-def delete(agave_client, path_to_rm, system_id=DEFAULT_STORAGE_SYSTEM, recursive=True):
+
+@retry(
+    stop=stop_after_delay(RETRY_MAX_DELAY),
+    reraise=RETRY_RERAISE,
+    wait=wait_exponential(multiplier=2, max=64))
+def delete(agave_client,
+           path_to_rm,
+           system_id=DEFAULT_STORAGE_SYSTEM,
+           recursive=True):
     """Delete a path on the specified storage system
 
     Arguments:
@@ -258,10 +298,9 @@ def delete(agave_client, path_to_rm, system_id=DEFAULT_STORAGE_SYSTEM, recursive
         logger.warning('Path {} did not exist to delete!'.format(path_to_rm))
         return True
     try:
-        return direct.delete(path_to_rm, system_id=system_id, recursive=recursive)
+        return direct.delete(
+            path_to_rm, system_id=system_id, recursive=recursive)
     except DirectOperationFailed as exc:
         logger.info('using Agave API')
         logger.debug(pformat(exc))
-        return agaveutils.files.delete(agave_client,
-                                       path_to_rm,
-                                       systemId=system_id)
+        return tapis.files.delete(agave_client, path_to_rm, systemId=system_id)

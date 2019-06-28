@@ -1,0 +1,2 @@
+class ManagedStoreError(ValueError):
+    pass

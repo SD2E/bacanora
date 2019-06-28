@@ -2,7 +2,7 @@
 Helper functions for working with Agave and Reactors APIs
 
 ```python
-from agaveutils import *
+from tapis import *
 ```
 """
 from __future__ import print_function
@@ -16,7 +16,6 @@ logger = logging.getLogger(__name__)
 
 from agavepy.agave import Agave
 from attrdict import AttrDict
-
 
 MAX_ELAPSED = 300
 MAX_RETRIES = 5
