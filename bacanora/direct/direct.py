@@ -15,14 +15,6 @@ def abs_path(file_path, system_id='data-sd2e-community', agave=None):
     return s.runtime_dir(environ, file_path)
 
 
-def get_prefix(storage_system, environment):
-    try:
-        return StorageSystems.prefixes[storage_system][environment]
-    except KeyError:
-        raise UnknownStorageSystem(
-            'Bacanora mapping for {} is not defined'.format(storage_system))
-
-
 def get(file_to_download, local_filename, system_id='data-sd2e-community'):
     try:
         full_path = abs_path(file_to_download)
