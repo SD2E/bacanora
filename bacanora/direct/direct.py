@@ -4,6 +4,10 @@ import shutil
 from ..stores import StorageSystem
 from .. import runtimes
 from .. import logger as loggermodule
+from ..utils import *
+
+# Methods
+from .download import get
 
 logger = loggermodule.get_logger(__name__)
 
@@ -13,27 +17,6 @@ def abs_path(file_path, system_id='data-sd2e-community', agave=None):
     environ = runtimes.detect()
     s = StorageSystem(system_id, agave=agave)
     return s.runtime_dir(environ, file_path)
-
-
-def get(file_to_download, local_filename, system_id='data-sd2e-community'):
-    try:
-        full_path = abs_path(file_to_download)
-        temp_local_filename = local_filename + '-' + str(
-            int(datetime.datetime.utcnow().timestamp()))
-        logger.debug('DIRECT_GET: {}'.format(full_path))
-        if os.path.exists(full_path):
-            shutil.copy(full_path, temp_local_filename)
-        else:
-            raise DirectOperationFailed('Remote source does not exist')
-        try:
-            os.rename(temp_local_filename, local_filename)
-        except Exception as rexc:
-            raise DirectOperationFailed('Atomic rename failed after download',
-                                        rexc)
-    except UnknownRuntime as uexc:
-        raise UnknownRuntime(uexc)
-    except UnknownStorageSystem as ustor:
-        raise UnknownStorageSystem(ustor)
 
 
 def put(file_to_upload, destination_path, system_id='data-sd2e-community'):

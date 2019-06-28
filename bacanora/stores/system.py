@@ -3,7 +3,7 @@ import json
 import os
 import re
 from functools import lru_cache
-from .exceptions import ManagedStoreError
+from .exceptions import ManagedStoreError, UnknownStorageSystem
 from ..extensible import ExtensibleAttrDict
 from ..normalize import normalize, normpath
 from .. import settings
@@ -82,7 +82,7 @@ class StorageSystem(str):
             sys = self.client.systems.get(systemId=self)
             return ExtensibleAttrDict(sys)
         except Exception as exc:
-            raise ManagedStoreError(
+            raise UnknownStorageSystem(
                 'Unable to fetch StorageSystem {} [{}]'.format(self, str(exc)))
 
     @property
