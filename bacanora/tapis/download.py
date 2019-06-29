@@ -32,30 +32,33 @@ def get(file_path,
     logger.debug('destination: {}'.format(tmp_local_filename))
 
     try:
+        logger.debug('files.download: agave://{}{}'.format(
+            system_id, file_path))
+        rsp = agave.files.download(filePath=file_path, systemId=system_id)
+        if type(rsp) == dict:
+            raise TapisOperationFailed(
+                "Failed to download {}".format(file_path))
         with open(tmp_local_filename, 'wb') as dest_file:
-            logger.debug('files.download: agave://{}{}'.format(
-                system_id, file_path))
-            rsp = agave.files.download(filePath=file_path, systemId=system_id)
-            if type(rsp) == dict:
-                raise TapisOperationFailed(
-                    "Failed to download {}".format(file_path))
             for block in rsp.iter_content(BLOCK_SIZE):
                 if not block:
                     break
                 dest_file.write(block)
-            if atomic:
-                try:
-                    if settings.DEBUG_MODE is False:
-                        os.rename(tmp_local_filename, local_filename)
-                    else:
-                        logger.debug(
-                            'temp filename: {}'.format(tmp_local_filename))
-                        shutil.copy(tmp_local_filename, local_filename)
-                except Exception as err:
-                    raise IOError('Rename failed after download', err)
+        if atomic:
+            try:
+                if settings.DEBUG_MODE is False:
+                    os.rename(tmp_local_filename, local_filename)
+                else:
+                    logger.debug(
+                        'temp filename: {}'.format(tmp_local_filename))
+                    shutil.copy(tmp_local_filename, local_filename)
+            except Exception as err:
+                raise IOError('Rename failed after download', err)
     except HTTPError as h:
-        raise HTTPError(process_agave_httperror(h))
-    except (OSError, IOError):
+        error_msg = process_agave_httperror(h)
+        logger.error(error_msg)
+        raise HTTPError(error_msg)
+    except (OSError, IOError) as err:
+        logger.error(str(err))
         raise
     except Exception as exc:
         raise TapisOperationFailed("Download failed: {}".format(exc))

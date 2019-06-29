@@ -8,4 +8,5 @@ from .uri import to_agave_uri, from_tacc_s3_uri, from_agave_uri
 #                     agave_upload_file, wait_for_file_status,
 #                     process_agave_httperror, exists, isdir, \
 #                     isfile, delete)
+from .exceptions import *
 from .operations import (get)
