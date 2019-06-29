@@ -35,6 +35,8 @@ PWD = os.getcwd()
 # to debug locally while still being able to access these three essential
 # values from within Abaco functions.
 
+__all__ = ['process_agave_httperror']
+
 
 def get_api_server(ag):
     '''Get current API server URI'''
@@ -81,3 +83,49 @@ def get_api_username(ag):
     else:
         logger.error("No username could be determined")
         return None
+
+
+def process_agave_httperror(http_error_object):
+
+    h = http_error_object
+    # extract HTTP response code
+    code = -1
+    try:
+        code = h.response.status_code
+        assert isinstance(code, int)
+    except Exception:
+        # we have no idea what the hell happened
+        code = 418
+
+    # extract HTTP reason
+    reason = 'UNKNOWN ERROR'
+    try:
+        reason = h.response.reason
+    except Exception:
+        pass
+
+    # Extract textual response elements
+    #
+    # agave and abaco will give json responses if the
+    # underlying service is at all capable of doing so
+    # so try to extract fields from it if we can.
+    #
+    # otherwise, return the actual text of the response
+    # in error message
+    err_msg = 'Unexpected encountered by the web service'
+    status_msg = 'error'
+    version_msg = 'unknown'
+    try:
+        j = h.response.json()
+        if 'message' in j:
+            err_msg = j['message']
+        if 'status' in j:
+            status_msg = j['status']
+        if 'version' in j:
+            version_msg = j['version']
+    except Exception:
+        err_msg = h.response.text
+
+    httperror = 'HTTPError - {} {}; message: {}; status: {}; version: {}; response.content: {}'
+    return httperror.format(code, reason, err_msg, status_msg, version_msg,
+                            h.response.content)
