@@ -22,6 +22,7 @@ __all__ = ['stat', 'rsrc_type', 'exists', 'isfile', 'isdir']
 
 
 # TODO - Add a simple TTL cache for stat()
+# TODO - Return a tuple modeled on Python os.stat()
 def stat(file_path,
          system_id=DEFAULT_SYSTEM_ID,
          root_dir='/',
