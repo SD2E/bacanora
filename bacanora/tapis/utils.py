@@ -16,6 +16,7 @@ logger = logging.getLogger(__name__)
 
 from agavepy.agave import Agave
 from attrdict import AttrDict
+from ..utils import normalize, normpath
 
 MAX_ELAPSED = 300
 MAX_RETRIES = 5
@@ -35,7 +36,7 @@ PWD = os.getcwd()
 # to debug locally while still being able to access these three essential
 # values from within Abaco functions.
 
-__all__ = ['process_agave_httperror']
+__all__ = ['process_agave_httperror', 'rooted_path']
 
 
 def get_api_server(ag):
@@ -129,3 +130,7 @@ def process_agave_httperror(http_error_object):
     httperror = 'HTTPError - {} {}; message: {}; status: {}; version: {}; response.content: {}'
     return httperror.format(code, reason, err_msg, status_msg, version_msg,
                             h.response.content)
+
+
+def rooted_path(file_path, root_dir='/'):
+    return os.path.join(root_dir, normalize(file_path))

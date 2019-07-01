@@ -14,6 +14,8 @@ logger = loggermodule.get_logger(__name__)
 DEFAULT_SYSTEM_ID = settings.STORAGE_SYSTEM
 BLOCK_SIZE = settings.FILES_BLOCK_SIZE
 
+__all__ = ['get']
+
 
 def get(file_path,
         system_id=DEFAULT_SYSTEM_ID,

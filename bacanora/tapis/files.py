@@ -15,8 +15,13 @@ DELAY = 1
 MULTIPLIER = 2
 
 
-def get(agaveClient, agaveAbsolutePath, systemId, localFilename,
-        retries=MAX_RETRIES, delay=DELAY, multiplier=MULTIPLIER):
+def get(agaveClient,
+        agaveAbsolutePath,
+        systemId,
+        localFilename,
+        retries=MAX_RETRIES,
+        delay=DELAY,
+        multiplier=MULTIPLIER):
     """files-get with retry and exponential backoff
 
     :param agaveClient: an authenticated Agave object
@@ -33,9 +38,7 @@ def get(agaveClient, agaveAbsolutePath, systemId, localFilename,
     pause = delay
     while attempt <= retries:
         try:
-            f = agave_download_file(agaveClient,
-                                    agaveAbsolutePath,
-                                    systemId,
+            f = agave_download_file(agaveClient, agaveAbsolutePath, systemId,
                                     localFilename)
             return f
         except Exception:
@@ -47,8 +50,13 @@ def get(agaveClient, agaveAbsolutePath, systemId, localFilename,
                 raise
 
 
-def mkdir(agaveClient, dirName, systemId, basePath='/',
-          retries=MAX_RETRIES, delay=DELAY, multiplier=MULTIPLIER):
+def mkdir(agaveClient,
+          dirName,
+          systemId,
+          basePath='/',
+          retries=MAX_RETRIES,
+          delay=DELAY,
+          multiplier=MULTIPLIER):
     """files-mkdir with retry and exponential backoff
 
     :param agaveClient: an authenticated Agave object
@@ -64,10 +72,7 @@ def mkdir(agaveClient, dirName, systemId, basePath='/',
     pause = delay
     while attempt <= retries:
         try:
-            agave_mkdir(agaveClient,
-                        dirName,
-                        systemId,
-                        basePath)
+            agave_mkdir(agaveClient, dirName, systemId, basePath)
             return True
         except Exception:
             if attempt < retries:
@@ -78,59 +83,22 @@ def mkdir(agaveClient, dirName, systemId, basePath='/',
                 raise
 
 
-def put(agaveClient, agaveDestPath, systemId, uploadFile,
-        retries=MAX_RETRIES, delay=DELAY, multiplier=MULTIPLIER):
+def put(agaveClient,
+        agaveDestPath,
+        systemId,
+        uploadFile,
+        retries=MAX_RETRIES,
+        delay=DELAY,
+        multiplier=MULTIPLIER):
     pass
 
 
-def process_agave_httperror(http_error_object):
-
-    h = http_error_object
-    # extract HTTP response code
-    code = -1
-    try:
-        code = h.response.status_code
-        assert isinstance(code, int)
-    except Exception:
-        # we have no idea what the hell happened
-        code = 418
-
-    # extract HTTP reason
-    reason = 'UNKNOWN ERROR'
-    try:
-        reason = h.response.reason
-    except Exception:
-        pass
-
-    # Extract textual response elements
-    #
-    # agave and abaco will give json responses if the
-    # underlying service is at all capable of doing so
-    # so try to extract fields from it if we can.
-    #
-    # otherwise, return the actual text of the response
-    # in error message
-    err_msg = 'Unexpected encountered by the web service'
-    status_msg = 'error'
-    version_msg = 'unknown'
-    try:
-        j = h.response.json()
-        if 'message' in j:
-            err_msg = j['message']
-        if 'status' in j:
-            status_msg = j['status']
-        if 'version' in j:
-            version_msg = j['version']
-    except Exception:
-        err_msg = h.response.text
-
-    httperror = 'HTTPError - {} {}; message: {}; status: {}; version: {}; response.content: {}'
-    return httperror.format(code, reason, err_msg, status_msg, version_msg,
-                            h.response.content)
-
-
-def agave_mkdir(agaveClient, dirName, systemId, basePath='/',
-                sync=False, timeOut=MAX_ELAPSED):
+def agave_mkdir(agaveClient,
+                dirName,
+                systemId,
+                basePath='/',
+                sync=False,
+                timeOut=MAX_ELAPSED):
     """
     Creates a directory dirName on a storage system at basePath
 
@@ -139,16 +107,19 @@ def agave_mkdir(agaveClient, dirName, systemId, basePath='/',
     nothing if all directories are already in place.
     """
     try:
-        agaveClient.files.manage(systemId=systemId,
-                                 body={'action': 'mkdir', 'path': dirName},
-                                 filePath=basePath)
+        agaveClient.files.manage(
+            systemId=systemId,
+            body={
+                'action': 'mkdir',
+                'path': dirName
+            },
+            filePath=basePath)
     except HTTPError as h:
         http_err_resp = process_agave_httperror(h)
         raise Exception(http_err_resp)
     except Exception as e:
-        raise Exception(
-            "Unable to mkdir {} at {}/{}: {}".format(
-                dirName, systemId, basePath, e))
+        raise Exception("Unable to mkdir {} at {}/{}: {}".format(
+            dirName, systemId, basePath, e))
 
     return True
 
@@ -167,18 +138,16 @@ def agave_download_file(agaveClient,
     downloadFileName = os.path.join(PWD, localFilename)
     with open(downloadFileName, 'wb') as f:
         try:
-            rsp = agaveClient.files.download(systemId=systemId,
-                                             filePath=agaveAbsolutePath)
+            rsp = agaveClient.files.download(
+                systemId=systemId, filePath=agaveAbsolutePath)
         except HTTPError as h:
             http_err_resp = process_agave_httperror(h)
             raise Exception(http_err_resp)
         except Exception as e:
-            raise Exception(
-                "Unknown error: {}".format(e))
+            raise Exception("Unknown error: {}".format(e))
 
         if type(rsp) == dict:
-            raise Exception(
-                "Failed to download {}".format(agaveAbsolutePath))
+            raise Exception("Failed to download {}".format(agaveAbsolutePath))
         for block in rsp.iter_content(2048):
             if not block:
                 break
@@ -205,9 +174,10 @@ def agave_upload_file(agaveClient,
     # that file, then do a mv operation at the end. Formally, its no differnt
     # for provenance than uploading in place.
     try:
-        agaveClient.files.importData(systemId=systemId,
-                                     filePath=agaveDestPath,
-                                     fileToUpload=open(uploadFile))
+        agaveClient.files.importData(
+            systemId=systemId,
+            filePath=agaveDestPath,
+            fileToUpload=open(uploadFile))
     except HTTPError as h:
         http_err_resp = process_agave_httperror(h)
         raise Exception(http_err_resp)
@@ -217,14 +187,15 @@ def agave_upload_file(agaveClient,
     uploaded_filename = os.path.basename(uploadFile)
     if sync:
         fullAgaveDestPath = os.path.join(agaveDestPath, uploaded_filename)
-        wait_for_file_status(
-            agaveClient, fullAgaveDestPath, systemId, timeOut)
+        wait_for_file_status(agaveClient, fullAgaveDestPath, systemId, timeOut)
 
     return True
 
 
-def wait_for_file_status(agaveClient, agaveWatchPath,
-                         systemId, maxTime=MAX_ELAPSED):
+def wait_for_file_status(agaveClient,
+                         agaveWatchPath,
+                         systemId,
+                         maxTime=MAX_ELAPSED):
     """
     Synchronously wait for a file's status to reach a terminal state.
 
@@ -241,8 +212,9 @@ def wait_for_file_status(agaveClient, agaveWatchPath,
     #       implementation might spawn a temporary callback channel
     #       (i.e. requestbin) subscribed to only terminal events, then
     #       monitor its messages to watch for completion.
-    TERMINAL_STATES = ['STAGING_COMPLETED', 'TRANSFORMING_COMPLETED',
-                       'CREATED', 'DOWNLOAD']
+    TERMINAL_STATES = [
+        'STAGING_COMPLETED', 'TRANSFORMING_COMPLETED', 'CREATED', 'DOWNLOAD'
+    ]
 
     assert maxTime > 0
     assert maxTime <= 1000
@@ -253,8 +225,8 @@ def wait_for_file_status(agaveClient, agaveWatchPath,
 
     while (time.time() < expires):
         try:
-            hist = agaveClient.files.getHistory(systemId=systemId,
-                                                filePath=agaveWatchPath)
+            hist = agaveClient.files.getHistory(
+                systemId=systemId, filePath=agaveWatchPath)
             stat = hist[-1]['status']
             if stat in TERMINAL_STATES:
                 return True
@@ -292,9 +264,8 @@ def exists(agaveClient, agaveAbsolutePath, systemId, formats=None):
         formats = ('folder', 'raw')
     try:
         path_format = agaveClient.files.list(
-            filePath=agaveAbsolutePath,
-            systemId=systemId,
-            limit=2)[0].get('format', None)
+            filePath=agaveAbsolutePath, systemId=systemId, limit=2)[0].get(
+                'format', None)
         if path_format in formats:
             return True
         else:
@@ -307,20 +278,10 @@ def exists(agaveClient, agaveAbsolutePath, systemId, formats=None):
     except Exception:
         raise
 
+
 def isfile(agaveClient, agaveAbsolutePath, systemId):
     return exists(agaveClient, agaveAbsolutePath, systemId, formats=['raw'])
 
+
 def isdir(agaveClient, agaveAbsolutePath, systemId):
     return exists(agaveClient, agaveAbsolutePath, systemId, formats=['folder'])
-
-def delete(agaveClient, agaveAbsolutePath, systemId):
-    try:
-        agaveClient.files.delete(filePath=agaveAbsolutePath, systemId=systemId)
-    except HTTPError as herr:
-        if herr.response.status_code == 404:
-            return False
-        else:
-            raise HTTPError(herr)
-    except Exception:
-        raise
-    return True
