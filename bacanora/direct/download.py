@@ -17,6 +17,7 @@ __all__ = ['get']
 def get(file_path,
         system_id=DEFAULT_SYSTEM_ID,
         local_filename=None,
+        force=False,
         atomic=True,
         agave=None):
     """Emulate a Tapis download by copying a path from its resolved physical
@@ -26,6 +27,10 @@ def get(file_path,
         posix_path = abs_path(file_path, system_id=system_id, agave=agave)
         if local_filename is None:
             local_filename = os.path.basename(posix_path)
+        if os.path.exists(local_filename) and force is False:
+            raise DirectOperationFailed(
+                'Destination file {} exists. Repeat with force=True to overwrite.'
+            )
         local_parent_dir = normpath(os.path.dirname(local_filename))
         logger.debug('get: {}'.format(posix_path))
 

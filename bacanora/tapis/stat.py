@@ -5,10 +5,10 @@ from agavepy.agave import AgaveError
 from requests.exceptions import HTTPError
 from .. import logger as loggermodule
 from .. import settings
-from ..utils import nanoseconds, microseconds, normalize, normpath
+from ..utils import nanoseconds, microseconds, normalize, normpath, rooted_path
 from ..stores import ManagedStoreError
 from .exceptions import TapisOperationFailed
-from .utils import process_agave_httperror, rooted_path
+from .utils import process_agave_httperror
 
 logger = loggermodule.get_logger(__name__)
 

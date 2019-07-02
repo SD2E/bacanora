@@ -13,6 +13,18 @@ def abs_path(file_path,
              system_id='data-sd2e-community',
              root_dir='/',
              agave=None):
+    """Resolve an Agave-relative path to its absolute path on a TACC
+    data-enabled host. Automatically detects common TACC host runtimes.
+
+    Arguments:
+        file_path (str): File path to resolve
+        system_id (str, optional): Tapis storageSystem where file_path is located
+        root_dir (str, optional): Absolute path if file_path is relative
+        agave (Agave, optional): Tapis (Agave) API client
+
+    Returns:
+        str: Absolute path on the TACC data-enabled host
+    """
     file_path = os.path.join(root_dir, normalize(file_path))
     logger.debug('file_path: {}'.format(file_path))
     environ = runtimes.detect()

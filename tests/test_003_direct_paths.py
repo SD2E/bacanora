@@ -36,8 +36,8 @@ def test_direct_abs_path_localhost(agave):
       '/user/sd2eadm/tree/tacc-work/share'),
      ('TACC_DOMAIN', 'data-tacc-work-sd2eadm', '/share',
       '/work/05201/sd2eadm/share')])
-def test_direct_abs_path_runtimes(monkeypatch, env_var, system_id, file_path,
-                                  result):
+def test_direct_abs_path_runtimes(monkeypatch, agave, env_var, system_id,
+                                  file_path, result):
     """Host path can be resolved on the matrix of StorageSystem types
     and Bacanora runtimes
     """

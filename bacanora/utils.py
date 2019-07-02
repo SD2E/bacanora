@@ -3,7 +3,8 @@ import datetime
 import re
 
 __all__ = [
-    'current_time', 'normpath', 'normalize', 'microseconds', 'nanoseconds'
+    'current_time', 'normpath', 'normalize', 'rooted_path', 'microseconds',
+    'nanoseconds'
 ]
 
 
@@ -31,6 +32,7 @@ def normalize(filepath):
     """Trim leading slash or slashes from a path
     """
     fp = re.sub('^(/)+', '', filepath)
+    fp = re.sub('(/)+$', '', fp)
     return fp
 
 
@@ -41,4 +43,9 @@ def normpath(filepath):
     fp = re.sub('^(/)+', '/', filepath)
     if not filepath.startswith('/'):
         filepath = '/' + filepath
+    fp = re.sub('(/)+$', '', fp)
     return os.path.normpath(fp)
+
+
+def rooted_path(file_path, root_dir='/'):
+    return os.path.join(root_dir, normalize(file_path))
