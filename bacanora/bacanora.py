@@ -2,6 +2,7 @@ from .logger import get_logger
 from .operations import *
 from . import tapis
 from . import direct
+from .processors import ProcessingOperationFailed
 
 logger = get_logger(__name__)
 
