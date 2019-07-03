@@ -1,18 +1,18 @@
+"""Tapis implementations of ``put`` operations
+"""
 import os
 import shutil
-from agavepy.agave import AgaveError
-from requests.exceptions import HTTPError
-from .. import logger as loggermodule
+from ..logger import get_logger
 from .. import settings
 from ..utils import nanoseconds, microseconds, normalize, normpath, rooted_path
-from ..stores import ManagedStoreError
+from .utils import read_tapis_http_error
+from ..exceptions import HTTPError, AgaveError
 from .exceptions import TapisOperationFailed
-from .utils import process_agave_httperror
 
-logger = loggermodule.get_logger(__name__)
+logger = get_logger(__name__)
 
 DEFAULT_SYSTEM_ID = settings.STORAGE_SYSTEM
-FILES_MAX_SYNC_ELAPSED = settings.
+FILES_MAX_SYNC_ELAPSED = settings.MAX_SYNC_ELAPSED_FILES
 
 __all__ = ['put']
 
@@ -65,7 +65,7 @@ def put(file_to_upload,
                 fileToUpload=open(file_to_upload))
             return True
         except HTTPError as h:
-            error_msg = process_agave_httperror(h)
+            error_msg = read_tapis_http_error(h)
             logger.error(error_msg)
             raise HTTPError(error_msg)
         except (OSError, IOError) as err:
@@ -78,40 +78,3 @@ def put(file_to_upload,
             return False
         else:
             raise
-
-
-def agave_upload_file(agaveClient,
-                      agaveDestPath,
-                      systemId,
-                      uploadFile,
-                      sync=True,
-                      timeOut=MAX_ELAPSED):
-    """
-    Upload a file to Agave-managed remote storage.
-
-    If sync is True, the function will wait for the upload to
-    complete before returning. Raises exceptions on importData
-    or timeout errors.
-    """
-    # NOTE: I know a hack to fix the issue with in-place overwrites not having
-    # the proper terminal state. It should also increase the atomicity of the
-    # uploads process. Upload to a namespaced path (agaveDestPath.tmp), track
-    # that file, then do a mv operation at the end. Formally, its no differnt
-    # for provenance than uploading in place.
-    try:
-        agaveClient.files.importData(
-            systemId=systemId,
-            filePath=agaveDestPath,
-            fileToUpload=open(uploadFile))
-    except HTTPError as h:
-        http_err_resp = process_agave_httperror(h)
-        raise Exception(http_err_resp)
-    except Exception as e:
-        raise Exception("Unknown error uploading {}: {}".format(uploadFile, e))
-
-    uploaded_filename = os.path.basename(uploadFile)
-    if sync:
-        fullAgaveDestPath = os.path.join(agaveDestPath, uploaded_filename)
-        wait_for_file_status(agaveClient, fullAgaveDestPath, systemId, timeOut)
-
-    return True

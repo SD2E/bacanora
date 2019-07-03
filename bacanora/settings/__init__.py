@@ -1,3 +1,5 @@
+"""Environment variable-driven configuration
+"""
 import os
 from .helpers import (fix_assets_path, array_from_string, parse_boolean,
                       int_or_none, set_from_string)

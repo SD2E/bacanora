@@ -1,3 +1,5 @@
+"""Submodule-level utilities for path manipulation, etc.
+"""
 import os
 import datetime
 import shutil

@@ -1,5 +1,9 @@
+"""Package-level helper functions for time stamping, path
+manipulation, importing modules on demand, and more
+"""
 import os
 import datetime
+import importlib
 import re
 
 __all__ = [
@@ -24,6 +28,8 @@ def microseconds():
 
 
 def nanoseconds():
+    """Current time in nanoseconds as ``int``
+    """
     return int(
         round(datetime.datetime.utcnow().timestamp() * 1000 * 1000 * 1000))
 
@@ -48,4 +54,20 @@ def normpath(filepath):
 
 
 def rooted_path(file_path, root_dir='/'):
+    """Safely combine a relative (which might not actually
+    be relative) and base path.
+    """
     return os.path.join(root_dir, normalize(file_path))
+
+
+def dynamic_import(module, package=None):
+    """Dynamically import a module by name at runtime
+
+    Args:
+        module (str): The name of the module to import
+        package (str, optional): The package to import ``module`` from
+
+    Returns:
+        object: The imported module
+    """
+    return importlib.import_module(module, package=package)

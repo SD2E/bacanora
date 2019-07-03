@@ -5,7 +5,7 @@ import re
 from functools import lru_cache
 from .exceptions import ManagedStoreError, UnknownStorageSystem
 from ..extensible import ExtensibleAttrDict
-from ..normalize import normalize, normpath
+from ..utils import normalize, normpath
 from .. import settings
 from .. import hashable
 from .. import runtimes

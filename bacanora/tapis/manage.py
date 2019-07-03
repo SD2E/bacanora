@@ -1,14 +1,14 @@
+"""Tapis implementations of ``management`` operations
+"""
 import os
 import shutil
-from agavepy.agave import AgaveError
-from requests.exceptions import HTTPError
 from .. import logger as loggermodule
 from .. import settings
 from ..utils import nanoseconds, microseconds, normalize, normpath, rooted_path
-from ..stores import ManagedStoreError
 from .stat import exists
+from ..exceptions import HTTPError, AgaveError
 from .exceptions import TapisOperationFailed
-from .utils import process_agave_httperror
+from .utils import read_tapis_http_error
 
 logger = loggermodule.get_logger(__name__)
 
@@ -62,7 +62,7 @@ def mkdir(path_to_make,
                 filePath=root_dir)
             return True
         except HTTPError as h:
-            http_err_resp = process_agave_httperror(h)
+            http_err_resp = read_tapis_http_error(h)
             logger.error('HTTP Error: {}'.format(http_err_resp))
             raise HTTPError(http_err_resp)
         except Exception as err:

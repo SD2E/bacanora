@@ -39,7 +39,7 @@ def agave_upload_file(agaveClient,
             filePath=agaveDestPath,
             fileToUpload=open(uploadFile))
     except HTTPError as h:
-        http_err_resp = process_agave_httperror(h)
+        http_err_resp = read_tapis_http_error(h)
         raise Exception(http_err_resp)
     except Exception as e:
         raise Exception("Unknown error uploading {}: {}".format(uploadFile, e))

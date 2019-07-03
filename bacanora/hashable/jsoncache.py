@@ -1,3 +1,5 @@
+"""Implements memoizing using the Python ``json`` module
+"""
 # Derived from: https://gist.github.com/adah1972/f4ec69522281aaeacdba65dbee53fade
 # Supports BSON types as per https://stackoverflow.com/a/18405626
 from collections import namedtuple

@@ -36,7 +36,7 @@ PWD = os.getcwd()
 # to debug locally while still being able to access these three essential
 # values from within Abaco functions.
 
-__all__ = ['process_agave_httperror']
+__all__ = ['read_tapis_http_error']
 
 
 def get_api_server(ag):
@@ -86,8 +86,10 @@ def get_api_username(ag):
         return None
 
 
-def process_agave_httperror(http_error_object):
-
+def read_tapis_http_error(http_error_object):
+    """Extract useful details from an exception raised by interactting
+    with a Tapis API
+    """
     h = http_error_object
     # extract HTTP response code
     code = -1
@@ -105,14 +107,10 @@ def process_agave_httperror(http_error_object):
     except Exception:
         pass
 
-    # Extract textual response elements
-    #
-    # agave and abaco will give json responses if the
-    # underlying service is at all capable of doing so
-    # so try to extract fields from it if we can.
-    #
-    # otherwise, return the actual text of the response
-    # in error message
+    # Tapis APIs will give JSON responses if the target web service is at all
+    # capable of fulfilling the request. Therefore, try first to extract fields
+    # from the JSON response, then fall back to returning the plain text from
+    # the response.
     err_msg = 'Unexpected encountered by the web service'
     status_msg = 'error'
     version_msg = 'unknown'

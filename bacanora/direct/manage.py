@@ -1,3 +1,5 @@
+"""POSIX implementations of ``manage`` operations
+"""
 import os
 import shutil
 from ..utils import nanoseconds, microseconds, normalize, normpath

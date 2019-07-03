@@ -1,4 +1,7 @@
+"""An ``AttrDict`` that can be extended using dot notation
+"""
 from attrdict import AttrDict
+
 
 class ExtensibleAttrDict(dict):
     """Implements AttrDict-like behavior for complex objects"""

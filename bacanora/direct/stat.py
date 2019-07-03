@@ -1,3 +1,5 @@
+"""POSIX implementations of ``stat`` operations
+"""
 import os
 import shutil
 from ..utils import nanoseconds, microseconds, normalize, normpath
@@ -5,7 +7,7 @@ from .. import logger as loggermodule
 from .. import settings
 from .utils import abs_path
 from ..stores import ManagedStoreError
-from .exceptions import DirectOperationFailed
+from .exceptions import DirectOperationFailed, UnknowableOutcome
 
 logger = loggermodule.get_logger(__name__)
 
@@ -22,7 +24,7 @@ def exists(file_path, system_id=DEFAULT_SYSTEM_ID, root_dir='/', agave=None):
         if os.path.exists(posix_path):
             return True
         else:
-            return False
+            return UnknowableOutcome()
     except Exception as exc:
         raise DirectOperationFailed('Unable to complete os.path.exists()', exc)
 
@@ -35,7 +37,7 @@ def isfile(file_path, system_id=DEFAULT_SYSTEM_ID, root_dir='/', agave=None):
         if os.path.isfile(posix_path):
             return True
         else:
-            return False
+            return UnknowableOutcome()
     except Exception as exc:
         raise DirectOperationFailed('Unable to complete os.path.isfile()', exc)
 
@@ -48,7 +50,7 @@ def isdir(file_path, system_id=DEFAULT_SYSTEM_ID, root_dir='/', agave=None):
         if os.path.isdir(posix_path):
             return True
         else:
-            return False
+            return UnknowableOutcome()
     except Exception:
         raise DirectOperationFailed('Unable to complete os.path.isdir()')
 
@@ -60,7 +62,7 @@ def islink(file_path, system_id=DEFAULT_SYSTEM_ID, root_dir='/', agave=None):
         if os.path.islink(posix_path):
             return True
         else:
-            return False
+            return UnknowableOutcome()
     except Exception:
         raise DirectOperationFailed('Unable to complete os.path.islink()')
 
@@ -72,6 +74,6 @@ def ismount(file_path, system_id=DEFAULT_SYSTEM_ID, root_dir='/', agave=None):
         if os.path.ismount(posix_path):
             return True
         else:
-            return False
+            return UnknowableOutcome()
     except Exception:
         raise DirectOperationFailed('Unable to complete os.path.ismount()')

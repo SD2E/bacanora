@@ -1,14 +1,14 @@
+"""Tapis implementations of ``stat`` operations
+"""
 import os
 import shutil
 from attrdict import AttrDict
-from agavepy.agave import AgaveError
-from requests.exceptions import HTTPError
 from .. import logger as loggermodule
 from .. import settings
 from ..utils import nanoseconds, microseconds, normalize, normpath, rooted_path
-from ..stores import ManagedStoreError
+from ..exceptions import HTTPError, AgaveError
 from .exceptions import TapisOperationFailed
-from .utils import process_agave_httperror
+from .utils import read_tapis_http_error
 
 logger = loggermodule.get_logger(__name__)
 
@@ -28,6 +28,22 @@ def stat(file_path,
          root_dir='/',
          permissive=False,
          agave=None):
+    """Retrieve attributes for a given path on a Tapis storageSystem
+
+    Arguments:
+        file_path (str): The path from which to fetch attributes
+        system_id (str, optional): The Tapis storageSystem for file_path
+        root_dir (str, optional): Base path on the storageSystem if file_path is relative
+        permissive (bool, optional): Whether to raise an Exception on failure
+        agave (Agave, optional): An active Tapis client
+
+    Returns:
+        dict: A dictionary containing Tapis files API attributes
+
+    Raises:
+        HTTPError: A transport or web services error was encountered
+        TapisOperationFailed: Some other error prevented the operation
+    """
     try:
         try:
             rooted_file_path = rooted_path(file_path, root_dir)
@@ -53,6 +69,22 @@ def rsrc_type(file_path,
               root_dir='/',
               permissive=False,
               agave=None):
+    """Retrieve the ``type`` for a given path on a Tapis storageSystem
+
+    Arguments:
+        file_path (str): The path from which to fetch attributes
+        system_id (str, optional): The Tapis storageSystem for file_path
+        root_dir (str, optional): Base path on the storageSystem if file_path is relative
+        permissive (bool, optional): Whether to raise an Exception on failure
+        agave (Agave, optional): An active Tapis client
+
+    Returns:
+        string: Either ``file`` or ``dir``
+
+    Raises:
+        HTTPError: A transport or web services error was encountered
+        TapisOperationFailed: Some other error prevented the operation
+    """
     try:
         return stat(
             file_path,
@@ -73,7 +105,21 @@ def exists(file_path,
            root_dir='/',
            permissive=False,
            agave=None):
-    """Emulate Python os.path.exists() using agave.files.list()
+    """Determine if a path exists on a Tapis storageSystem
+
+    Arguments:
+        file_path (str): The path from which to fetch attributes
+        system_id (str, optional): The Tapis storageSystem for file_path
+        root_dir (str, optional): Base path on the storageSystem if file_path is relative
+        permissive (bool, optional): Whether to raise an Exception on failure
+        agave (Agave, optional): An active Tapis client
+
+    Returns:
+        bool: True if the path exists and False if not
+
+    Raises:
+        HTTPError: A transport or web services error was encountered
+        TapisOperationFailed: Some other error prevented the operation
     """
     try:
         file_path_type = rsrc_type(
@@ -101,7 +147,21 @@ def isfile(file_path,
            root_dir='/',
            permissive=False,
            agave=None):
-    """Emulate Python os.path.isfile() using agave.files.list()
+    """Determine if a path exists and is a file on a Tapis storageSystem
+
+    Arguments:
+        file_path (str): The path from which to fetch attributes
+        system_id (str, optional): The Tapis storageSystem for file_path
+        root_dir (str, optional): Base path on the storageSystem if file_path is relative
+        permissive (bool, optional): Whether to raise an Exception on failure
+        agave (Agave, optional): An active Tapis client
+
+    Returns:
+        bool: True if the path is a file and False if not
+
+    Raises:
+        HTTPError: A transport or web services error was encountered
+        TapisOperationFailed: Some other error prevented the operation
     """
     try:
         file_path_format = rsrc_type(
@@ -124,7 +184,21 @@ def isdir(file_path,
           root_dir='/',
           permissive=False,
           agave=None):
-    """Emulate Python os.path.isdir() using agave.files.list()
+    """Determine if a path exists and is a directory on a Tapis storageSystem
+
+    Arguments:
+        file_path (str): The path from which to fetch attributes
+        system_id (str, optional): The Tapis storageSystem for file_path
+        root_dir (str, optional): Base path on the storageSystem if file_path is relative
+        permissive (bool, optional): Whether to raise an Exception on failure
+        agave (Agave, optional): An active Tapis client
+
+    Returns:
+        bool: True if the path is a directory and False if not
+
+    Raises:
+        HTTPError: A transport or web services error was encountered
+        TapisOperationFailed: Some other error prevented the operation
     """
     try:
         file_path_format = rsrc_type(

@@ -33,15 +33,20 @@ VARIABLES = {
 
 
 class UnknownRuntime(ValueError):
+    """Not a known runtime name
+    """
     pass
 
 
 class RuntimeNotDetected(Exception):
+    """Not possible to automatically detect the environment
+    that the code in running in
+    """
     pass
 
 
 class BacanoraRuntime(str):
-    """Name of a BacanoraRuntime"""
+    """Extended string name for a Bacanora runtime"""
 
     def __new__(cls, value):
         value = str(value).lower()
@@ -53,6 +58,9 @@ class BacanoraRuntime(str):
 
 
 def detect(permissive=True):
+    """Detect which runtime the calling code is running in
+    using environment fingerprinting
+    """
     for runtime, variables in VARIABLES.items():
         for varname in variables:
             if varname in environ:
