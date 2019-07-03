@@ -47,26 +47,3 @@ def test_bacanora_isfile(agave, file_path, system_id, test_isfile, test_pass):
     else:
         with pytest.raises(bacanora.ProcessingOperationFailed):
             exceptable_test_code()
-
-
-@pytest.mark.parametrize(
-    "file_path, system_id, test_isfile, test_pass",
-    [('/sample/tacc-cloud/dawnofman.jpg', 'data-sd2e-community', False, True),
-     ('/sample/tacc-cloud', 'data-sd2e-community', True, True),
-     ('/sample/tacc-cloud/', 'data-sd2e-community', True, True),
-     ('/sample/tacc-meep', 'data-sd2e-community', False, False),
-     ('/sample/tacc-cloud/dawnofman.jpg', 'data-projects-safegenes', False,
-      False), ('/uploads', 'data-projects-safegenes', True, True)])
-def test_bacanora_isdir(agave, file_path, system_id, test_isfile, test_pass):
-    """Determine resource is a directory via Tapis files
-    """
-
-    def exceptable_test_code():
-        assert bacanora.isdir(
-            file_path, system_id=system_id, agave=agave) == test_isfile
-
-    if test_pass:
-        exceptable_test_code()
-    else:
-        with pytest.raises(bacanora.ProcessingOperationFailed):
-            exceptable_test_code()
