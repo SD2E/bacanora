@@ -12,7 +12,8 @@ COMMAND_PROCESSORS = (DIRECT_PROCESSOR, TAPIS_PROCESSOR)
 logger = get_logger(__name__)
 
 __all__ = [
-    'process', 'ProcessingOperationFailed', 'ProcessOperationNotImplemented'
+    'process', 'ProcessingOperationFailed', 'ProcessOperationNotImplemented',
+    'BackendNotImplemented'
 ]
 
 
@@ -25,6 +26,10 @@ class ProcessingOperationFailed(Exception):
 
 
 class ProcessOperationNotImplemented(ValueError):
+    pass
+
+
+class BackendNotImplemented(ProcessOperationNotImplemented):
     pass
 
 
@@ -57,15 +62,18 @@ def process(command, *args, **kwargs):
     except KeyError:
         pass
 
+    # Allow override of COMMAND_PROCESSORS with one specific processor name
     if processor is not None:
         procs = [str(processor)]
     else:
         procs = COMMAND_PROCESSORS
+
     for proc in procs:
-        logger.debug('Attempting processor {}'.format(proc))
-        if proc not in COMMAND_PROCESSORS:
-            raise ValueError('Unknown command processor {}'.format(proc))
         try:
+            logger.debug('Attempting processor {}'.format(proc))
+            if proc not in COMMAND_PROCESSORS:
+                raise BackendNotImplemented(
+                    'Unknown command processor {}'.format(proc))
             mod = dynamic_import('bacanora.' + proc)
             try:
                 func = getattr(mod, command)

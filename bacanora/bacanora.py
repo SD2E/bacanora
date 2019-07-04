@@ -4,7 +4,7 @@ from . import processors
 from . import tapis
 from . import direct
 from .processors import (ProcessingOperationFailed,
-                         ProcessOperationNotImplemented)
+                         ProcessOperationNotImplemented, BackendNotImplemented)
 
 logger = get_logger(__name__)
 
