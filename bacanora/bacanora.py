@@ -1,8 +1,10 @@
 from .logger import get_logger
 from .operations import *
+from . import processors
 from . import tapis
 from . import direct
-from .processors import ProcessingOperationFailed
+from .processors import (ProcessingOperationFailed,
+                         ProcessOperationNotImplemented)
 
 logger = get_logger(__name__)
 

@@ -11,7 +11,9 @@ COMMAND_PROCESSORS = (DIRECT_PROCESSOR, TAPIS_PROCESSOR)
 
 logger = get_logger(__name__)
 
-__all__ = ['process', 'ProcessingOperationFailed']
+__all__ = [
+    'process', 'ProcessingOperationFailed', 'ProcessOperationNotImplemented'
+]
 
 
 class ProcessingOperationFailed(Exception):
@@ -20,6 +22,10 @@ class ProcessingOperationFailed(Exception):
 
     def __str__(self):
         return self.message
+
+
+class ProcessOperationNotImplemented(ValueError):
+    pass
 
 
 def restore_client(agave):
@@ -42,8 +48,15 @@ def process(command, *args, **kwargs):
         ProcessingOperationFailed: The operation was unsuccessful
     """
     kwargs['agave'] = restore_client(kwargs.get('agave', None))
-    processor = kwargs.get('processor', None)
     exceptions = list()
+
+    # Enable one specific processor to be requested
+    processor = kwargs.get('processor', None)
+    try:
+        del kwargs['processor']
+    except KeyError:
+        pass
+
     if processor is not None:
         procs = [str(processor)]
     else:
@@ -54,7 +67,11 @@ def process(command, *args, **kwargs):
             raise ValueError('Unknown command processor {}'.format(proc))
         try:
             mod = dynamic_import('bacanora.' + proc)
-            func = getattr(mod, command)
+            try:
+                func = getattr(mod, command)
+            except Exception:
+                raise ProcessOperationNotImplemented(
+                    '{}.{} not implemented or available'.format(proc, command))
             resp = func(*args, **kwargs)
             logger.debug('Response Type: {}'.format(type(resp)))
             if isinstance(resp, Exception):
