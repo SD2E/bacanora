@@ -12,7 +12,7 @@ COMMAND_PROCESSORS = (DIRECT_PROCESSOR, TAPIS_PROCESSOR)
 logger = get_logger(__name__)
 
 __all__ = [
-    'process', 'ProcessingOperationFailed', 'ProcessOperationNotImplemented',
+    'process', 'ProcessingOperationFailed', 'OperationNotImplemented',
     'BackendNotImplemented'
 ]
 
@@ -25,11 +25,11 @@ class ProcessingOperationFailed(Exception):
         return self.message
 
 
-class ProcessOperationNotImplemented(ValueError):
+class OperationNotImplemented(ValueError):
     pass
 
 
-class BackendNotImplemented(ProcessOperationNotImplemented):
+class BackendNotImplemented(OperationNotImplemented):
     pass
 
 
@@ -78,7 +78,7 @@ def process(command, *args, **kwargs):
             try:
                 func = getattr(mod, command)
             except Exception:
-                raise ProcessOperationNotImplemented(
+                raise OperationNotImplemented(
                     '{}.{} not implemented or available'.format(proc, command))
             resp = func(*args, **kwargs)
             logger.debug('Response Type: {}'.format(type(resp)))

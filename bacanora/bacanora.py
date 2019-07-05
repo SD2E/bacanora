@@ -1,10 +1,16 @@
 from .logger import get_logger
-from .operations import *
+# allow processors.process() to be called directly
 from . import processors
+# make backends discoverable to dynamic_import()
 from . import tapis
 from . import direct
-from .processors import (ProcessingOperationFailed,
-                         ProcessOperationNotImplemented, BackendNotImplemented)
+
+# bacanora.files.get/put/etc
+from . import files
+
+# exported exceptions
+from .processors import (ProcessingOperationFailed, OperationNotImplemented,
+                         BackendNotImplemented)
 
 logger = get_logger(__name__)
 
