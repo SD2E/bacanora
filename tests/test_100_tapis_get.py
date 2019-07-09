@@ -16,7 +16,7 @@ from bacanora import tapis
     "file_path, system_id, local_filename, test_pass",
     [('/sample/tacc-cloud/dawnofman.jpg', 'data-sd2e-community', None, True)])
 def test_tapis_get(agave, file_path, system_id, local_filename, test_pass):
-    def exceptable_test_code():
+    def exceptable_code():
         downloaded_filename = tapis.get(
             file_path,
             system_id=system_id,
@@ -26,10 +26,10 @@ def test_tapis_get(agave, file_path, system_id, local_filename, test_pass):
         os.unlink(downloaded_filename)
 
     if test_pass:
-        exceptable_test_code()
+        exceptable_code()
     else:
         with pytest.raises(Exception):
-            exceptable_test_code()
+            exceptable_code()
 
 
 @pytest.mark.parametrize(
@@ -39,7 +39,7 @@ def test_tapis_get(agave, file_path, system_id, local_filename, test_pass):
       False)])
 def test_tapis_get_httperror(agave, file_path, system_id, local_filename,
                              test_pass):
-    def exceptable_test_code():
+    def exceptable_code():
         downloaded_filename = tapis.get(
             file_path,
             system_id=system_id,
@@ -49,7 +49,7 @@ def test_tapis_get_httperror(agave, file_path, system_id, local_filename,
         os.unlink(downloaded_filename)
 
     if test_pass:
-        exceptable_test_code()
+        exceptable_code()
     else:
         with pytest.raises(tapis.HTTPError):
-            exceptable_test_code()
+            exceptable_code()

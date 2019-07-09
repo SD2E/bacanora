@@ -12,34 +12,120 @@ from bacanora import direct
 
 
 @pytest.mark.parametrize(
-    "file_path, system_id, exists, isfile, isdir, test_pass",
-    [('/tests/data/direct/sample/tacc-cloud/dawnofman.jpg',
-      'data-sd2e-community', True, True, False, True),
-     ('/tests/data/direct/sample/tacc-cloud/dawnofman.jpg',
-      'data-sd2e-fake-system', True, True, False, False),
-     ('/tests/data/direct/sample/tacc-cloud/', 'data-sd2e-community', True,
-      False, True, True),
-     ('/tests/data/direct/sample/tacc-cloud', 'data-sd2e-community', True,
-      False, True, True)])
-def test_direct_get_local_cwd(agave, file_path, system_id, exists, isfile,
-                              isdir, test_pass):
-    """Stat operations (exists, isfile, isdir) function in direct mode
+    "file_path, system_id, exists, test_pass",
+    [
+        # directory exists
+        ('/tests/data/direct/sample/tacc-cloud', 'data-sd2e-community', True,
+         True),
+        # file exists
+        ('/tests/data/direct/sample/tacc-cloud/dawnofman.jpg',
+         'data-sd2e-community', True, True),
+        # fail because file cannot be found, raise UnknowableOutcome
+        ('/tests/data/direct/sample/tacc-cloud/dawnofmeep.jpg',
+         'data-sd2e-community', False, False),
+        # fail because system is non-existent, raise DirectOperationFailed
+        ('/tests/data/direct/sample/tacc-cloud/dawnofman.jpg',
+         'data-sd2e-fake-system', False, False)
+    ])
+def test_direct_stat_exists(agave, file_path, system_id, exists, test_pass):
+    """Test permutations of direct.stat.exists()
     """
-    if test_pass:
-        fp_exists = direct.exists(file_path, system_id=system_id, agave=agave)
-        fp_isfile = direct.isfile(file_path, system_id=system_id, agave=agave)
-        fp_isdir = direct.isdir(file_path, system_id=system_id, agave=agave)
-        assert fp_exists is exists
-        assert fp_isfile is isfile
-        assert fp_isdir is isdir
-    else:
-        with pytest.raises(direct.DirectOperationFailed):
+
+    def exceptable_code():
+        try:
             fp_exists = direct.exists(
                 file_path, system_id=system_id, agave=agave)
-            fp_isfile = direct.isfile(
+            if exists:
+                assert fp_exists is exists, 'mismatched exists() result'
+        except Exception:
+            raise
+
+    if test_pass:
+        exceptable_code()
+    else:
+        if exists:
+            with pytest.raises(direct.UnknowableOutcome):
+                exceptable_code()
+        else:
+            with pytest.raises(direct.DirectOperationFailed):
+                exceptable_code()
+
+
+@pytest.mark.parametrize(
+    "file_path, system_id, exists, test_pass",
+    [
+        # path exists but is directory
+        ('/tests/data/direct/sample/tacc-cloud', 'data-sd2e-community', False,
+         True),
+        # path exists and is directory
+        ('/tests/data/direct/sample/tacc-cloud/dawnofman.jpg',
+         'data-sd2e-community', True, True),
+        # fail because file not found, raise UnknowableOutcome
+        ('/tests/data/direct/sample/tacc-cloud/dawnofmeep.jpg',
+         'data-sd2e-community', False, False),
+        # fail because system is non-existent, raise DirectOperationFailed
+        ('/tests/data/direct/sample/tacc-cloud/dawnofman.jpg',
+         'data-sd2e-fake-system', False, False)
+    ])
+def test_direct_stat_isfile(agave, file_path, system_id, exists, test_pass):
+    """Test permutations of direct.stat.isfile()
+    """
+
+    def exceptable_code():
+        try:
+            fp_exists = direct.exists(
                 file_path, system_id=system_id, agave=agave)
-            fp_isdir = direct.isdir(
+            if exists:
+                assert fp_exists is exists, 'mismatched exists() result'
+        except Exception:
+            raise
+
+    if test_pass:
+        exceptable_code()
+    else:
+        if exists:
+            with pytest.raises(direct.UnknowableOutcome):
+                exceptable_code()
+        else:
+            with pytest.raises(direct.DirectOperationFailed):
+                exceptable_code()
+
+
+@pytest.mark.parametrize(
+    "file_path, system_id, exists, test_pass",
+    [
+        # path exists and is directory
+        ('/tests/data/direct/sample/tacc-cloud', 'data-sd2e-community', True,
+         True),
+        # path exists but is not directory
+        ('/tests/data/direct/sample/tacc-cloud/dawnofman.jpg',
+         'data-sd2e-community', False, True),
+        # fail because file not found, raise UnknowableOutcome
+        ('/tests/data/direct/sample/tacc-cloud/dawnofmeep.jpg',
+         'data-sd2e-community', False, False),
+        # fail because system is non-existent, raise DirectOperationFailed
+        ('/tests/data/direct/sample/tacc-cloud/dawnofman.jpg',
+         'data-sd2e-fake-system', False, False)
+    ])
+def test_direct_stat_isdir(agave, file_path, system_id, exists, test_pass):
+    """Test permutations of direct.stat.isdir()
+    """
+
+    def exceptable_code():
+        try:
+            fp_exists = direct.exists(
                 file_path, system_id=system_id, agave=agave)
-            assert fp_exists is exists
-            assert fp_isfile is isfile
-            assert fp_isdir is isdir
+            if exists:
+                assert fp_exists is exists, 'mismatched exists() result'
+        except Exception:
+            raise
+
+    if test_pass:
+        exceptable_code()
+    else:
+        if exists:
+            with pytest.raises(direct.UnknowableOutcome):
+                exceptable_code()
+        else:
+            with pytest.raises(direct.DirectOperationFailed):
+                exceptable_code()

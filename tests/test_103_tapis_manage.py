@@ -35,7 +35,7 @@ def test_tapis_manage_mkdir(agave, file_path, system_id, force_action,
     unless force=True
     """
 
-    def exceptable_test_code():
+    def exceptable_code():
         tapis.mkdir(
             file_path, system_id=system_id, force=force_action, agave=agave)
         listing = agave.files.list(filePath=file_path, systemId=system_id)
@@ -43,7 +43,7 @@ def test_tapis_manage_mkdir(agave, file_path, system_id, force_action,
         assert tapis.utils.normpath(file_path) in files
 
     if test_pass:
-        exceptable_test_code()
+        exceptable_code()
         if last_test:
             try:
                 remote_delete(file_path, system_id, agave)
@@ -52,7 +52,7 @@ def test_tapis_manage_mkdir(agave, file_path, system_id, force_action,
                 # warnings
     else:
         with pytest.raises(Exception):
-            exceptable_test_code()
+            exceptable_code()
 
     # if last_test:
     #     try:
@@ -84,7 +84,7 @@ def test_tapis_manage_copy(agave, file_path, system_id, destination_path,
     to overwrite unless force=True
     """
 
-    def exceptable_test_code():
+    def exceptable_code():
         tapis.copy(
             file_path,
             destination_path,
@@ -97,10 +97,10 @@ def test_tapis_manage_copy(agave, file_path, system_id, destination_path,
         assert tapis.utils.normpath(destination_path) in files
 
     if test_pass:
-        exceptable_test_code()
+        exceptable_code()
     else:
         with pytest.raises(Exception):
-            exceptable_test_code()
+            exceptable_code()
 
 
 @pytest.mark.parametrize(
@@ -120,7 +120,7 @@ def test_tapis_manage_rename(agave, src_file_path, file_path, system_id,
     to overwrite unless force=True
     """
 
-    def exceptable_test_code():
+    def exceptable_code():
         tapis.copy(
             src_file_path,
             file_path,
@@ -139,10 +139,10 @@ def test_tapis_manage_rename(agave, src_file_path, file_path, system_id,
         assert tapis.utils.normpath(destination_path) in files
 
     if test_pass:
-        exceptable_test_code()
+        exceptable_code()
     else:
         with pytest.raises(Exception):
-            exceptable_test_code()
+            exceptable_code()
 
 
 @pytest.mark.parametrize(
@@ -162,7 +162,7 @@ def test_tapis_manage_move(agave, src_file_path, file_path, system_id,
     to overwrite unless force=True
     """
 
-    def exceptable_test_code():
+    def exceptable_code():
         tapis.copy(
             src_file_path,
             file_path,
@@ -181,10 +181,10 @@ def test_tapis_manage_move(agave, src_file_path, file_path, system_id,
         assert tapis.utils.normpath(destination_path) in files
 
     if test_pass:
-        exceptable_test_code()
+        exceptable_code()
     else:
         with pytest.raises(Exception):
-            exceptable_test_code()
+            exceptable_code()
 
 
 @pytest.mark.parametrize(

@@ -32,7 +32,7 @@ def test_direct_manage_mkdir(agave, path_to_make, system_id, root_dir,
     """
     final_path_to_make = os.path.join(root_dir, utils.normalize(path_to_make))
 
-    def exceptable_test_code():
+    def exceptable_code():
         direct.mkdir(
             path_to_make,
             system_id=system_id,
@@ -43,10 +43,10 @@ def test_direct_manage_mkdir(agave, path_to_make, system_id, root_dir,
             path_to_make, system_id=system_id, root_dir=root_dir, agave=agave)
 
     if test_pass:
-        exceptable_test_code()
+        exceptable_code()
     else:
         with pytest.raises(direct.DirectOperationFailed):
-            exceptable_test_code()
+            exceptable_code()
 
     if last_test:
         local_delete(final_path_to_make)
@@ -74,7 +74,7 @@ def test_direct_manage_copy(agave, src_path, path_to_copy, system_id, root_dir,
 
     path_copied_name = path_to_copy + '-copy'
 
-    def exceptable_test_code():
+    def exceptable_code():
         # Workalike to avoid testing copy() until we are ready
         src = utils.normalize(src_path)
         dest = utils.normalize(path_to_copy)
@@ -95,10 +95,10 @@ def test_direct_manage_copy(agave, src_path, path_to_copy, system_id, root_dir,
             norm_path_new_name)
 
     if test_pass:
-        exceptable_test_code()
+        exceptable_code()
     else:
         with pytest.raises(Exception):
-            exceptable_test_code()
+            exceptable_code()
 
     if last_test:
         for del_target in (path_to_copy, path_copied_name):
@@ -127,7 +127,7 @@ def test_direct_manage_rename(agave, src_path, path_to_rename, system_id,
 
     path_new_name = path_to_rename + '-renamed'
 
-    def exceptable_test_code():
+    def exceptable_code():
         direct.copy(
             src_path,
             path_to_rename,
@@ -147,10 +147,10 @@ def test_direct_manage_rename(agave, src_path, path_to_rename, system_id,
             norm_path_new_name)
 
     if test_pass:
-        exceptable_test_code()
+        exceptable_code()
     else:
         with pytest.raises(Exception):
-            exceptable_test_code()
+            exceptable_code()
 
     if last_test:
         for del_target in (path_to_rename, path_new_name):

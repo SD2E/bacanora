@@ -20,11 +20,15 @@ def exists(file_path, system_id=DEFAULT_SYSTEM_ID, root_dir='/', agave=None):
     try:
         posix_path = abs_path(
             file_path, system_id=system_id, root_dir=root_dir, agave=agave)
-        logger.debug('exists: {}'.format(posix_path))
+        logger.info('exists({})'.format(posix_path))
         if os.path.exists(posix_path):
+            logger.debug('exists({}): True'.format(posix_path))
             return True
         else:
-            return UnknowableOutcome()
+            logger.warning('exists({}): ???'.format(posix_path))
+            raise UnknowableOutcome()
+    except UnknowableOutcome:
+        raise
     except Exception as exc:
         raise DirectOperationFailed('Unable to complete os.path.exists()', exc)
 
@@ -33,11 +37,15 @@ def isfile(file_path, system_id=DEFAULT_SYSTEM_ID, root_dir='/', agave=None):
     try:
         posix_path = abs_path(
             file_path, system_id=system_id, root_dir=root_dir, agave=agave)
-        logger.debug('isfile: {}'.format(posix_path))
+        logger.info('isfile({})'.format(posix_path))
         if os.path.isfile(posix_path):
+            logger.debug('isfile({}): True'.format(posix_path))
             return True
         else:
-            return UnknowableOutcome()
+            logger.warning('isfile({}): ???'.format(posix_path))
+            raise UnknowableOutcome()
+    except UnknowableOutcome:
+        raise
     except Exception as exc:
         raise DirectOperationFailed('Unable to complete os.path.isfile()', exc)
 
@@ -45,12 +53,16 @@ def isfile(file_path, system_id=DEFAULT_SYSTEM_ID, root_dir='/', agave=None):
 def isdir(file_path, system_id=DEFAULT_SYSTEM_ID, root_dir='/', agave=None):
     posix_path = abs_path(
         file_path, system_id=system_id, root_dir=root_dir, agave=agave)
-    logger.debug('isdir: {}'.format(posix_path))
+    logger.info('isdir({})'.format(posix_path))
     try:
         if os.path.isdir(posix_path):
+            logger.debug('isdir({}): True'.format(posix_path))
             return True
         else:
-            return UnknowableOutcome()
+            logger.warning('isdir({}): ???'.format(posix_path))
+            raise UnknowableOutcome()
+    except UnknowableOutcome:
+        raise
     except Exception:
         raise DirectOperationFailed('Unable to complete os.path.isdir()')
 
@@ -62,7 +74,9 @@ def islink(file_path, system_id=DEFAULT_SYSTEM_ID, root_dir='/', agave=None):
         if os.path.islink(posix_path):
             return True
         else:
-            return UnknowableOutcome()
+            raise UnknowableOutcome()
+    except UnknowableOutcome:
+        raise
     except Exception:
         raise DirectOperationFailed('Unable to complete os.path.islink()')
 
@@ -74,6 +88,8 @@ def ismount(file_path, system_id=DEFAULT_SYSTEM_ID, root_dir='/', agave=None):
         if os.path.ismount(posix_path):
             return True
         else:
-            return UnknowableOutcome()
+            raise UnknowableOutcome()
+    except UnknowableOutcome:
+        raise
     except Exception:
         raise DirectOperationFailed('Unable to complete os.path.ismount()')

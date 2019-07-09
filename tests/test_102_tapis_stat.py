@@ -20,16 +20,16 @@ def test_tapis_stat_stat(agave, file_path, system_id, ftype, fname, test_pass):
     """Tapis stat returns the dict listing for a resource
     """
 
-    def exceptable_test_code():
+    def exceptable_code():
         resp = tapis.stat(file_path, system_id=system_id, agave=agave)
         assert resp.type == ftype
         assert resp.name == fname
 
     if test_pass:
-        exceptable_test_code()
+        exceptable_code()
     else:
         with pytest.raises(Exception):
-            exceptable_test_code()
+            exceptable_code()
 
 
 @pytest.mark.parametrize(
@@ -58,15 +58,15 @@ def test_tapis_stat_isfile(agave, file_path, system_id, test_isfile,
     """Determine resource is a file via Tapis files
     """
 
-    def exceptable_test_code():
+    def exceptable_code():
         assert tapis.isfile(
             file_path, system_id=system_id, agave=agave) == test_isfile
 
     if test_pass:
-        exceptable_test_code()
+        exceptable_code()
     else:
         with pytest.raises(tapis.exceptions.HTTPError):
-            exceptable_test_code()
+            exceptable_code()
 
 
 @pytest.mark.parametrize(
@@ -81,12 +81,12 @@ def test_tapis_stat_isdir(agave, file_path, system_id, test_isfile, test_pass):
     """Determine resource is a directory via Tapis files
     """
 
-    def exceptable_test_code():
+    def exceptable_code():
         assert tapis.isdir(
             file_path, system_id=system_id, agave=agave) == test_isfile
 
     if test_pass:
-        exceptable_test_code()
+        exceptable_code()
     else:
         with pytest.raises(tapis.exceptions.HTTPError):
-            exceptable_test_code()
+            exceptable_code()

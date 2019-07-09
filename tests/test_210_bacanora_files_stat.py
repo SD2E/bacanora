@@ -38,12 +38,12 @@ def test_bacanora_isfile(agave, file_path, system_id, test_isfile, test_pass):
     """Determine resource is a file via Tapis files
     """
 
-    def exceptable_test_code():
+    def exceptable_code():
         assert bacanora.files.isfile(
             file_path, system_id=system_id, agave=agave) == test_isfile
 
     if test_pass:
-        exceptable_test_code()
+        exceptable_code()
     else:
         with pytest.raises(bacanora.ProcessingOperationFailed):
-            exceptable_test_code()
+            exceptable_code()
