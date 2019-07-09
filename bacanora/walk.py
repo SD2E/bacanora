@@ -49,7 +49,7 @@ def walk(directory_path,
 def listdir(directory_path,
             system_id=DEFAULT_SYSTEM_ID,
             root_dir='/',
-            directories=False,
+            directories=True,
             dotfiles=False,
             agave=None):
     """List immediate contents of a Tapis files directory.
