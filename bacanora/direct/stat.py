@@ -16,7 +16,11 @@ DEFAULT_SYSTEM_ID = settings.STORAGE_SYSTEM
 __all__ = ['exists', 'isfile', 'isdir', 'islink', 'ismount']
 
 
-def exists(file_path, system_id=DEFAULT_SYSTEM_ID, root_dir='/', agave=None):
+def exists(file_path,
+           system_id=DEFAULT_SYSTEM_ID,
+           root_dir='/',
+           permissive=False,
+           agave=None):
     try:
         posix_path = abs_path(
             file_path, system_id=system_id, root_dir=root_dir, agave=agave)
@@ -33,7 +37,11 @@ def exists(file_path, system_id=DEFAULT_SYSTEM_ID, root_dir='/', agave=None):
         raise DirectOperationFailed('Unable to complete os.path.exists()', exc)
 
 
-def isfile(file_path, system_id=DEFAULT_SYSTEM_ID, root_dir='/', agave=None):
+def isfile(file_path,
+           system_id=DEFAULT_SYSTEM_ID,
+           root_dir='/',
+           permissive=False,
+           agave=None):
     try:
         posix_path = abs_path(
             file_path, system_id=system_id, root_dir=root_dir, agave=agave)
@@ -50,7 +58,11 @@ def isfile(file_path, system_id=DEFAULT_SYSTEM_ID, root_dir='/', agave=None):
         raise DirectOperationFailed('Unable to complete os.path.isfile()', exc)
 
 
-def isdir(file_path, system_id=DEFAULT_SYSTEM_ID, root_dir='/', agave=None):
+def isdir(file_path,
+          system_id=DEFAULT_SYSTEM_ID,
+          root_dir='/',
+          permissive=False,
+          agave=None):
     posix_path = abs_path(
         file_path, system_id=system_id, root_dir=root_dir, agave=agave)
     logger.info('isdir({})'.format(posix_path))
@@ -67,7 +79,11 @@ def isdir(file_path, system_id=DEFAULT_SYSTEM_ID, root_dir='/', agave=None):
         raise DirectOperationFailed('Unable to complete os.path.isdir()')
 
 
-def islink(file_path, system_id=DEFAULT_SYSTEM_ID, root_dir='/', agave=None):
+def islink(file_path,
+           system_id=DEFAULT_SYSTEM_ID,
+           root_dir='/',
+           permissive=False,
+           agave=None):
     posix_path = abs_path(
         file_path, system_id=system_id, root_dir=root_dir, agave=agave)
     try:
@@ -81,7 +97,11 @@ def islink(file_path, system_id=DEFAULT_SYSTEM_ID, root_dir='/', agave=None):
         raise DirectOperationFailed('Unable to complete os.path.islink()')
 
 
-def ismount(file_path, system_id=DEFAULT_SYSTEM_ID, root_dir='/', agave=None):
+def ismount(file_path,
+            system_id=DEFAULT_SYSTEM_ID,
+            root_dir='/',
+            permissive=False,
+            agave=None):
     posix_path = abs_path(
         file_path, system_id=system_id, root_dir=root_dir, agave=agave)
     try:

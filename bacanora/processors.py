@@ -89,9 +89,8 @@ def process(command, *args, **kwargs):
                 return resp
             return resp
         except Exception as err:
-            logger.error('Exception encountered')
+            logger.error('Exception encountered: {}'.format(err))
             exceptions.append(err)
-            pass
     # print(exceptions[-1])
     raise ProcessingOperationFailed(
         'Unable to complete {}. Last error was {}'.format(

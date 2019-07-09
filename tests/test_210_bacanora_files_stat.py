@@ -12,18 +12,38 @@ TMP_DIR = os.path.join(CWD, 'tmp')
 import bacanora
 
 
-@pytest.mark.parametrize(
-    "file_path, system_id, test_exists",
-    [('/sample/tacc-cloud/dawnofman.jpg', 'data-sd2e-community', True),
-     ('/sample/tacc-cloud', 'data-sd2e-community', True),
-     ('/sample/tacc-cloud/', 'data-sd2e-community', True),
-     ('/sample/tacc-meep', 'data-sd2e-community', False),
-     ('/sample/tacc-cloud', 'data-projects-noop', False)])
-def test_bacanora_exists(agave, file_path, system_id, test_exists):
+@pytest.mark.parametrize("file_path, system_id, root_dir, test_exists", [
+    ('/sample/tacc-cloud/dawnofman.jpg', 'data-sd2e-community',
+     '/tests/data/direct/', True),
+    ('/sample/tacc-cloud', 'data-sd2e-community', '/tests/data/direct/', True),
+    ('/sample/tacc-cloud/', 'data-sd2e-community', '/tests/data/direct/',
+     True),
+    ('/sample/tacc-meep', 'data-sd2e-community', '/tests/data/direct/', False),
+    ('/uploads', 'data-projects-safegenes', '/tests/data/direct/', False)
+])
+def test_bacanora_exists_direct(agave, file_path, system_id, root_dir,
+                                test_exists):
     """Determine existence of a resource via Tapis files
     """
     assert bacanora.files.exists(
-        file_path, system_id=system_id, agave=agave) == test_exists
+        file_path, system_id=system_id, root_dir=root_dir,
+        agave=agave) == test_exists
+
+
+@pytest.mark.parametrize(
+    "file_path, system_id, root_dir, test_exists",
+    [('/sample/tacc-cloud/dawnofman.jpg', 'data-sd2e-community', '/', True),
+     ('/sample/tacc-cloud', 'data-sd2e-community', '/', True),
+     ('/sample/tacc-cloud/', 'data-sd2e-community', '/', True),
+     ('/sample/tacc-meep', 'data-sd2e-community', '/', False),
+     ('/uploads', 'data-projects-safegenes', '/', True)])
+def test_bacanora_exists_tapis(agave, file_path, system_id, root_dir,
+                               test_exists):
+    """Determine existence of a resource via Tapis files
+    """
+    assert bacanora.files.exists(
+        file_path, system_id=system_id, root_dir=root_dir,
+        agave=agave) == test_exists
 
 
 @pytest.mark.parametrize(

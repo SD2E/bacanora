@@ -44,9 +44,7 @@ def mkdir(path_to_make,
         posix_path = abs_path(
             path_to_make, system_id=system_id, root_dir=root_dir, agave=agave)
         logger.debug('mkdir: {}'.format(posix_path))
-        if exists(
-                path_to_make, system_id=system_id, root_dir=root_dir,
-                agave=agave):
+        if os.path.exists(posix_path):
             if force:
                 delete(
                     path_to_make,
@@ -97,6 +95,8 @@ def delete(path_to_delete,
             root_dir=root_dir,
             agave=agave)
         logger.debug('delete: {}'.format(posix_path))
+        if not os.path.exists(posix_path):
+            logger.warning('{} does not exist')
         if os.path.isfile(posix_path):
             os.remove(posix_path)
             return True
@@ -148,9 +148,7 @@ def rename(path_to_rename,
             agave=agave)
         posix_path_2 = abs_path(
             new_path_name, system_id=system_id, root_dir=root_dir, agave=agave)
-        if exists(
-                new_path_name, system_id=system_id, root_dir=root_dir,
-                agave=agave):
+        if os.path.exists(posix_path_2):
             if force:
                 delete(
                     new_path_name,
@@ -243,11 +241,7 @@ def copy(path_to_copy,
             system_id=system_id,
             root_dir=root_dir,
             agave=agave)
-        if exists(
-                destination_path,
-                system_id=system_id,
-                root_dir=root_dir,
-                agave=agave):
+        if os.path.exists(posix_path_2):
             if force:
                 delete(
                     destination_path,

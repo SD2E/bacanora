@@ -33,14 +33,20 @@ def test_direct_manage_mkdir(agave, path_to_make, system_id, root_dir,
     final_path_to_make = os.path.join(root_dir, utils.normalize(path_to_make))
 
     def exceptable_code():
+        created_posix_path = direct.abs_path(
+            path_to_make, system_id=system_id, root_dir=root_dir, agave=agave)
         direct.mkdir(
             path_to_make,
             system_id=system_id,
             root_dir=root_dir,
             force=force_action,
             agave=agave)
-        direct.exists(
-            path_to_make, system_id=system_id, root_dir=root_dir, agave=agave)
+        if force_action:
+            assert os.path.exists(
+                created_posix_path), '{} did not exist after mkdir()'.format(
+                    created_posix_path)
+        # direct.exists(
+        #     path_to_make, system_id=system_id, root_dir=root_dir, agave=agave)
 
     if test_pass:
         exceptable_code()
