@@ -5,7 +5,7 @@ logger = loggermodule.get_logger(__name__)
 
 __all__ = [
     'ABACO', 'JUPYTER', 'HPC', 'LOCALHOST', 'ALL', 'detect', 'UnknownRuntime',
-    'RuntimeNotDetected', 'BacanoraRuntime'
+    'RuntimeNotDetected', 'BacanoraRuntime', 'DEFAULT_RUNTIME'
 ]
 
 ABACO = 'abaco'

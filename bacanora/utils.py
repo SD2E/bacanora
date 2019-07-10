@@ -47,8 +47,8 @@ def normpath(filepath):
     in a path
     """
     fp = re.sub('^(/)+', '/', filepath)
-    if not filepath.startswith('/'):
-        filepath = '/' + filepath
+    if not fp.startswith('/'):
+        fp = '/' + fp
     fp = re.sub('(/)+$', '', fp)
     return os.path.normpath(fp)
 

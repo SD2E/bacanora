@@ -1,3 +1,6 @@
+"""Supports path-mapping on various runtimes for each functional kind of Tapis
+storageSystem
+"""
 import inspect
 import json
 import os
@@ -9,32 +12,23 @@ from ..utils import normalize, normpath
 from .. import settings
 from .. import hashable
 from .. import runtimes
-
-COMMUNITY_TYPE = 'community'
-PROJECT_TYPE = 'project'
-PUBLIC_TYPE = 'public'
-SHARE_TYPE = 'share'
-WORK_TYPE = 'work'
+from .jupyter import (JUPYTER_BASE)
+from .types import (COMMUNITY_TYPE, PROJECT_TYPE, PUBLIC_TYPE, SHARE_TYPE,
+                    WORK_TYPE, SYSTEM_TYPES)
 
 __all__ = [
     'COMMUNITY_TYPE', 'PROJECT_TYPE', 'PUBLIC_TYPE', 'SHARE_TYPE', 'WORK_TYPE',
-    'SYSTEM_TYPES', 'StorageSystem', 'abspath'
+    'SYSTEM_TYPES', 'JUPYTER_BASE', 'StorageSystem', 'abspath',
+    'system_type_and_name'
 ]
 
-SYSTEM_TYPES = (COMMUNITY_TYPE, PUBLIC_TYPE, SHARE_TYPE, PROJECT_TYPE,
-                WORK_TYPE)
-TYPE_RES = {
+REGEXES = {
     COMMUNITY_TYPE: re.compile('data-(sd2e-community)'),
     PUBLIC_TYPE: re.compile('data-sd2e-projects-(users)'),
     SHARE_TYPE: re.compile('data-sd2e-projects.([-.a-zA-Z0-9]{4,})'),
     PROJECT_TYPE: re.compile('data-projects-([-.a-zA-Z0-9]{4,})'),
     WORK_TYPE: re.compile('data-tacc-work-([a-zA-Z0-9]{3,8})')
 }
-
-JUPYTER_BASE = '/user/{User}/tree'
-
-CORRAL_CONTAINER_BASE = '/corral'
-CORRAL_BASE = '/corral-repl/projects/'
 
 
 class StorageSystem(str):
@@ -57,15 +51,14 @@ class StorageSystem(str):
     def set_type_and_name(self, permissive=False):
         """Uses regular expressions to find type and short name for system
         """
-        for t, r in TYPE_RES.items():
-            rs = r.match(self)
-            if rs:
-                setattr(self, '_type', t)
-                setattr(self, '_short_name', rs.group(1))
-                return True
-        if permissive is False:
-            raise ManagedStoreError(
-                'Unable to determine type/short name for {}'.format(self))
+        try:
+            tn = system_type_and_name(self, permissive=permissive)
+            setattr(self, '_type', tn[0])
+            setattr(self, '_short_name', tn[1])
+        except Exception:
+            if permissive is False:
+                raise ManagedStoreError(
+                    'Unable to determine type/short name for {}'.format(self))
 
     @hashable.picklecache.mcache(lru_cache(maxsize=256))
     def get_system_record(self, permissive=False):
@@ -171,7 +164,7 @@ class StorageSystem(str):
 
     @property
     def localhost_dir(self):
-        return os.getcwd()
+        return settings.LOCALHOST_ROOT_DIR
 
     def agave_canonical_uri(self, path):
         """Return a agave-canonical URI for a path on the StorageSystem
@@ -233,3 +226,17 @@ def abspath(self, filepath, storage_system=None, validate=False, agave=None):
     else:
         root_dir = StorageSystem(storage_system, agave=agave).root_dir
     return os.path.join(root_dir, normalized_path)
+
+
+def system_type_and_name(system_id, permissive=False):
+    system_type = None
+    system_short_name = None
+    for t, r in REGEXES.items():
+        rs = r.match(system_id)
+        if rs:
+            system_type = t
+            system_short_name = rs.group(1)
+            return (system_type, system_short_name)
+    if permissive is False:
+        raise ManagedStoreError(
+            'Unable to determine type/short name for {}'.format(system_id))

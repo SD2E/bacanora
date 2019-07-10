@@ -4,7 +4,7 @@ from .helpers import (fix_assets_path, array_from_string, parse_boolean,
 
 __all__ = [
     'FILES_BLOCK_SIZE', 'FILES_ATOMIC_OPERATIONS', 'FILES_LIST_PAGESIZE',
-    'HASHIDS_SALT'
+    'HASHIDS_SALT', 'LOCALHOST_ROOT_DIR'
 ]
 
 # Download block size
@@ -20,3 +20,6 @@ FILES_LIST_PAGESIZE = int(
 
 HASHIDS_SALT = os.environ.get('BACANORA_HASHIDS_SALT',
                               'TcJzUZKcuLn6bvrwkY8nesE3')
+
+LOCALHOST_ROOT_DIR = os.environ.get('BACANORA_LOCALHOST_ROOT_DIR',
+                                    os.path.join(os.getcwd(), 'tmp'))
