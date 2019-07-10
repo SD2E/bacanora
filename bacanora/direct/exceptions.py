@@ -1,4 +1,4 @@
-"""Tapis processor failures and errors
+"""Direct processor failures and errors
 """
 
 

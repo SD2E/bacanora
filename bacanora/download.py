@@ -1,4 +1,4 @@
-"""Facades for the Tapis ``get`` operations
+"""Facades for Tapis ``files-get`` operations
 """
 from . import logger as loggermodule
 from . import settings
@@ -20,7 +20,7 @@ def get(file_path,
         agave=None):
     """Download a file from a Tapis storageSystem
 
-    Arguments:
+    Args:
         file_path (str): Path on the storageSystem to download
         system_id (str, optional): Tapis storageSystem to act upon
         local_filename (str, optional): Local name of downloaded file

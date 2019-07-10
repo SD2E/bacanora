@@ -1,3 +1,5 @@
+"""For creating and validating Hashids
+"""
 from hashids import Hashids
 from uuid import uuid3, uuid5, NAMESPACE_DNS
 from . import settings
@@ -14,7 +16,7 @@ def dns_namespace():
 def generate(*args):
     """Generate a unique Hashid for one or more passed values
 
-    Arguments:
+    Args:
         args: One or more values to serialize into an identifier. Passed
         values must support str(<value>).
 

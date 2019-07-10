@@ -1,4 +1,4 @@
-"""Facades for the Tapis ``files-pems`` operations
+"""Facades for the Tapis ``files-pems-*`` operations
 """
 from . import logger as loggermodule
 from . import settings
@@ -24,7 +24,7 @@ def grant(file_path,
 
     This operation presentl has no POSIX-native equivalent
 
-    Arguments:
+    Args:
         file_path (str): Target path on a storageSystem for the grant
         system_id (str, optional): Tapis storageSystem for file_path
         root_dir (str, optional): Base path if file_path is relative

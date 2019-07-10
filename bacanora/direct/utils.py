@@ -20,7 +20,7 @@ def abs_path(file_path,
     """Resolve an Tapis-relative path to its absolute path on a TACC
     data-enabled host. Automatically detects common TACC host runtimes.
 
-    Arguments:
+    Args:
         file_path (str): File path to resolve
         system_id (str, optional): Tapis storageSystem where file_path is located
         root_dir (str, optional): Absolute path if file_path is relative
@@ -47,7 +47,7 @@ def abspath_to_tapis(file_path,
     likely Tapis storageSystem equivalient. Automatically detects common
     TACC host runtimes.
 
-    Arguments:
+    Args:
         file_path (str): File path to resolve
         system_id (str, optional): Tapis storageSystem for file_path is located
         root_dir (str, optional): Absolute path if file_path is relative

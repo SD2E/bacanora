@@ -1,4 +1,4 @@
-"""POSIX implementations of ``stat`` operations
+"""POSIX implementations of Tapis ``files-list`` operations
 """
 import os
 import shutil

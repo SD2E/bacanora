@@ -1,4 +1,4 @@
-"""Implements a memoizing cache using the Python ``cloudpickle``
+"""A memoizing cache built on the Python ``cloudpickle``
 (preferred) or ``pickle`` module.
 """
 # Derived from: https://gist.github.com/adah1972/f4ec69522281aaeacdba65dbee53fade

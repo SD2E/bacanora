@@ -1,3 +1,3 @@
-"""Detect and operate on Tapis host runtimes
+"""Detects and supports Tapis runtimes on TACC data-enabled hosts
 """
 from .runtimes import *

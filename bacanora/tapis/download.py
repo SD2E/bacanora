@@ -1,4 +1,4 @@
-"""Tapis implementations of ``get`` operations
+"""Tapis implementations of ``files-get`` operations
 """
 import os
 import shutil
@@ -26,7 +26,7 @@ def get(file_path,
         agave=None):
     """Wrapper for Tapis files-get, adding atomic operations
 
-    Arguments:
+    Args:
         file_path (str): Path on the storageSystem to download
         system_id (str, optional): Tapis storageSystem to act upon
         local_filename (str, optional): Local name of downloaded file

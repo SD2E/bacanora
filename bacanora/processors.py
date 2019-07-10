@@ -1,4 +1,6 @@
-"""Generic command processor supporting configurable backends
+"""Bacanora's pluggable command processor
+
+Supports multiple configurable backends (direct, tapis, lustre*)
 """
 from agavepy.agave import Agave
 from bacanora.utils import dynamic_import
@@ -46,7 +48,7 @@ def process(command, *args, **kwargs):
     """Implements multiple dispatch for processing Tapis commands using
     configurable backends.
 
-    Arguments:
+    Args:
         command (str): The command to execute
 
     Raises:

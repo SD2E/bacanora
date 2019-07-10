@@ -1,4 +1,4 @@
-"""Code for working with Tapis storageSystem file path mapping
+"""Implements file path mapping for Tapis storageSystems
 """
 from .system import *
 from .exceptions import ManagedStoreError, UnknownStorageSystem

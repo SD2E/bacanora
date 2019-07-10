@@ -1,4 +1,4 @@
-"""POSIX implementations of ``manage`` operations
+"""POSIX implementations of Tapis ``files-[manage]`` operations
 """
 import os
 import shutil
@@ -25,7 +25,7 @@ def mkdir(path_to_make,
           agave=None):
     """Emulate Tapis files-mkdir via makedirs() on the local host
 
-    Arguments:
+    Args:
         path_to_make (str): Path on the storageSystem to make
         system_id (str, optional): Tapis storageSystem to act upon
         root_dir (str, optional): Base directory if path_to_delete is relative
@@ -74,7 +74,7 @@ def delete(path_to_delete,
            agave=None):
     """Emulate Tapis files-delete via remove() or rmtree() on the local host
 
-    Arguments:
+    Args:
         path_to_delete (str): Path on the storageSystem to delete
         system_id (str, optional): Tapis storageSystem to act upon
         root_dir (str, optional): Base directory if path_to_delete is relative
@@ -124,7 +124,7 @@ def rename(path_to_rename,
            agave=None):
     """Emulate Tapis files-rename via rename() on the local host
 
-    Arguments:
+    Args:
         path_to_rename (str): Path on the storageSystem to move
         new_path_name (str): destination on the storageSystem
         system_id (str, optional): Tapis storageSystem to act upon
@@ -181,7 +181,7 @@ def move(path_to_move,
          agave=None):
     """Facade for direct.rename()
 
-    Arguments:
+    Args:
         path_to_move (str): Path on the storageSystem to move
         destination_path (str): destination on the storageSystem
         system_id (str, optional): Tapis storageSystem to act upon
@@ -217,7 +217,7 @@ def copy(path_to_copy,
     """Emulate Tapis files-copy via os.copy() and shutil.copytree() on
     the local host
 
-    Arguments:
+    Args:
         path_to_copy (str): Path on the storageSystem to move
         destination_path (str): destination on the storageSystem
         system_id (str, optional): Tapis storageSystem to act upon

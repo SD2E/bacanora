@@ -1,4 +1,4 @@
-"""Import commands that are handled by the ``tapis`` processor
+"""Configures command functions to be handled by the ``tapis`` processor
 """
 from .download import *
 from .pems import grant

@@ -25,7 +25,7 @@ logger = get_logger(__name__)
 #              system_id=DEFAULT_STORAGE_SYSTEM):
 #     """Download a file from Agave files API
 
-#     Arguments:
+#     Args:
 #         agave_client (Agave): An active Agave client
 #         file_to_download (str): Absolute path of file to download
 #         local_filename (str): Local name of file once downloaded
@@ -93,7 +93,7 @@ logger = get_logger(__name__)
 #            autogrant=False):
 #     """Upload a file using Agave files, with optional world:READ grant
 
-#     Arguments:
+#     Args:
 #         agave_client (Agave): An active Agave client
 #         file_to_upload (str): Path of file to upload
 #         destination_path (str): Absolute path on destination storage system
@@ -136,7 +136,7 @@ logger = get_logger(__name__)
 #           permission='READ'):
 #     """Grant Agave file permissions
 
-#     Arguments:
+#     Args:
 #         agave_client (Agave): An active Agave client
 #         pems_grant_target (str): Absolute path on destination storage system
 #         system_id (str, optional): Storage system where file is located [data-sd2e-community]
@@ -171,7 +171,7 @@ logger = get_logger(__name__)
 # def exists(agave_client, path_to_test, system_id=DEFAULT_STORAGE_SYSTEM):
 #     """Test for existence of a file or directory
 
-#     Arguments:
+#     Args:
 #         agave_client (Agave): An active Agave client
 #         path_to_test (str): Agave-absolute path to test
 #         system_id (str, optional): Storage system where file is located [data-sd2e-community]
@@ -193,7 +193,7 @@ logger = get_logger(__name__)
 # def isfile(agave_client, path_to_test, system_id=DEFAULT_STORAGE_SYSTEM):
 #     """Determine if a path points to a file
 
-#     Arguments:
+#     Args:
 #         agave_client (Agave): An active Agave client
 #         path_to_test (str): Agave-absolute path to test
 #         system_id (str, optional): Storage system where file is located [data-sd2e-community]
@@ -215,7 +215,7 @@ logger = get_logger(__name__)
 # def isdir(agave_client, path_to_test, system_id=DEFAULT_STORAGE_SYSTEM):
 #     """Determine if a path points to a directory
 
-#     Arguments:
+#     Args:
 #         agave_client (Agave): An active Agave client
 #         path_to_test (str): Agave-absolute path to test
 #         system_id (str, optional): Storage system where file is located [data-sd2e-community]
@@ -237,7 +237,7 @@ logger = get_logger(__name__)
 # def mkdir(agave_client, path_to_make, system_id=DEFAULT_STORAGE_SYSTEM):
 #     """Make a new directory on the specified storage system
 
-#     Arguments:
+#     Args:
 #         agave_client (Agave): An active Agave client
 #         path_to_make (str): Agave-absolute path to create
 #         system_id (str, optional): Storage system where file is located [data-sd2e-community]
@@ -266,7 +266,7 @@ logger = get_logger(__name__)
 #            recursive=True):
 #     """Delete a path on the specified storage system
 
-#     Arguments:
+#     Args:
 #         agave_client (Agave): An active Agave client
 #         path_to_rm (str): Agave-absolute path to remove
 #         system_id (str, optional): Storage system where file is located [data-sd2e-community]

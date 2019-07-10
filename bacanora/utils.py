@@ -1,5 +1,5 @@
-"""Package-level helper functions for time stamping, path
-manipulation, importing modules on demand, and more
+"""Top-level helper functions for generating time stamps,
+manipulating paths, importing modules on demand, and much more.
 """
 import os
 import datetime

@@ -1,3 +1,8 @@
+"""The ``tapis`` submodule wraps common ``files`` operations (and select
+other APIs) in a common access pattern that provides resilient, optimized
+performance (where possible), and alignment with the behavior of file & path
+management functions in Python's ``os`` module.
+"""
 from . import entity
 from . import pems
 from .agave import AgaveNonceOnly

@@ -1,4 +1,4 @@
-"""Tapis implementations of ``stat`` operations
+"""Tapis implementations of ``files-list`` operations
 """
 import os
 import shutil
@@ -30,7 +30,7 @@ def stat(file_path,
          agave=None):
     """Retrieve attributes for a given path on a Tapis storageSystem
 
-    Arguments:
+    Args:
         file_path (str): The path from which to fetch attributes
         system_id (str, optional): The Tapis storageSystem for file_path
         root_dir (str, optional): Base path on the storageSystem if file_path is relative
@@ -72,7 +72,7 @@ def rsrc_type(file_path,
               agave=None):
     """Retrieve the ``type`` for a given path on a Tapis storageSystem
 
-    Arguments:
+    Args:
         file_path (str): The path from which to fetch attributes
         system_id (str, optional): The Tapis storageSystem for file_path
         root_dir (str, optional): Base path on the storageSystem if file_path is relative
@@ -109,7 +109,7 @@ def exists(file_path,
            agave=None):
     """Determine if a path exists on a Tapis storageSystem
 
-    Arguments:
+    Args:
         file_path (str): The path from which to fetch attributes
         system_id (str, optional): The Tapis storageSystem for file_path
         root_dir (str, optional): Base path on the storageSystem if file_path is relative
@@ -152,7 +152,7 @@ def isfile(file_path,
            agave=None):
     """Determine if a path exists and is a file on a Tapis storageSystem
 
-    Arguments:
+    Args:
         file_path (str): The path from which to fetch attributes
         system_id (str, optional): The Tapis storageSystem for file_path
         root_dir (str, optional): Base path on the storageSystem if file_path is relative
@@ -190,7 +190,7 @@ def isdir(file_path,
           agave=None):
     """Determine if a path exists and is a directory on a Tapis storageSystem
 
-    Arguments:
+    Args:
         file_path (str): The path from which to fetch attributes
         system_id (str, optional): The Tapis storageSystem for file_path
         root_dir (str, optional): Base path on the storageSystem if file_path is relative

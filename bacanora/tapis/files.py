@@ -1,3 +1,5 @@
+"""Globals and configurations pertaining to the Tapis ``files`` API
+"""
 from .. import settings
 
 __all__ = [

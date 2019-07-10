@@ -1,4 +1,4 @@
-"""POSIX implementations of ``get`` operations
+"""POSIX implementations of Tapis ``files-get`` operations
 """
 import os
 import shutil

@@ -1,8 +1,9 @@
+"""Facades for Tapis ``files-[manage]`` operations
+"""
 from . import logger as loggermodule
 from . import settings
 from .processors import process, ProcessingOperationFailed
-"""Facades for the Tapis ``manage`` operations
-"""
+
 logger = loggermodule.get_logger(__name__)
 
 DEFAULT_SYSTEM_ID = settings.STORAGE_SYSTEM
@@ -20,7 +21,7 @@ def mkdir(path_to_make,
 
     Emulates Python ``os.makedirs()``
 
-    Arguments:
+    Args:
         path_to_make (str): Path on the storageSystem to make
         system_id (str, optional): Tapis storageSystem to act upon
         root_dir (str, optional): Base directory if path_to_delete is relative
@@ -56,7 +57,7 @@ def copy(path_to_copy,
     Implements a context-sensitive hybrid of Python ``shutil.copy2()``
     and ``shutil.copytree()``
 
-    Arguments:
+    Args:
         path_to_copy (str): Path on the storageSystem to move
         destination_path (str): destination on the storageSystem
         system_id (str, optional): Tapis storageSystem to act upon
@@ -93,7 +94,7 @@ def rename(path_to_rename,
 
     Emulates Python ``os.rename()``
 
-    Arguments:
+    Args:
         path_to_rename (str): Path on the storageSystem to move
         new_path_name (str): destination on the storageSystem
         system_id (str, optional): Tapis storageSystem to act upon
@@ -131,7 +132,7 @@ def move(path_to_move,
 
     Emulates a **move** command using an implementation of Python ``os.rename()``
 
-    Arguments:
+    Args:
         path_to_move (str): Path on the storageSystem to move
         destination_path (str): destination on the storageSystem
         system_id (str, optional): Tapis storageSystem to act upon
@@ -170,7 +171,7 @@ def delete(path_to_delete,
     Implements a context-sensitive hybrid of Python ``os.remove()``
     and ``shutil.rmtree()``
 
-    Arguments:
+    Args:
         path_to_delete (str): Path on the storageSystem to delete
         system_id (str, optional): Tapis storageSystem to act upon
         root_dir (str, optional): Base directory if path_to_delete is relative

@@ -1,4 +1,4 @@
-"""Facades for the Tapis ``stat`` operations
+"""Facades for the Tapis ``files-list`` operations
 """
 from . import logger as loggermodule
 from . import settings
@@ -20,7 +20,7 @@ def exists(file_path,
 
     Emulates Python ``os.path.exists()``
 
-    Arguments:
+    Args:
         file_path (str): The path from which to fetch attributes
         system_id (str, optional): The Tapis storageSystem for file_path
         root_dir (str, optional): Base path on the storageSystem if file_path is relative
@@ -52,7 +52,7 @@ def isfile(file_path,
 
     Emulates Python ``os.path.isfile()``
 
-    Arguments:
+    Args:
         file_path (str): The path from which to fetch attributes
         system_id (str, optional): The Tapis storageSystem for file_path
         root_dir (str, optional): Base path on the storageSystem if file_path is relative
@@ -84,7 +84,7 @@ def isdir(dir_path,
 
     Emulates Python ``os.path.isdir()``
 
-    Arguments:
+    Args:
         file_path (str): The path from which to fetch attributes
         system_id (str, optional): The Tapis storageSystem for file_path
         root_dir (str, optional): Base path on the storageSystem if file_path is relative
