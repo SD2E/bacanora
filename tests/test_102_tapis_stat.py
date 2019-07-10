@@ -10,6 +10,7 @@ DATA_DIR = os.path.join(PARENT, 'tests/data/tapis')
 TMP_DIR = os.path.join(CWD, 'tmp')
 
 from bacanora import tapis
+from bacanora import utils
 
 
 @pytest.mark.parametrize(
@@ -89,4 +90,52 @@ def test_tapis_stat_isdir(agave, file_path, system_id, test_isfile, test_pass):
         exceptable_code()
     else:
         with pytest.raises(tapis.exceptions.HTTPError):
+            exceptable_code()
+
+
+@pytest.mark.parametrize(
+    "file_path, system_id, test_isfile, test_pass",
+    [('/sample/tacc-cloud/dawnofman.jpg', 'data-sd2e-community', False, True),
+     ('/sample/tacc-cloud', 'data-sd2e-community', True, True)])
+def test_tapis_isfile_lru_cache(agave, file_path, system_id, test_isfile,
+                                test_pass):
+    def exceptable_code():
+        start_1 = utils.nanoseconds()
+        resp_a = tapis.isfile(file_path, system_id=system_id, agave=agave)
+        start_2 = utils.nanoseconds()
+        resp_b = tapis.isfile(file_path, system_id=system_id, agave=agave)
+        start_3 = utils.nanoseconds()
+        elapsed_1 = (start_2 - start_1)
+        elapsed_2 = (start_3 - start_2)
+        assert elapsed_2 <= elapsed_1, 'Cache did not speed up isfile()'
+        assert resp_a == resp_b, 'Function returns did not match'
+
+    if test_pass:
+        exceptable_code()
+    else:
+        with pytest.raises(AssertionError):
+            exceptable_code()
+
+
+@pytest.mark.parametrize(
+    "file_path, system_id, test_isfile, test_pass",
+    [('/sample/tacc-cloud/dawnofman.jpg', 'data-sd2e-community', False, True),
+     ('/sample/tacc-cloud', 'data-sd2e-community', True, True)])
+def test_tapis_isdir_lru_cache(agave, file_path, system_id, test_isfile,
+                               test_pass):
+    def exceptable_code():
+        start_1 = utils.nanoseconds()
+        resp_a = tapis.isdir(file_path, system_id=system_id, agave=agave)
+        start_2 = utils.nanoseconds()
+        resp_b = tapis.isdir(file_path, system_id=system_id, agave=agave)
+        start_3 = utils.nanoseconds()
+        elapsed_1 = (start_2 - start_1)
+        elapsed_2 = (start_3 - start_2)
+        assert elapsed_2 <= elapsed_1, 'Cache did not speed up isfile()'
+        assert resp_a == resp_b, 'Function returns did not match'
+
+    if test_pass:
+        exceptable_code()
+    else:
+        with pytest.raises(AssertionError):
             exceptable_code()

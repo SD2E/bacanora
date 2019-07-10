@@ -3,12 +3,15 @@
 import os
 import shutil
 from attrdict import AttrDict
+from functools import lru_cache
+from ..hashable import picklecache, jsoncache
 from .. import logger as loggermodule
 from .. import settings
 from ..utils import nanoseconds, microseconds, normalize, normpath, rooted_path
 from ..exceptions import HTTPError, AgaveError
 from .exceptions import TapisOperationFailed
 from .utils import read_tapis_http_error
+
 from . import files
 
 logger = loggermodule.get_logger(__name__)
@@ -61,6 +64,7 @@ def stat(file_path,
             raise
 
 
+@picklecache.mcache(lru_cache(maxsize=256))
 def rsrc_type(file_path,
               system_id=DEFAULT_SYSTEM_ID,
               root_dir='/',
@@ -88,7 +92,7 @@ def rsrc_type(file_path,
             system_id=system_id,
             root_dir=root_dir,
             permissive=False,
-            agave=agave).get(types.TYPE_KEY, None)
+            agave=agave).get(files.TYPE_KEY, None)
     except Exception as err:
         logger.warning('Exception encountered in rsrc_type(): {}'.format(err))
         if permissive:
@@ -97,6 +101,7 @@ def rsrc_type(file_path,
             raise
 
 
+@picklecache.mcache(lru_cache(maxsize=256))
 def exists(file_path,
            system_id=DEFAULT_SYSTEM_ID,
            root_dir='/',
@@ -125,7 +130,7 @@ def exists(file_path,
             root_dir=root_dir,
             permissive=False,
             agave=agave)
-        return file_path_type in types.FILES_TYPES
+        return file_path_type in files.FILES_TYPES
     except HTTPError as herr:
         if herr.response.status_code == 404:
             return False
@@ -139,6 +144,7 @@ def exists(file_path,
             raise
 
 
+@picklecache.mcache(lru_cache(maxsize=256))
 def isfile(file_path,
            system_id=DEFAULT_SYSTEM_ID,
            root_dir='/',
@@ -167,7 +173,7 @@ def isfile(file_path,
             root_dir=root_dir,
             permissive=False,
             agave=agave)
-        return file_path_format in types.FILE_TYPES
+        return file_path_format in files.FILE_TYPES
     except Exception as err:
         logger.warning('Exception encountered in isfile(): {}'.format(err))
         if permissive:
@@ -176,6 +182,7 @@ def isfile(file_path,
             raise
 
 
+@picklecache.mcache(lru_cache(maxsize=256))
 def isdir(file_path,
           system_id=DEFAULT_SYSTEM_ID,
           root_dir='/',
@@ -204,7 +211,7 @@ def isdir(file_path,
             root_dir=root_dir,
             permissive=False,
             agave=agave)
-        return file_path_format in types.DIRECTORY_TYPES
+        return file_path_format in files.DIRECTORY_TYPES
     except Exception as err:
         logger.warning('Exception encountered in isdir(): {}'.format(err))
         if permissive:
