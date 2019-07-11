@@ -22,6 +22,7 @@ def put(file_to_upload,
         destination_path,
         system_id=DEFAULT_SYSTEM_ID,
         root_dir='/',
+        runtime=None,
         force=False,
         sync=False,
         atomic=True,
@@ -35,6 +36,7 @@ def put(file_to_upload,
         destination_path (str): Upload destination on Tapis storageSystem
         system_id (str, optional): Tapis storageSystem where upload will go
         root_dir (str, optional): Base path if destination_path is relative
+        runtime (str, optional): Override detected Bacanora runtime
         force (bool, optional): Force overwrite on storageSystem
         atomic (bool, optional): Whether to upload first to a temporary file
         sync (bool, optional): Wait until the file uploads to return
@@ -56,6 +58,7 @@ def put(file_to_upload,
             posix_path = abs_path(
                 rooted_path(destination_path, root_dir),
                 system_id=system_id,
+                runtime=runtime,
                 agave=agave)
             logger.debug('put: {} => {}'.format(file_name, posix_path))
             # Ensure remote destination path exists. Tapis files does this

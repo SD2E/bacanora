@@ -20,13 +20,31 @@ def get(file_path,
         system_id=DEFAULT_SYSTEM_ID,
         local_filename=None,
         force=False,
+        runtime=None,
         atomic=True,
         agave=None):
     """Emulate a Tapis download by copying a path from its resolved physical
     location to the local host
+
+    Args:
+        file_path (str): Path on the storageSystem to download
+        system_id (str, optional): Tapis storageSystem to act upon
+        local_filename (str, optional): Local name of downloaded file
+        force (bool, optional): Force overwrite of an existing file or directory
+        runtime (str, optional): Override detected Bacanora runtime
+        atomic (bool, optional): Whether to download first to a temporary file
+        permissive (bool, optional): Whether to return False or raise an Exception on failure
+        agave (Agave): An active Tapis (Agave) API client
+
+    Returns:
+        str: Name of the downloaded file
+
+    Raises:
+        DirectOperationFailed: Some other error was encountered
     """
+    posix_path = abs_path(
+        file_path, system_id=system_id, runtime=runtime, agave=agave)
     try:
-        posix_path = abs_path(file_path, system_id=system_id, agave=agave)
         if local_filename is None:
             local_filename = os.path.basename(posix_path)
         if os.path.exists(local_filename) and force is False:
@@ -58,9 +76,11 @@ def get(file_path,
             try:
                 shutil.copy(posix_path, temp_fname)
             except Exception as exc:
-                raise DirectOperationFailed('Copy failed', exc)
+                raise DirectOperationFailed(
+                    'Copy failed: {}'.format(posix_path), exc)
         else:
-            raise DirectOperationFailed('Source does not exist')
+            raise DirectOperationFailed(
+                'Source does not exist: {}'.format(posix_path))
 
         # Rename or copy the tempfile into place
         if atomic:

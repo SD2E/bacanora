@@ -20,6 +20,7 @@ def walk(directory_path,
          system_id=DEFAULT_SYSTEM_ID,
          root_dir='/',
          directories=False,
+         runtime=None,
          dotfiles=False,
          agave=None):
     """Recursively list contents of a Tapis files directory.
@@ -28,6 +29,7 @@ def walk(directory_path,
         directory_path (str): Full or relative path of directory to walk
         system_id (str, optional): Tapis storageSystem for directory_path
         root_dir (str, optional): Base path if directory_path is relative
+        runtime (str, optional): Override detected Bacanora runtime
         directories (bool, optional): Whether result should include directories
         dotfiles (bool, optional): Whether result should include dotfiles
         permissive (bool, optional): Whether to return False or raise Exception on error
@@ -45,6 +47,7 @@ def walk(directory_path,
         posix_path = abs_path(
             directory_path,
             system_id=system_id,
+            runtime=runtime,
             root_dir=root_dir,
             agave=agave)
         logger.debug('posix_path: {}'.format(posix_path))
@@ -64,7 +67,8 @@ def walk(directory_path,
                 found_paths.append(root)
 
         dir_listing = [
-            abspath_to_tapis(l, system_id=system_id, agave=agave)
+            abspath_to_tapis(
+                l, system_id=system_id, runtime=runtime, agave=agave)
             for l in found_paths
         ]
         logger.debug('walk.result: {} paths'.format(len(dir_listing)))
@@ -77,6 +81,7 @@ def walk(directory_path,
 def listdir(directory_path,
             system_id=DEFAULT_SYSTEM_ID,
             root_dir='/',
+            runtime=None,
             directories=True,
             dotfiles=False,
             agave=None):
@@ -86,6 +91,7 @@ def listdir(directory_path,
         directory_path (str): Full or relative path of directory to walk
         system_id (str, optional): Tapis storageSystem for directory_path
         root_dir (str, optional): Base path if directory_path is relative
+        runtime (str, optional): Override detected Bacanora runtime
         directories (bool, optional): Whether result should include directories
         dotfiles (bool, optional): Whether result should include dotfiles
         permissive (bool, optional): Whether to return False or raise Exception on error
@@ -105,6 +111,7 @@ def listdir(directory_path,
             directory_path,
             system_id=system_id,
             root_dir=root_dir,
+            runtime=runtime,
             directories=directories,
             dotfiles=dotfiles,
             agave=agave)

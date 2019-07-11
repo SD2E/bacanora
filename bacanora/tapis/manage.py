@@ -22,7 +22,8 @@ def mkdir(path_to_make,
           force=False,
           root_dir='/',
           permissive=False,
-          agave=None):
+          agave=None,
+          **kwargs):
     """Wrapper for Tapis files-mkdir
 
     Args:
@@ -81,7 +82,8 @@ def delete(path_to_delete,
            force=False,
            recursive=True,
            permissive=False,
-           agave=None):
+           agave=None,
+           **kwargs):
     """Wrapper for Tapis files-delete
 
     Args:
@@ -126,7 +128,8 @@ def move(path_to_move,
          force=False,
          root_dir='/',
          permissive=False,
-         agave=None):
+         agave=None,
+         **kwargs):
     """Wrapper for Tapis files-move
 
     Args:
@@ -193,7 +196,8 @@ def rename(path_to_rename,
            force=False,
            root_dir='/',
            permissive=False,
-           agave=None):
+           agave=None,
+           **kwargs):
     """Wrapper for Tapis files-rename
 
     Args:
@@ -228,7 +232,8 @@ def copy(path_to_copy,
          force=False,
          root_dir='/',
          permissive=False,
-         agave=None):
+         agave=None,
+         **kwargs):
     """Wrapper for Tapis files-copy
 
     Args:

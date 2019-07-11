@@ -1,14 +1,13 @@
 import os
 import pytest
 import warnings
-from .fixtures.agave import agave, credentials
 
 CWD = os.getcwd()
 HERE = os.path.dirname(os.path.abspath(__file__))
 PARENT = os.path.dirname(HERE)
 DATA_DIR = os.path.join(PARENT, 'tests/data/direct')
 
-from bacanora import direct
+from bacanora import direct, runtimes
 
 
 @pytest.mark.parametrize(
@@ -21,12 +20,17 @@ from bacanora import direct
       False),
      ('/tests/data/direct/sample/tacc-cloud', 'data-projects-safegenes', True)]
 )
-def test_direct_walk_exceptions(agave, directory_path, system_id, test_pass):
+def test_direct_walk_exceptions(project_dir, agave, directory_path, system_id,
+                                test_pass):
     """Exceptions should be raised on various error states
     """
 
     def exceptable_code():
-        resp = direct.walk(directory_path, system_id=system_id, agave=agave)
+        resp = direct.walk(
+            directory_path,
+            system_id=system_id,
+            runtime=runtimes.LOCALHOST,
+            agave=agave)
         assert isinstance(resp, list), 'Response was not a list'
         assert len(resp) > 0, 'Response was a list but was empty'
 
@@ -45,8 +49,8 @@ def test_direct_walk_exceptions(agave, directory_path, system_id, test_pass):
       'nested_directory', False),
      ('/tests/data/direct/sample/tacc-cloud', 'data-sd2e-community', False,
       'no_such_directory', False)])
-def test_direct_walk_directories(agave, directory_path, system_id, directories,
-                                 diagnostic_value, test_pass):
+def test_direct_walk_directories(project_dir, agave, directory_path, system_id,
+                                 directories, diagnostic_value, test_pass):
     """Can toggle the return of subdirectories
     """
 
@@ -54,6 +58,7 @@ def test_direct_walk_directories(agave, directory_path, system_id, directories,
         resp = direct.walk(
             directory_path,
             system_id=system_id,
+            runtime=runtimes.LOCALHOST,
             directories=directories,
             agave=agave)
         resp_files = [os.path.basename(f) for f in resp]
@@ -77,8 +82,8 @@ def test_direct_walk_directories(agave, directory_path, system_id, directories,
       '.hidden_file', False),
      ('/tests/data/direct/sample/tacc-cloud', 'data-sd2e-community', True,
       '.hidden_file_doesnt_exist', False)])
-def test_direct_walk_dotfiles(agave, directory_path, system_id, dotfiles,
-                              diagnostic_value, test_pass):
+def test_direct_walk_dotfiles(project_dir, agave, directory_path, system_id,
+                              dotfiles, diagnostic_value, test_pass):
     """Can toggle the return of dotfiles in response
     """
 
@@ -86,6 +91,7 @@ def test_direct_walk_dotfiles(agave, directory_path, system_id, dotfiles,
         resp = direct.walk(
             directory_path,
             system_id=system_id,
+            runtime=runtimes.LOCALHOST,
             dotfiles=dotfiles,
             agave=agave)
         resp_files = [os.path.basename(f) for f in resp]

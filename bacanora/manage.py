@@ -15,6 +15,7 @@ def mkdir(path_to_make,
           system_id=DEFAULT_SYSTEM_ID,
           force=False,
           root_dir='/',
+          runtime=None,
           permissive=False,
           agave=None):
     """Make a directory on a Tapis storageSystem
@@ -25,6 +26,7 @@ def mkdir(path_to_make,
         path_to_make (str): Path on the storageSystem to make
         system_id (str, optional): Tapis storageSystem to act upon
         root_dir (str, optional): Base directory if path_to_delete is relative
+        runtime (string, optional): Override detected Bacanora runtime
         force (bool, optional): Force overwrite of an existing file or directory
         permissive (bool, optional): Whether to return False or raise an Exception on failure
         agave (Agave): An active Tapis (Agave) API client
@@ -40,6 +42,7 @@ def mkdir(path_to_make,
         path_to_make=path_to_make,
         system_id=system_id,
         root_dir=root_dir,
+        runtime=runtime,
         force=force,
         permissive=permissive,
         agave=agave)
@@ -49,6 +52,7 @@ def copy(path_to_copy,
          destination_path,
          system_id=DEFAULT_SYSTEM_ID,
          force=False,
+         runtime=None,
          root_dir='/',
          permissive=False,
          agave=None):
@@ -62,6 +66,7 @@ def copy(path_to_copy,
         destination_path (str): destination on the storageSystem
         system_id (str, optional): Tapis storageSystem to act upon
         force (bool, optional): Force overwrite of an existing file or directory
+        runtime (string, optional): Override detected Bacanora runtime
         root_dir (str, optional): Base directory if path_to_copy and destination_path are relative
         permissive (bool, optional): Whether to return False or raise an Exception on failure
         agave (Agave): An active Tapis (Agave) API client
@@ -78,6 +83,7 @@ def copy(path_to_copy,
         destination_path=destination_path,
         system_id=system_id,
         force=force,
+        runtime=runtime,
         root_dir=root_dir,
         permissive=permissive,
         agave=agave)
@@ -87,6 +93,7 @@ def rename(path_to_rename,
            new_path_name,
            system_id=DEFAULT_SYSTEM_ID,
            force=False,
+           runtime=None,
            root_dir='/',
            permissive=False,
            agave=None):
@@ -99,6 +106,7 @@ def rename(path_to_rename,
         new_path_name (str): destination on the storageSystem
         system_id (str, optional): Tapis storageSystem to act upon
         force (bool, optional): Force overwrite of an existing file or directory
+        runtime (string, optional): Override detected Bacanora runtime
         root_dir (str, optional): Base directory if path_to_rename and new_path_name are relative
         permissive (bool, optional): Whether to return False or raise an Exception on failure
         agave (Agave): An active Tapis (Agave) API client
@@ -116,6 +124,7 @@ def rename(path_to_rename,
         destination_path=new_path_name,
         system_id=system_id,
         force=force,
+        runtime=runtime,
         root_dir=root_dir,
         permissive=permissive,
         agave=agave)
@@ -125,6 +134,7 @@ def move(path_to_move,
          destination_path,
          system_id=DEFAULT_SYSTEM_ID,
          force=False,
+         runtime=None,
          root_dir='/',
          permissive=False,
          agave=None):
@@ -137,6 +147,7 @@ def move(path_to_move,
         destination_path (str): destination on the storageSystem
         system_id (str, optional): Tapis storageSystem to act upon
         force (bool, optional): Force overwrite of an existing file or directory
+        runtime (string, optional): Override detected Bacanora runtime
         root_dir (str, optional): Base directory if path_to_move and destination_path are relative
         permissive (bool, optional): Whether to return False or raise an Exception on failure
         agave (Agave): An active Tapis (Agave) API client
@@ -154,6 +165,7 @@ def move(path_to_move,
         destination_path=destination_path,
         system_id=system_id,
         force=force,
+        runtime=runtime,
         root_dir=root_dir,
         permissive=permissive,
         agave=agave)
@@ -163,6 +175,7 @@ def delete(path_to_delete,
            system_id=DEFAULT_SYSTEM_ID,
            root_dir='/',
            force=False,
+           runtime=None,
            recursive=True,
            permissive=False,
            agave=None):
@@ -175,6 +188,7 @@ def delete(path_to_delete,
         path_to_delete (str): Path on the storageSystem to delete
         system_id (str, optional): Tapis storageSystem to act upon
         root_dir (str, optional): Base directory if path_to_delete is relative
+        runtime (string, optional): Override detected Bacanora runtime
         permissive (bool, optional): Whether to return False or raise an Exception on failure
         agave (Agave): An active Tapis (Agave) API client
 
@@ -189,6 +203,7 @@ def delete(path_to_delete,
         path_to_make=path_to_delete,
         system_id=system_id,
         root_dir=root_dir,
+        runtime=runtime,
         force=force,
         permissive=permissive,
         agave=agave)

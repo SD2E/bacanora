@@ -5,6 +5,9 @@ Supports multiple configurable backends (direct, tapis, lustre*)
 from agavepy.agave import Agave
 from bacanora.utils import dynamic_import
 from bacanora.logger import get_logger
+from bacanora.settings import RETRY_MAX_DELAY, RETRY_RERAISE
+from tenacity import (retry, retry_if_exception_type, stop_after_delay,
+                      wait_exponential)
 
 DIRECT_PROCESSOR = 'direct'
 TAPIS_PROCESSOR = 'tapis'
@@ -15,7 +18,7 @@ logger = get_logger(__name__)
 
 __all__ = [
     'process', 'ProcessingOperationFailed', 'OperationNotImplemented',
-    'BackendNotImplemented'
+    'BackendNotImplemented', 'COMMAND_PROCESSORS'
 ]
 
 
@@ -44,6 +47,11 @@ def restore_client(agave):
         return agave
 
 
+@retry(
+    retry=retry_if_exception_type(ProcessingOperationFailed),
+    reraise=RETRY_RERAISE,
+    stop=stop_after_delay(RETRY_MAX_DELAY),
+    wait=wait_exponential(multiplier=2, max=64))
 def process(command, *args, **kwargs):
     """Implements multiple dispatch for processing Tapis commands using
     configurable backends.

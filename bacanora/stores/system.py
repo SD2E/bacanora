@@ -164,7 +164,8 @@ class StorageSystem(str):
 
     @property
     def localhost_dir(self):
-        return settings.LOCALHOST_ROOT_DIR
+        return os.environ.get('BACANORA_LOCALHOST_ROOT_DIR',
+                              os.path.join(os.getcwd(), 'temp'))
 
     def agave_canonical_uri(self, path):
         """Return a agave-canonical URI for a path on the StorageSystem

@@ -2,7 +2,6 @@ import os
 import pytest
 import shutil
 import warnings
-from .fixtures.agave import agave, credentials
 
 CWD = os.getcwd()
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -10,8 +9,7 @@ PARENT = os.path.dirname(HERE)
 DATA_DIR = os.path.join(PARENT, 'tests/data/direct')
 TMP_DIR = os.path.join(CWD, 'tmp')
 
-from bacanora import direct
-from bacanora import utils
+from bacanora import direct, runtimes, utils
 from .utils import local_delete
 
 
@@ -25,8 +23,8 @@ from .utils import local_delete
       True, True, True),
      ('test-mkdir-relative', 'data-sd2e-community',
       '/tests/data/direct/sample', True, True, True)])
-def test_direct_manage_mkdir(agave, path_to_make, system_id, root_dir,
-                             force_action, test_pass, last_test):
+def test_direct_manage_mkdir(project_dir, agave, path_to_make, system_id,
+                             root_dir, force_action, test_pass, last_test):
     """Ensure mkdir() works for absolute and relative paths, but fails if
     destination exists and force is not True
     """
@@ -34,11 +32,16 @@ def test_direct_manage_mkdir(agave, path_to_make, system_id, root_dir,
 
     def exceptable_code():
         created_posix_path = direct.abs_path(
-            path_to_make, system_id=system_id, root_dir=root_dir, agave=agave)
+            path_to_make,
+            system_id=system_id,
+            root_dir=root_dir,
+            runtime=runtimes.LOCALHOST,
+            agave=agave)
         direct.mkdir(
             path_to_make,
             system_id=system_id,
             root_dir=root_dir,
+            runtime=runtimes.LOCALHOST,
             force=force_action,
             agave=agave)
         if force_action:
@@ -72,8 +75,9 @@ def test_direct_manage_mkdir(agave, path_to_make, system_id, root_dir,
      ('/tests/data/direct/sample/tacc-cloud',
       '/tests/data/direct/sample/tacc-cloud-copytest', 'data-sd2e-community',
       '/', True, True, True)])
-def test_direct_manage_copy(agave, src_path, path_to_copy, system_id, root_dir,
-                            force_action, test_pass, last_test):
+def test_direct_manage_copy(project_dir, agave, src_path, path_to_copy,
+                            system_id, root_dir, force_action, test_pass,
+                            last_test):
     """Rename file or directory works but fails if destination exists
     when force is not True
     """
@@ -94,6 +98,7 @@ def test_direct_manage_copy(agave, src_path, path_to_copy, system_id, root_dir,
             path_copied_name,
             system_id=system_id,
             root_dir=root_dir,
+            runtime=runtimes.LOCALHOST,
             force=force_action,
             agave=agave)
         norm_path_new_name = utils.normalize(path_copied_name)
@@ -125,8 +130,9 @@ def test_direct_manage_copy(agave, src_path, path_to_copy, system_id, root_dir,
      ('/tests/data/direct/sample/tacc-cloud',
       '/tests/data/direct/sample/tacc-cloud-pytest', 'data-sd2e-community',
       '/', True, True, True)])
-def test_direct_manage_rename(agave, src_path, path_to_rename, system_id,
-                              root_dir, force_action, test_pass, last_test):
+def test_direct_manage_rename(project_dir, agave, src_path, path_to_rename,
+                              system_id, root_dir, force_action, test_pass,
+                              last_test):
     """Rename file or directory works but fails if destination exists
     when force is not True
     """
@@ -139,6 +145,7 @@ def test_direct_manage_rename(agave, src_path, path_to_rename, system_id,
             path_to_rename,
             system_id=system_id,
             root_dir=root_dir,
+            runtime=runtimes.LOCALHOST,
             force=True,
             agave=agave)
         direct.rename(
@@ -146,6 +153,7 @@ def test_direct_manage_rename(agave, src_path, path_to_rename, system_id,
             path_new_name,
             system_id=system_id,
             root_dir=root_dir,
+            runtime=runtimes.LOCALHOST,
             force=force_action,
             agave=agave)
         norm_path_new_name = utils.normalize(path_new_name)

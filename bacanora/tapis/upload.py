@@ -30,7 +30,8 @@ def put(file_to_upload,
         atomic=True,
         sync=False,
         permissive=False,
-        agave=None):
+        agave=None,
+        **kwargs):
     """Wrapper for Tapis files-upload with atomic operations and sync mode.
 
     Args:

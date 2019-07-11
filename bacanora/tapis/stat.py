@@ -27,7 +27,8 @@ def stat(file_path,
          system_id=DEFAULT_SYSTEM_ID,
          root_dir='/',
          permissive=False,
-         agave=None):
+         agave=None,
+         **kwargs):
     """Retrieve attributes for a given path on a Tapis storageSystem
 
     Args:
@@ -69,7 +70,8 @@ def rsrc_type(file_path,
               system_id=DEFAULT_SYSTEM_ID,
               root_dir='/',
               permissive=False,
-              agave=None):
+              agave=None,
+              **kwargs):
     """Retrieve the ``type`` for a given path on a Tapis storageSystem
 
     Args:
@@ -106,7 +108,8 @@ def exists(file_path,
            system_id=DEFAULT_SYSTEM_ID,
            root_dir='/',
            permissive=False,
-           agave=None):
+           agave=None,
+           **kwargs):
     """Determine if a path exists on a Tapis storageSystem
 
     Args:
@@ -149,7 +152,8 @@ def isfile(file_path,
            system_id=DEFAULT_SYSTEM_ID,
            root_dir='/',
            permissive=False,
-           agave=None):
+           agave=None,
+           **kwargs):
     """Determine if a path exists and is a file on a Tapis storageSystem
 
     Args:
@@ -187,7 +191,8 @@ def isdir(file_path,
           system_id=DEFAULT_SYSTEM_ID,
           root_dir='/',
           permissive=False,
-          agave=None):
+          agave=None,
+          **kwargs):
     """Determine if a path exists and is a directory on a Tapis storageSystem
 
     Args:
@@ -224,7 +229,8 @@ def is_link(file_path,
             system_id=DEFAULT_SYSTEM_ID,
             root_dir='/',
             permissive=False,
-            agave=None):
+            agave=None,
+            **kwargs):
     """Placeholder for a Tapis function to identify links
     """
     raise NotImplementedError(
@@ -235,7 +241,8 @@ def is_mount(file_path,
              system_id=DEFAULT_SYSTEM_ID,
              root_dir='/',
              permissive=False,
-             agave=None):
+             agave=None,
+             **kwargs):
     """Placeholder for a Tapis function to identify mounts
     """
     raise NotImplementedError(

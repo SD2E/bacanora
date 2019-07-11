@@ -12,15 +12,16 @@ ABACO = 'abaco'
 JUPYTER = 'jupyter'
 HPC = 'hpc'
 LOCALHOST = 'localhost'
+AUTO = 'auto'
 
-ALL = (ABACO, JUPYTER, HPC, LOCALHOST)
-DEFAULT_RUNTIME = LOCALHOST
+ALL = (ABACO, JUPYTER, HPC, LOCALHOST, AUTO)
+DEFAULT_RUNTIME = ABACO
 
 DEFINITIONS = {
     ABACO: 'Code is running inside an Abaco Reactor',
     JUPYTER: 'Code is running inside a Dockerized Jupyter notebook',
     HPC: 'Code is running natively on a TACC HPC system',
-    LOCALHOST: 'Code is running locally'
+    LOCALHOST: 'Code is running locally',
 }
 
 # TODO - Expand list of variables and/or runtimes supported
@@ -57,10 +58,12 @@ class BacanoraRuntime(str):
         return str.__new__(cls, value)
 
 
-def detect(permissive=True):
+def detect(override=None, permissive=True):
     """Detect which runtime the calling code is running in
     using environment fingerprinting
     """
+    if override is not None:
+        return BacanoraRuntime(override)
     for runtime, variables in VARIABLES.items():
         for varname in variables:
             if varname in environ:

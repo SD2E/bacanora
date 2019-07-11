@@ -9,6 +9,8 @@ PWD = os.getcwd()
 HERE = os.path.dirname(os.path.abspath(__file__))
 PARENT = os.path.dirname(HERE)
 
+__all__ = ['credentials', 'agave', 'PREFIXES']
+
 # Valid environment variable prefixes to parameterize tests
 PREFIXES = ['AGAVE', '_AGAVE', 'TACC', '_TACC']
 

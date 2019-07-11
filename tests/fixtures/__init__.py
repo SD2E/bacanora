@@ -1,2 +1,2 @@
-import pytest
-from .agave import agave, credentials
+from .agave import *
+from .settings import *

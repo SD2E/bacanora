@@ -40,7 +40,8 @@ def _grant(
         recursive_pem=False,
         # check_before_grant=False,
         permissive=True,
-        agave=None):
+        agave=None,
+        **kwargs):
     """Private function to resiliently apply a permissions grant
     """
     rooted_directory_path = rooted_path(directory_path, root_dir)

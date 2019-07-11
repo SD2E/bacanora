@@ -62,7 +62,8 @@ def _walk(directory_path,
           page_size=DEFAULT_PAGE_SIZE,
           recurse=True,
           sort=False,
-          agave=None):
+          agave=None,
+          **kwargs):
     """Private function implementing an analogue to os.walk()
     """
     logger.info('_walk: agave://{}{}'.format(system_id, directory_path))
@@ -121,7 +122,8 @@ def walk(directory_path,
          dotfiles=False,
          sort=False,
          page_size=DEFAULT_PAGE_SIZE,
-         agave=None):
+         agave=None,
+         **kwargs):
     """Recursively list contents of a Tapis files directory.
 
     Args:
@@ -169,7 +171,8 @@ def listdir(directory_path,
             dotfiles=False,
             page_size=DEFAULT_PAGE_SIZE,
             sort=True,
-            agave=None):
+            agave=None,
+            **kwargs):
     """List immediate contents of a Tapis files directory.
 
     Args:

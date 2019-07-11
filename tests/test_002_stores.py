@@ -1,6 +1,5 @@
 import os
 import pytest
-from .fixtures.agave import agave, credentials
 
 CWD = os.getcwd()
 HERE = os.path.dirname(os.path.abspath(__file__))

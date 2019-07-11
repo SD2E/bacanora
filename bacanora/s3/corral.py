@@ -1,5 +1,5 @@
-"""Constants for TACC's Corral resource, which is the backing
-store for TACC S3 services
+"""Constants for the Corral resource, the backing storage
+for TACC S3 services
 """
 
 from .. import stores
@@ -10,11 +10,12 @@ __all__ = [
 ]
 
 CORRAL_CONTAINER_BASE = '/corral'
-CORRAL_BASE = '/corral-repl/projects'
+CORRAL_NATIVE_BASE = '/corral-repl/projects/{}'.format(
+    settings.TACC_PROJECT_NAME)
 
-S3_PROJECT_BASE = '/{}/s3/ingest'.format(settings.TACC_PROJECT_NAME)
+S3_PROJECT_BASE = '/s3/ingest'
 
-HPC_BASE = CORRAL_BASE
+HPC_BASE = CORRAL_NATIVE_BASE
 ABACO_BASE = CORRAL_CONTAINER_BASE
 JUPYTER_BASE = CORRAL_CONTAINER_BASE
 

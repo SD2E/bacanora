@@ -14,6 +14,7 @@ __all__ = ['walk', 'listdir']
 def walk(directory_path,
          system_id=DEFAULT_SYSTEM_ID,
          root_dir='/',
+         runtime=None,
          directories=False,
          dotfiles=False,
          agave=None):
@@ -25,6 +26,7 @@ def walk(directory_path,
         directory_path (str): Full or relative path of directory to walk
         system_id (str, optional): Tapis storageSystem for directory_path
         root_dir (str, optional): Base path if directory_path is relative
+        runtime (string, optional): Override detected Bacanora runtime
         directories (bool, optional): Whether result should include directories
         dotfiles (bool, optional): Whether result should include dotfiles
         permissive (bool, optional): Whether to return False or raise Exception on error
@@ -41,6 +43,7 @@ def walk(directory_path,
         directory_path=directory_path,
         system_id=system_id,
         root_dir=root_dir,
+        runtime=runtime,
         directories=directories,
         dotfiles=dotfiles,
         agave=agave)
@@ -49,6 +52,7 @@ def walk(directory_path,
 def listdir(directory_path,
             system_id=DEFAULT_SYSTEM_ID,
             root_dir='/',
+            runtime=None,
             directories=True,
             dotfiles=False,
             agave=None):
@@ -59,6 +63,7 @@ def listdir(directory_path,
         system_id (str, optional): Tapis storageSystem for directory_path
         root_dir (str, optional): Base path if directory_path is relative
         directories (bool, optional): Whether result should include directories
+        runtime (string, optional): Override detected Bacanora runtime
         dotfiles (bool, optional): Whether result should include dotfiles
         permissive (bool, optional): Whether to return False or raise Exception on error
         agave (Agave, optional): Tapis (Agave) API client
@@ -74,6 +79,7 @@ def listdir(directory_path,
         directory_path=directory_path,
         system_id=system_id,
         root_dir=root_dir,
+        runtime=runtime,
         directories=directories,
         dotfiles=dotfiles,
         agave=agave)

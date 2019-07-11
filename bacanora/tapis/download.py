@@ -23,7 +23,8 @@ def get(file_path,
         force=False,
         atomic=True,
         permissive=False,
-        agave=None):
+        agave=None,
+        **kwargs):
     """Wrapper for Tapis files-get, adding atomic operations
 
     Args:

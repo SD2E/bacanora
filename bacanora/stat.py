@@ -14,6 +14,7 @@ __all__ = ['exists', 'isfile', 'isdir']
 def exists(file_path,
            system_id=DEFAULT_SYSTEM_ID,
            root_dir='/',
+           runtime=None,
            permissive=False,
            agave=None):
     """Determine if a path exists on a Tapis storageSystem
@@ -24,6 +25,7 @@ def exists(file_path,
         file_path (str): The path from which to fetch attributes
         system_id (str, optional): The Tapis storageSystem for file_path
         root_dir (str, optional): Base path on the storageSystem if file_path is relative
+        runtime (string, optional): Override detected Bacanora runtime
         permissive (bool, optional): Whether to raise an Exception on failure
         agave (Agave, optional): An active Tapis client
 
@@ -38,6 +40,7 @@ def exists(file_path,
         'exists',
         file_path=file_path,
         system_id=system_id,
+        runtime=runtime,
         root_dir=root_dir,
         permissive=permissive,
         agave=agave)
@@ -46,6 +49,7 @@ def exists(file_path,
 def isfile(file_path,
            system_id=DEFAULT_SYSTEM_ID,
            root_dir='/',
+           runtime=None,
            permissive=False,
            agave=None):
     """Determine if a path exists and is a file on a Tapis storageSystem
@@ -56,6 +60,7 @@ def isfile(file_path,
         file_path (str): The path from which to fetch attributes
         system_id (str, optional): The Tapis storageSystem for file_path
         root_dir (str, optional): Base path on the storageSystem if file_path is relative
+        runtime (string, optional): Override detected Bacanora runtime
         permissive (bool, optional): Whether to raise an Exception on failure
         agave (Agave, optional): An active Tapis client
 
@@ -71,6 +76,7 @@ def isfile(file_path,
         file_path=file_path,
         system_id=system_id,
         root_dir=root_dir,
+        runtime=runtime,
         permissive=permissive,
         agave=agave)
 
@@ -78,6 +84,7 @@ def isfile(file_path,
 def isdir(dir_path,
           system_id=DEFAULT_SYSTEM_ID,
           root_dir='/',
+          runtime=None,
           permissive=False,
           agave=None):
     """Determine if a path exists and is a directory on a Tapis storageSystem
@@ -88,6 +95,7 @@ def isdir(dir_path,
         file_path (str): The path from which to fetch attributes
         system_id (str, optional): The Tapis storageSystem for file_path
         root_dir (str, optional): Base path on the storageSystem if file_path is relative
+        runtime (string, optional): Override detected Bacanora runtime
         permissive (bool, optional): Whether to raise an Exception on failure
         agave (Agave, optional): An active Tapis client
 
@@ -103,5 +111,6 @@ def isdir(dir_path,
         file_path=dir_path,
         system_id=system_id,
         root_dir=root_dir,
+        runtime=runtime,
         permissive=permissive,
         agave=agave)

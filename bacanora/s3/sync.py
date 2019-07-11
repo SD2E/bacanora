@@ -1,29 +1,25 @@
-"""POSIX sync a file from S3 to Tapis storage
+"""Direct POSIX operations for syncing data from S3 to Tapis storage
 """
 import os
 import shutil
 from .bucket import s3_to_tapis
 from .system import s3_runtime_paths, runtimes
-from ..direct import DirectOperationFailed
+from .exceptions import S3OperationFailed
 from ..logger import get_logger
 from ..tapis import to_agave_uri
 from ..utils import nanoseconds
 logger = get_logger(__name__)
 
-
-class S3OperationFailed(DirectOperationFailed):
-    pass
+__all__ = ['import_file']
 
 
-def sync_file(
-        bucket_name,
-        bucket_path,
-        # Don't sync just bull thru it
-        force=False,
-        runtime=runtimes.DEFAULT_RUNTIME,
-        permissive=False,
-        profile=False,
-        agave=None):
+def import_file(bucket_name,
+                bucket_path,
+                force=False,
+                runtime=None,
+                permissive=False,
+                profile=False,
+                agave=None):
     """Copy a file uploaded to a TACC S3 bucket with its
     corresponding Tapis storageSystem
 
@@ -59,8 +55,9 @@ def sync_file(
                 elapsed_sec = (nanoseconds() - start_time) / (
                     1000 * 1000 * 1000)
                 if profile:
-                    logger.info('sync_file.shutil.copy(): {}s elapsed'.format(
-                        elapsed_sec))
+                    logger.info(
+                        'import_file.shutil.copy(): {}s elapsed'.format(
+                            elapsed_sec))
                 return to_agave_uri(system_id, system_path)
             except Exception as exc:
                 raise S3OperationFailed('Failed to sync {}: {}'.format(
@@ -73,7 +70,7 @@ def cmpfiles(posix_src,
              mtime=False,
              size=True,
              cksum=False):
-    """Check whether two paths exist and are the same
+    """Check whether two POSIX paths exist and are the same
 
     Args:
         posix_src (str): Path to first file

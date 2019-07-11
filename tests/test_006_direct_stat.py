@@ -1,14 +1,13 @@
 import os
 import pytest
 import warnings
-from .fixtures.agave import agave, credentials
 
 CWD = os.getcwd()
 HERE = os.path.dirname(os.path.abspath(__file__))
 PARENT = os.path.dirname(HERE)
 DATA_DIR = os.path.join(PARENT, 'tests/data/direct')
 
-from bacanora import direct
+from bacanora import direct, runtimes
 
 
 @pytest.mark.parametrize(
@@ -27,14 +26,18 @@ from bacanora import direct
         ('/tests/data/direct/sample/tacc-cloud/dawnofman.jpg',
          'data-sd2e-fake-system', False, False)
     ])
-def test_direct_stat_exists(agave, file_path, system_id, exists, test_pass):
+def test_direct_stat_exists(project_dir, agave, file_path, system_id, exists,
+                            test_pass):
     """Test permutations of direct.stat.exists()
     """
 
     def exceptable_code():
         try:
             fp_exists = direct.exists(
-                file_path, system_id=system_id, agave=agave)
+                file_path,
+                system_id=system_id,
+                runtime=runtimes.LOCALHOST,
+                agave=agave)
             if exists:
                 assert fp_exists is exists, 'mismatched exists() result'
         except Exception:
@@ -67,14 +70,18 @@ def test_direct_stat_exists(agave, file_path, system_id, exists, test_pass):
         ('/tests/data/direct/sample/tacc-cloud/dawnofman.jpg',
          'data-sd2e-fake-system', False, False)
     ])
-def test_direct_stat_isfile(agave, file_path, system_id, exists, test_pass):
+def test_direct_stat_isfile(project_dir, agave, file_path, system_id, exists,
+                            test_pass):
     """Test permutations of direct.stat.isfile()
     """
 
     def exceptable_code():
         try:
             fp_exists = direct.exists(
-                file_path, system_id=system_id, agave=agave)
+                file_path,
+                system_id=system_id,
+                runtime=runtimes.LOCALHOST,
+                agave=agave)
             if exists:
                 assert fp_exists is exists, 'mismatched exists() result'
         except Exception:
@@ -107,14 +114,18 @@ def test_direct_stat_isfile(agave, file_path, system_id, exists, test_pass):
         ('/tests/data/direct/sample/tacc-cloud/dawnofman.jpg',
          'data-sd2e-fake-system', False, False)
     ])
-def test_direct_stat_isdir(agave, file_path, system_id, exists, test_pass):
+def test_direct_stat_isdir(project_dir, agave, file_path, system_id, exists,
+                           test_pass):
     """Test permutations of direct.stat.isdir()
     """
 
     def exceptable_code():
         try:
             fp_exists = direct.exists(
-                file_path, system_id=system_id, agave=agave)
+                file_path,
+                system_id=system_id,
+                runtime=runtimes.LOCALHOST,
+                agave=agave)
             if exists:
                 assert fp_exists is exists, 'mismatched exists() result'
         except Exception:

@@ -16,6 +16,7 @@ def put(file_to_upload,
         system_id=DEFAULT_SYSTEM_ID,
         root_dir='/',
         force=False,
+        runtime=None,
         atomic=True,
         sync=False,
         permissive=False,
@@ -28,6 +29,7 @@ def put(file_to_upload,
         system_id (str, optional): Tapis storageSystem where upload will go
         root_dir (str, optional): Base path if destination_path is relative
         force (bool, optional): Force overwrite on storageSystem
+        runtime (string, optional): Override detected Bacanora runtime
         atomic (bool, optional): Whether to upload first to a temporary file
         sync (bool, optional): Wait until the file uploads to return
         permissive (bool, optional): Whether to return False or raise Exception on error
@@ -47,6 +49,7 @@ def put(file_to_upload,
         root_dir=root_dir,
         atomic=atomic,
         force=force,
+        runtime=runtime,
         sync=sync,
         permissive=permissive,
         agave=agave)

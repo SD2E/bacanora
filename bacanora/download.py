@@ -15,6 +15,7 @@ def get(file_path,
         system_id=DEFAULT_SYSTEM_ID,
         local_filename=None,
         force=False,
+        runtime=None,
         atomic=True,
         permissive=False,
         agave=None):
@@ -25,6 +26,7 @@ def get(file_path,
         system_id (str, optional): Tapis storageSystem to act upon
         local_filename (str, optional): Local name of downloaded file
         force (bool, optional): Force overwrite of an existing file or directory
+        runtime (string, optional): Override detected Bacanora runtime
         atomic (bool, optional): Whether to download first to a temporary file
         permissive (bool, optional): Whether to return False or raise an Exception on failure
         agave (Agave): An active Tapis (Agave) API client
@@ -41,6 +43,7 @@ def get(file_path,
         system_id=system_id,
         local_filename=local_filename,
         force=force,
+        runtime=runtime,
         atomic=atomic,
         permissive=permissive,
         agave=agave)

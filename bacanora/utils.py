@@ -34,19 +34,31 @@ def nanoseconds():
         round(datetime.datetime.utcnow().timestamp() * 1000 * 1000 * 1000))
 
 
-def normalize(filepath):
+def normalize(file_path):
     """Trim leading slash or slashes from a path
+
+    Args:
+        file_path (str): Path to normalize
+
+    Returns:
+        str: Normalized file_path
     """
-    fp = re.sub('^(/)+', '', filepath)
+    fp = re.sub('^(/)+', '', file_path)
     fp = re.sub('(/)+$', '', fp)
     return fp
 
 
-def normpath(filepath):
+def normpath(file_path):
     """Collapse duplicate leading slashes and resolve relative references
     in a path
+
+    Args:
+        file_path (str): Path to process
+
+    Returns:
+        str: Processed file_path
     """
-    fp = re.sub('^(/)+', '/', filepath)
+    fp = re.sub('^(/)+', '/', file_path)
     if not fp.startswith('/'):
         fp = '/' + fp
     fp = re.sub('(/)+$', '', fp)
@@ -56,6 +68,13 @@ def normpath(filepath):
 def rooted_path(file_path, root_dir='/'):
     """Safely combine a relative (which might not actually
     be relative) and base path.
+
+    Args:
+        file_path (str): Relative path
+        root_dir (str, optional): Base path for file_path
+
+    Returns:
+        str: Processed file_path
     """
     return os.path.join(root_dir, normalize(file_path))
 

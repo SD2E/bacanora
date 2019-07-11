@@ -11,3 +11,9 @@ from .operations import *
 from .utils import get_api_server, get_api_token, get_api_username
 # from .reactors import send_message, await_actor_execution
 from .uri import to_agave_uri, from_tacc_s3_uri, from_agave_uri
+
+# @retry(
+#     retry=retry_if_exception_type(AgaveError),
+#     reraise=RETRY_RERAISE,
+#     stop=stop_after_delay(RETRY_MAX_DELAY),
+#     wait=wait_exponential(multiplier=2, max=64))

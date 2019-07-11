@@ -18,8 +18,10 @@ FILES_ATOMIC_OPERATIONS = parse_boolean(
 FILES_LIST_PAGESIZE = int(
     os.environ.get('BACANORA_FILES_LIST_PAGESIZE ', '100'))
 
+# Used to issue session Ids for batch file operations
 HASHIDS_SALT = os.environ.get('BACANORA_HASHIDS_SALT',
                               'TcJzUZKcuLn6bvrwkY8nesE3')
 
+# The virtual root directory for running bacanora in a local environment
 LOCALHOST_ROOT_DIR = os.environ.get('BACANORA_LOCALHOST_ROOT_DIR',
-                                    os.path.join(os.getcwd(), 'tmp'))
+                                    os.path.join(os.getcwd(), 'temp'))

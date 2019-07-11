@@ -1,7 +1,6 @@
 import os
 import pytest
 import warnings
-from .fixtures.agave import agave, credentials
 
 CWD = os.getcwd()
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -69,7 +68,7 @@ def test_tapis_manage_mkdir(agave, file_path, system_id, force_action,
      ('/sample/tacc-cloud/README.rst', 'data-sd2e-community',
       '/sample/tacc-cloud/README-copy-2.rst', True, True),
      ('/sample/tacc-cloud/README.rst', 'data-sd2e-community',
-      '/sample/tacc-cloud/README-copy-1.rst', False, False),
+      '/sample/tacc-cloud/README-copy-1.rst', False, True),
      ('/sample/tacc-cloud/README.rst', 'data-sd2e-community',
       '/sample/tacc-cloud/README-copy-1.rst', True, True),
      ('/sample/tacc-cloud/README.rst', 'data-sd2e-fakesystem',
@@ -94,7 +93,8 @@ def test_tapis_manage_copy(agave, file_path, system_id, destination_path,
         listing = agave.files.list(
             filePath=os.path.dirname(file_path), systemId=system_id)
         files = [tapis.utils.normpath(f.get('path')) for f in listing]
-        assert tapis.utils.normpath(destination_path) in files
+        if not tapis.utils.normpath(destination_path) in files:
+            raise FileNotFoundError()
 
     if test_pass:
         exceptable_code()
