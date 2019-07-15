@@ -108,14 +108,6 @@ bacanora.tapis.utils module
    :undoc-members:
    :show-inheritance:
 
-bacanora.tapis.version module
------------------------------
-
-.. automodule:: bacanora.tapis.version
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
 bacanora.tapis.walk module
 --------------------------
 

@@ -34,6 +34,14 @@ bacanora.bacanora module
    :undoc-members:
    :show-inheritance:
 
+bacanora.compat module
+----------------------
+
+.. automodule:: bacanora.compat
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 bacanora.download module
 ------------------------
 
@@ -126,14 +134,6 @@ bacanora.utils module
 ---------------------
 
 .. automodule:: bacanora.utils
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-bacanora.version module
------------------------
-
-.. automodule:: bacanora.version
    :members:
    :undoc-members:
    :show-inheritance:

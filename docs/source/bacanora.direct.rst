@@ -60,14 +60,6 @@ bacanora.direct.utils module
    :undoc-members:
    :show-inheritance:
 
-bacanora.direct.version module
-------------------------------
-
-.. automodule:: bacanora.direct.version
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
 bacanora.direct.walk module
 ---------------------------
 
