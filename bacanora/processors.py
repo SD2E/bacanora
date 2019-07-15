@@ -2,6 +2,7 @@
 
 Supports multiple configurable backends (direct, tapis, lustre*)
 """
+from deprecated.sphinx import deprecated, versionadded
 from agavepy.agave import Agave
 from bacanora.utils import dynamic_import
 from bacanora.logger import get_logger
@@ -38,6 +39,7 @@ class BackendNotImplemented(OperationNotImplemented):
     pass
 
 
+@versionadded(version='1.0.0', reason="First release")
 def restore_client(agave):
     """Load an Agave client from the environment if one is not provided.
     """
@@ -47,6 +49,7 @@ def restore_client(agave):
         return agave
 
 
+@versionadded(version='1.0.0', reason="First release")
 @retry(
     retry=retry_if_exception_type(ProcessingOperationFailed),
     reraise=RETRY_RERAISE,

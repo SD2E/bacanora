@@ -1,5 +1,6 @@
 """Facades for the Tapis ``files-upload`` operations
 """
+from deprecated.sphinx import deprecated, versionadded
 from . import logger as loggermodule
 from . import settings
 from .processors import process, ProcessingOperationFailed
@@ -11,6 +12,7 @@ DEFAULT_SYSTEM_ID = settings.STORAGE_SYSTEM
 __all__ = ['put']
 
 
+@versionadded(version='1.0.0', reason="First release")
 def put(file_to_upload,
         destination_path,
         system_id=DEFAULT_SYSTEM_ID,

@@ -1,5 +1,6 @@
 """Facades for the Tapis ``files-list`` operations
 """
+from deprecated.sphinx import deprecated, versionadded
 from . import logger as loggermodule
 from . import settings
 from .processors import process, ProcessingOperationFailed
@@ -11,6 +12,7 @@ DEFAULT_SYSTEM_ID = settings.STORAGE_SYSTEM
 __all__ = ['walk', 'listdir']
 
 
+@versionadded(version='1.0.0', reason="First release")
 def walk(directory_path,
          system_id=DEFAULT_SYSTEM_ID,
          root_dir='/',
@@ -49,6 +51,7 @@ def walk(directory_path,
         agave=agave)
 
 
+@versionadded(version='1.0.0', reason="First release")
 def listdir(directory_path,
             system_id=DEFAULT_SYSTEM_ID,
             root_dir='/',

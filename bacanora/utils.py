@@ -1,6 +1,7 @@
 """Top-level helper functions for generating time stamps,
 manipulating paths, importing modules on demand, and much more.
 """
+from deprecated.sphinx import deprecated, versionadded
 import os
 import datetime
 import importlib
@@ -12,6 +13,7 @@ __all__ = [
 ]
 
 
+@versionadded(version='1.0.0', reason="First release")
 def current_time():
     """Current UTC time
     Returns:
@@ -21,12 +23,14 @@ def current_time():
         int(datetime.datetime.utcnow().timestamp() * 1000) / 1000)
 
 
+@versionadded(version='1.0.0', reason="First release")
 def microseconds():
     """Current time in microseconds as ``int``
     """
     return int(round(datetime.datetime.utcnow().timestamp() * 1000 * 1000))
 
 
+@versionadded(version='1.0.0', reason="First release")
 def nanoseconds():
     """Current time in nanoseconds as ``int``
     """
@@ -34,6 +38,7 @@ def nanoseconds():
         round(datetime.datetime.utcnow().timestamp() * 1000 * 1000 * 1000))
 
 
+@versionadded(version='1.0.0', reason="First release")
 def normalize(file_path):
     """Trim leading slash or slashes from a path
 
@@ -48,6 +53,7 @@ def normalize(file_path):
     return fp
 
 
+@versionadded(version='1.0.0', reason="First release")
 def normpath(file_path):
     """Collapse duplicate leading slashes and resolve relative references
     in a path
@@ -65,6 +71,7 @@ def normpath(file_path):
     return os.path.normpath(fp)
 
 
+@versionadded(version='1.0.0', reason="First release")
 def rooted_path(file_path, root_dir='/'):
     """Safely combine a relative (which might not actually
     be relative) and base path.

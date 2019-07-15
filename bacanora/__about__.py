@@ -24,7 +24,7 @@ except NameError:
 __title__ = 'bacanora'
 __summary__ = 'Accelerated, resilient Tapis file operations'
 __uri__ = ''
-__version__ = '1.0.0-rc1'
+__version__ = '1.0.0'
 
 if base_dir is not None and os.path.exists(os.path.join(base_dir, ".commit")):
     with open(os.path.join(base_dir, ".commit")) as fp:

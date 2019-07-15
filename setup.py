@@ -1,14 +1,17 @@
 from setuptools import setup, find_packages
 
+import bacanora.__about__ as about
 import copy
 import sys
 from pprint import pprint
+
 
 def get_version():
     """
     returns version.
     """
-    return '0.0.1'
+    return about.__version__
+
 
 def get_requirements(remove_links=True):
     """
@@ -33,6 +36,7 @@ def get_requirements(remove_links=True):
             if requirement.startswith("hg+"):
                 new_requirements.remove(requirement)
     return new_requirements
+
 
 def get_links():
     """
@@ -59,6 +63,7 @@ def get_links():
                 links_list.remove(link)
     return links_list
 
+
 if not get_version():
     raise RuntimeError('Version is not set')
 
@@ -75,7 +80,7 @@ setup(
     long_description_content_type="text/x-rst",
     url="https://github.com/SD2E/bacanora",
     install_requires=get_requirements(),
-    tests_require=get_requirements()+['hashids'],
+    tests_require=get_requirements() + ['hashids'],
     dependency_links=get_links(),
     packages=find_packages(),
     license="BSD",
@@ -87,5 +92,4 @@ setup(
         "Operating System :: OS Independent",
         'Intended Audience :: Developers',
         'Natural Language :: English',
-    ]
-)
+    ])

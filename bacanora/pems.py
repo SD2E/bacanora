@@ -1,5 +1,6 @@
 """Facades for the Tapis ``files-pems-*`` operations
 """
+from deprecated.sphinx import deprecated, versionadded
 from . import logger as loggermodule
 from . import settings
 from .tapis import pems
@@ -12,6 +13,7 @@ DEFAULT_SYSTEM_ID = settings.STORAGE_SYSTEM
 __all__ = ['grant']
 
 
+@versionadded(version='1.0.0', reason="First release")
 def grant(file_path,
           system_id=DEFAULT_SYSTEM_ID,
           root_dir='/',

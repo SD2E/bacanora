@@ -1,5 +1,6 @@
 """Facades for Tapis ``files-[manage]`` operations
 """
+from deprecated.sphinx import deprecated, versionadded
 from . import logger as loggermodule
 from . import settings
 from .processors import process, ProcessingOperationFailed
@@ -11,6 +12,7 @@ DEFAULT_SYSTEM_ID = settings.STORAGE_SYSTEM
 __all__ = ['mkdir', 'copy', 'rename', 'move', 'delete']
 
 
+@versionadded(version='1.0.0', reason="First release")
 def mkdir(path_to_make,
           system_id=DEFAULT_SYSTEM_ID,
           force=False,
@@ -48,6 +50,7 @@ def mkdir(path_to_make,
         agave=agave)
 
 
+@versionadded(version='1.0.0', reason="First release")
 def copy(path_to_copy,
          destination_path,
          system_id=DEFAULT_SYSTEM_ID,
@@ -89,6 +92,7 @@ def copy(path_to_copy,
         agave=agave)
 
 
+@versionadded(version='1.0.0', reason="First release")
 def rename(path_to_rename,
            new_path_name,
            system_id=DEFAULT_SYSTEM_ID,
@@ -130,6 +134,7 @@ def rename(path_to_rename,
         agave=agave)
 
 
+@versionadded(version='1.0.0', reason="First release")
 def move(path_to_move,
          destination_path,
          system_id=DEFAULT_SYSTEM_ID,
@@ -171,6 +176,7 @@ def move(path_to_move,
         agave=agave)
 
 
+@versionadded(version='1.0.0', reason="First release")
 def delete(path_to_delete,
            system_id=DEFAULT_SYSTEM_ID,
            root_dir='/',
