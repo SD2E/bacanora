@@ -2,44 +2,37 @@ Bacanora
 ========
 
 Implements accelerated, failure-resilient versions of Agave files operations,
-as well as analogues of key Python `os.path` and `shutils` functions.
+as well as analogues of several key Python `os.path` and `shutils` functions.
+Acceleration is implemented via special IO optimizations available to machines
+in TACC's data-enabled compute environment, while resliency comes from a
+robust fail/retry system.
 
-Currently supported functions include:
-    * ``upload``
-    * ``download``
-    * ``grant``
-    * ``exists``
-    * ``isdir``
-    * ``isfile``
-    * ``mkdir``
-    * ``delete``
-
-Configuration
--------------
-
-Bacanora's behavior is controlled by environment variables:
-    * ``BACANORA_STORAGE_SYSTEM`` - Default Agave storage system if not specified [``data-sd2e-community``]
-    * ``BACANORA_LOG_LEVEL`` - Logging level for Bacanora's logging functions [``DEBUG``]
-    * ``BACANORA_LOG_VERBOSE`` - Whether to emit *extremely* verbose log messages [``0``]
-    * ``BACANORA_RETRY_MAX_DELAY`` - Maximum elapsed time before declaring a function has failed [``90``]
-    * ``BACANORA_RETRY_RERAISE`` - Re-raise exceptions encountered during file operations [``0``]
-    * ``BACANORA_FILES_BLOCK_SIZE`` - Size in bytes to retrieve in download operations [``4096``]
+The ``bacanora.files`` module includes functions for file upload / download
+(``put``, ``get``), status checks (``exists``, ``isfile``, ``isdir``,
+``getsize``, ``mtime``), and management (``mkidr``, ``copy``,
+``rename``, ``move``, ``delete``). There are also helper functions for
+working with Tapis (``agave://``) URLs and TACC S3 (``s3://``) URLs
 
 Usage Example
 -------------
 
 .. code-block:: pycon
 
-   >>> import bacanora
    >>> from agavepy.agave import Agave
    >>> ag = Agave.restore()
-   >>> bacanora.exists(ag, '/sample/tacc-cloud')
+   >>> import bacanora
+   >>> bacanora.files.exists('/sample/tacc-cloud', agave=ag)
    True
-   >>> bacanora.download(ag, ' /sample/tacc-cloud/bacanora/blebob.jpg', local_filename='billie.jpg')
-   'billie.jpg'
-   >>> bacanora.isdir(ag, '/sample/tacc-cloud')
+    >>> bacanora.files.exists('/sample/tacc-cloud', system_id='data-projects-fake', agave=ag)
+   False
+   >>> bacanora.files.get('/sample/tacc-cloud/dawnofman.jpg', local_filename='ape.jpg', agave=ag)
+   'ape.jpg'
+   >>> bacanora.files.get('/sample/tacc-cloud/dawnofman.jpg', system_id='data-tacc-work-tacobot', agave=ag)
+   'dawnofman.jpg'
+   >>> bacanora.files.isdir('/sample/tacc-cloud', agave=ag)
    True
-   >>> bacanora.isfile(ag, '/sample/tacc-cloud')
+   >>> bacanora.files.isfile('/sample/tacc-cloud', agave=ag)
    False
-   >>> bacanora.exists(ag, '/sample/tacc-cloud-fake')
+   >>> bacanora.files.exists('/sample/tacc-cloud-fake', agave=ag)
    False
+

@@ -1,11 +1,6 @@
 bacanora.tapis package
 ======================
 
-.. automodule:: bacanora.tapis
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
 Submodules
 ----------
 
@@ -129,3 +124,11 @@ bacanora.tapis.walk module
    :undoc-members:
    :show-inheritance:
 
+
+Module contents
+---------------
+
+.. automodule:: bacanora.tapis
+   :members:
+   :undoc-members:
+   :show-inheritance:

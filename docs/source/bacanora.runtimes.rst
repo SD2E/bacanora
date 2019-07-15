@@ -1,11 +1,6 @@
 bacanora.runtimes package
 =========================
 
-.. automodule:: bacanora.runtimes
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
 Submodules
 ----------
 
@@ -17,3 +12,11 @@ bacanora.runtimes.runtimes module
    :undoc-members:
    :show-inheritance:
 
+
+Module contents
+---------------
+
+.. automodule:: bacanora.runtimes
+   :members:
+   :undoc-members:
+   :show-inheritance:

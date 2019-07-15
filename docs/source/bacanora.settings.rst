@@ -1,21 +1,8 @@
 bacanora.settings package
 =========================
 
-.. automodule:: bacanora.settings
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
 Submodules
 ----------
-
-bacanora.settings.callbacks module
-----------------------------------
-
-.. automodule:: bacanora.settings.callbacks
-   :members:
-   :undoc-members:
-   :show-inheritance:
 
 bacanora.settings.debug module
 ------------------------------
@@ -65,3 +52,11 @@ bacanora.settings.tenacity module
    :undoc-members:
    :show-inheritance:
 
+
+Module contents
+---------------
+
+.. automodule:: bacanora.settings
+   :members:
+   :undoc-members:
+   :show-inheritance:

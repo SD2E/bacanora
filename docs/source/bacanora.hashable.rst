@@ -1,11 +1,6 @@
 bacanora.hashable package
 =========================
 
-.. automodule:: bacanora.hashable
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
 Submodules
 ----------
 
@@ -25,3 +20,11 @@ bacanora.hashable.picklecache module
    :undoc-members:
    :show-inheritance:
 
+
+Module contents
+---------------
+
+.. automodule:: bacanora.hashable
+   :members:
+   :undoc-members:
+   :show-inheritance:

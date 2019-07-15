@@ -1,11 +1,6 @@
 bacanora package
 ================
 
-.. automodule:: bacanora
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
 Subpackages
 -----------
 
@@ -15,10 +10,10 @@ Subpackages
    bacanora.hashable
    bacanora.logger
    bacanora.runtimes
+   bacanora.s3
    bacanora.settings
    bacanora.stores
    bacanora.tapis
-   bacanora.tests
 
 Submodules
 ----------
@@ -151,3 +146,11 @@ bacanora.walk module
    :undoc-members:
    :show-inheritance:
 
+
+Module contents
+---------------
+
+.. automodule:: bacanora
+   :members:
+   :undoc-members:
+   :show-inheritance:
