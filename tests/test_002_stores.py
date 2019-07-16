@@ -5,6 +5,7 @@ CWD = os.getcwd()
 HERE = os.path.dirname(os.path.abspath(__file__))
 PARENT = os.path.dirname(HERE)
 DATA_DIR = os.path.join(PARENT, 'tests/data/stores')
+HOMEDIR = os.environ.get('HOME')
 
 from bacanora import stores, runtimes
 
@@ -41,7 +42,7 @@ def test_stores_type_shortname(agave, system_id, sys_type, sys_short_name):
     [(runtimes.ABACO, 'data-sd2e-community', '/uploads',
       '/work/projects/SD2E-Community/prod/data/uploads'),
      (runtimes.JUPYTER, 'data-sd2e-community', '/uploads',
-      '/user/{User}/tree/sd2e-community/uploads'),
+      '/home/jupyter/sd2e-community/uploads'),
      (runtimes.HPC, 'data-sd2e-community', '/uploads',
       '/work/projects/SD2E-Community/prod/data/uploads'),
      (runtimes.ABACO, 'data-tacc-work-sd2eadm', '/share',
@@ -53,7 +54,7 @@ def test_stores_type_shortname(agave, system_id, sys_type, sys_short_name):
      (runtimes.HPC, 'data-tacc-work-vaughn', '/share',
       '/work/01374/vaughn/share'),
      (runtimes.JUPYTER, 'data-tacc-work-sd2eadm', '/share',
-      '/user/sd2eadm/tree/tacc-work/share'),
+      '/home/jupyter/tacc-work/share'),
      (runtimes.ABACO, 'data-projects-echo', '/uploads',
       '/work/projects/DARPA-SD2-Partners/echo/uploads'),
      (runtimes.ABACO, 'data-projects-safegenes', '/uploads',
@@ -61,17 +62,23 @@ def test_stores_type_shortname(agave, system_id, sys_type, sys_short_name):
      (runtimes.HPC, 'data-projects-safegenes', '/uploads',
       '/work/projects/DARPA-SD2-Partners/safegenes/uploads'),
      (runtimes.JUPYTER, 'data-projects-safegenes', '/uploads',
-      '/user/{User}/tree/sd2e-partners/safegenes/uploads'),
+      '/home/jupyter/sd2e-partners/safegenes/uploads'),
      (runtimes.ABACO, 'data-sd2e-projects.sd2e-project-4', '/',
       '/work/projects/SD2E-Community/prod/projects/sd2e-project-4'),
      (runtimes.JUPYTER, 'data-sd2e-projects.sd2e-project-4', '/',
-      '/user/{User}/tree/sd2e-projects/sd2e-project-4'),
+      '/home/jupyter/sd2e-projects/sd2e-project-4'),
      (runtimes.HPC, 'data-sd2e-projects.sd2e-project-4', '/',
       '/work/projects/SD2E-Community/prod/projects/sd2e-project-4'),
      (runtimes.HPC, 'data-sd2e-projects-users', '/sd2eadm',
       '/work/projects/SD2E-Community/prod/share/sd2eadm'),
      (runtimes.ABACO, 'data-sd2e-projects-users', '/sd2eadm',
-      '/work/projects/SD2E-Community/prod/share/sd2eadm')])
+      '/work/projects/SD2E-Community/prod/share/sd2eadm'),
+     (runtimes.HPC_JUPYTER, 'data-sd2e-projects.sd2e-project-4', '/',
+      os.path.join(HOMEDIR, 'sd2e-projects/sd2e-project-4')),
+     (runtimes.HPC_JUPYTER, 'data-sd2e-community', '/uploads',
+      os.path.join(HOMEDIR, 'sd2e-community/uploads')),
+     (runtimes.HPC_JUPYTER, 'data-tacc-work-sd2eadm', '/share',
+      os.path.join(HOMEDIR, 'tacc-work/share'))])
 def test_stores_runtime_dir(agave, runtime, system_id, file_path, result):
     """Validate the main function of StorageSystem: Given a runtime name
     and path, resolve the full, absolute path on the runtime host

@@ -12,14 +12,14 @@ from ..utils import normalize, normpath
 from .. import settings
 from .. import hashable
 from .. import runtimes
-from .jupyter import (JUPYTER_BASE)
+from .jupyter import (JUPYTER_URL_BASE, JUPYTER_HUB_BASE, JUPYTER_HPC_BASE)
 from .types import (COMMUNITY_TYPE, PROJECT_TYPE, PUBLIC_TYPE, SHARE_TYPE,
                     WORK_TYPE, SYSTEM_TYPES)
 
 __all__ = [
     'COMMUNITY_TYPE', 'PROJECT_TYPE', 'PUBLIC_TYPE', 'SHARE_TYPE', 'WORK_TYPE',
-    'SYSTEM_TYPES', 'JUPYTER_BASE', 'StorageSystem', 'abspath',
-    'system_type_and_name'
+    'SYSTEM_TYPES', 'JUPYTER_URL_BASE', 'JUPYTER_HUB_BASE', 'JUPYTER_HPC_BASE',
+    'StorageSystem', 'abspath', 'system_type_and_name'
 ]
 
 REGEXES = {
@@ -142,25 +142,50 @@ class StorageSystem(str):
         return self.work_dir
 
     def _jupyter_user_base(self):
+        return '/home/jupyter'
+
+    def _jupyter_url_base(self):
         return '/user/' + self.short_name + '/tree'
 
     @property
     def jupyter_dir(self):
         if self.type == COMMUNITY_TYPE:
-            return os.path.join(JUPYTER_BASE, self._short_name)
+            return os.path.join(JUPYTER_HUB_BASE, self._short_name)
         elif self.type == WORK_TYPE:
-            return self._jupyter_user_base() + '/tacc-work'
+            return os.path.join(JUPYTER_HUB_BASE, 'tacc-work')
         elif self.type == SHARE_TYPE:
-            return os.path.join(JUPYTER_BASE, 'sd2e-projects', self.short_name)
+            return os.path.join(JUPYTER_HUB_BASE, 'sd2e-projects',
+                                self.short_name)
         elif self.type == PROJECT_TYPE:
-            return os.path.join(JUPYTER_BASE, 'sd2e-partners', self.short_name)
+            return os.path.join(JUPYTER_HUB_BASE, 'sd2e-partners',
+                                self.short_name)
         elif self.type == PUBLIC_TYPE:
             # We do not allow any exposure of the Agave public system assets
             # via Jupyter, esp. because we use it to store application assets
             raise ManagedStoreError('{} is not available via Jupyter'.format(
                 self.system_id))
         else:
-            raise ManagedStoreError('Failed to resolve Jupyter path')
+            raise ManagedStoreError('Failed to resolve JupyterHub path')
+
+    @property
+    def hpc_jupyter_dir(self):
+        if self.type == COMMUNITY_TYPE:
+            return os.path.join(JUPYTER_HPC_BASE, self._short_name)
+        elif self.type == WORK_TYPE:
+            return os.path.join(JUPYTER_HPC_BASE, 'tacc-work')
+        elif self.type == SHARE_TYPE:
+            return os.path.join(JUPYTER_HPC_BASE, 'sd2e-projects',
+                                self.short_name)
+        elif self.type == PROJECT_TYPE:
+            return os.path.join(JUPYTER_HPC_BASE, 'sd2e-partners',
+                                self.short_name)
+        elif self.type == PUBLIC_TYPE:
+            # We do not allow any exposure of the Agave public system assets
+            # via Jupyter, esp. because we use it to store application assets
+            raise ManagedStoreError('{} is not available via Jupyter'.format(
+                self.system_id))
+        else:
+            raise ManagedStoreError('Failed to resolve Jupyter HPC path')
 
     @property
     def localhost_dir(self):
@@ -213,6 +238,8 @@ class StorageSystem(str):
             runtime_path = self.hpc_dir
         elif runtime == runtimes.JUPYTER:
             runtime_path = self.jupyter_dir
+        elif runtime == runtimes.HPC_JUPYTER:
+            runtime_path = self.hpc_jupyter_dir
         else:
             runtime_path = self.localhost_dir
         path = normalize(path)
