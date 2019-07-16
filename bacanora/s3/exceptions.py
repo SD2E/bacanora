@@ -1,5 +1,6 @@
 """S3 processor failures and errors
 """
+
 from ..direct import (DirectOperationFailed, UnknowableOutcome)
 from ..stores import UnknownStorageSystem
 

@@ -1,5 +1,4 @@
-"""Constants for the Corral resource, the backing storage
-for TACC S3 services
+"""Constants for the Corral resource.
 """
 
 from .. import stores

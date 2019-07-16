@@ -24,7 +24,7 @@ def walk(directory_path,
 
     Emulates Python ``os.walk()``
 
-    Args:
+    Arguments:
         directory_path (str): Full or relative path of directory to walk
         system_id (str, optional): Tapis storageSystem for directory_path
         root_dir (str, optional): Base path if directory_path is relative
@@ -61,7 +61,7 @@ def listdir(directory_path,
             agave=None):
     """List immediate contents of a Tapis files directory.
 
-    Args:
+    Arguments:
         directory_path (str): Full or relative path of directory to walk
         system_id (str, optional): Tapis storageSystem for directory_path
         root_dir (str, optional): Base path if directory_path is relative

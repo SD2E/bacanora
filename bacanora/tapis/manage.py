@@ -1,4 +1,4 @@
-"""Tapis implementations of ``files-[manage]`` operations
+"""Web service implementations of ``files-[manage]`` operations
 """
 import os
 import shutil
@@ -26,7 +26,7 @@ def mkdir(path_to_make,
           **kwargs):
     """Wrapper for Tapis files-mkdir
 
-    Args:
+    Arguments:
         path_to_make (str): Path on the storageSystem to make
         system_id (str, optional): Tapis storageSystem to act upon
         root_dir (str, optional): Base directory if path_to_delete is relative
@@ -86,7 +86,7 @@ def delete(path_to_delete,
            **kwargs):
     """Wrapper for Tapis files-delete
 
-    Args:
+    Arguments:
         path_to_delete (str): Path on the storageSystem to delete
         system_id (str, optional): Tapis storageSystem to act upon
         root_dir (str, optional): Base directory if path_to_delete is relative
@@ -132,7 +132,7 @@ def move(path_to_move,
          **kwargs):
     """Wrapper for Tapis files-move
 
-    Args:
+    Arguments:
         path_to_move (str): Path on the storageSystem to move
         destination_path (str): destination on the storageSystem
         system_id (str, optional): Tapis storageSystem to act upon
@@ -200,7 +200,7 @@ def rename(path_to_rename,
            **kwargs):
     """Wrapper for Tapis files-rename
 
-    Args:
+    Arguments:
         path_to_rename (str): Path on the storageSystem to move
         new_path_name (str): destination on the storageSystem
         system_id (str, optional): Tapis storageSystem to act upon
@@ -236,7 +236,7 @@ def copy(path_to_copy,
          **kwargs):
     """Wrapper for Tapis files-copy
 
-    Args:
+    Arguments:
         path_to_copy (str): Path on the storageSystem to move
         destination_path (str): destination on the storageSystem
         system_id (str, optional): Tapis storageSystem to act upon

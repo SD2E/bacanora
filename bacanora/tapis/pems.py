@@ -1,4 +1,4 @@
-"""Tapis implementations of ``files-pems-*`` operations
+"""Web service implementations of ``files-pems-*`` operations
 """
 import copy
 import os
@@ -88,7 +88,7 @@ def grant(file_path,
           agave=None):
     """Recursively grant a permission level on a path to a specific user
 
-    Args:
+    Arguments:
         file_path (str): Target path on a storageSystem for the grant
         system_id (str, optional): Tapis storageSystem for file_path
         root_dir (str, optional): Base path if file_path is relative

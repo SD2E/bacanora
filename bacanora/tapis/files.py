@@ -1,4 +1,4 @@
-"""Globals and configurations pertaining to the Tapis ``files`` API
+"""Globals and configurations pertaining to the Tapis ``files`` web service API
 """
 from .. import settings
 

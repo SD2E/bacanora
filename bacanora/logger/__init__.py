@@ -1,4 +1,4 @@
-"""Provides rationalized logging with tunable verbosity
+"""Provides a simplified interface to logging with tunable verbosity
 """
 import os
 import sys

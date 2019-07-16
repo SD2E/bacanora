@@ -16,7 +16,7 @@ def dns_namespace():
 def generate(*args):
     """Generate a unique Hashid for one or more passed values
 
-    Args:
+    Arguments:
         args: One or more values to serialize into an identifier. Passed
         values must support str(<value>).
 
@@ -33,7 +33,7 @@ def generate(*args):
 def validate(text_string, permissive=False):
     """Validate whether a string is a hashid
 
-    Args:
+    Arguments:
         text_string (str): the value to validate
         permissive (bool, optional): whether to return false or raise Exception on failure
 

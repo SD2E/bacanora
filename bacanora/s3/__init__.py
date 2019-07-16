@@ -1,4 +1,8 @@
-"""Functions supporting TACC S3 acclerated upload endpoints
+"""Implements POSIX-native implementations of S3 files operations
+
+The ``s3`` submodule takes advantage of native filesystem mounts to support
+lightning-fast transfers from S3 to Tapis-managed storageSystems running on
+TACC hosts.
 """
 from .exceptions import *
 from .operations import *

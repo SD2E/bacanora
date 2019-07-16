@@ -42,7 +42,7 @@ def nanoseconds():
 def normalize(file_path):
     """Trim leading slash or slashes from a path
 
-    Args:
+    Arguments:
         file_path (str): Path to normalize
 
     Returns:
@@ -58,7 +58,7 @@ def normpath(file_path):
     """Collapse duplicate leading slashes and resolve relative references
     in a path
 
-    Args:
+    Arguments:
         file_path (str): Path to process
 
     Returns:
@@ -76,7 +76,7 @@ def rooted_path(file_path, root_dir='/'):
     """Safely combine a relative (which might not actually
     be relative) and base path.
 
-    Args:
+    Arguments:
         file_path (str): Relative path
         root_dir (str, optional): Base path for file_path
 
@@ -89,7 +89,7 @@ def rooted_path(file_path, root_dir='/'):
 def dynamic_import(module, package=None):
     """Dynamically import a module by name at runtime
 
-    Args:
+    Arguments:
         module (str): The name of the module to import
         package (str, optional): The package to import ``module`` from
 

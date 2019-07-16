@@ -8,7 +8,7 @@ apidocs: docs-autodoc docs
 
 # Refresh API doc sources
 docs-autodoc:
-	cd docs && sphinx-apidoc --maxdepth 1 -H "Package Docs" -f -o source --ext-githubpages --ext-viewcode ../bacanora bacanora/bacanora
+	cd docs && sphinx-apidoc -M --maxdepth 1 -H "Package Docs" -f -o source ../bacanora
 
 docs-clean:
 	cd docs && make clean

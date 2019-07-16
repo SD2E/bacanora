@@ -1,4 +1,4 @@
-"""POSIX implementations of Tapis ``files-get`` operations
+"""Provides Tapis ``files-get`` operations
 """
 import os
 import shutil
@@ -18,17 +18,20 @@ __all__ = ['get']
 
 def get(file_path,
         system_id=DEFAULT_SYSTEM_ID,
+        root_dir='/',
         local_filename=None,
         force=False,
         runtime=None,
         atomic=True,
+        permissive=False,
         agave=None):
     """Emulate a Tapis download by copying a path from its resolved physical
     location to the local host
 
-    Args:
+    Arguments:
         file_path (str): Path on the storageSystem to download
         system_id (str, optional): Tapis storageSystem to act upon
+        root_dir (str, optional): Base path if file_path is relative
         local_filename (str, optional): Local name of downloaded file
         force (bool, optional): Force overwrite of an existing file or directory
         runtime (str, optional): Override detected Bacanora runtime
@@ -43,7 +46,11 @@ def get(file_path,
         DirectOperationFailed: Some other error was encountered
     """
     posix_path = abs_path(
-        file_path, system_id=system_id, runtime=runtime, agave=agave)
+        file_path,
+        system_id=system_id,
+        runtime=runtime,
+        root_dir=root_dir,
+        agave=agave)
     try:
         if local_filename is None:
             local_filename = os.path.basename(posix_path)

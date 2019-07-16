@@ -23,7 +23,7 @@ copyright = '2019, TACC Open Source'
 author = 'TACC Open Source'
 
 # The full version, including alpha/beta/rc tags
-release = '1.0.0-rc1'
+release = '1.0.0'
 
 # -- General configuration ---------------------------------------------------
 
@@ -31,8 +31,24 @@ release = '1.0.0-rc1'
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
 extensions = [
-    'sphinx.ext.autodoc', 'sphinx.ext.githubpages', 'sphinxcontrib.napoleon'
+    'sphinx.ext.autodoc', 'sphinx.ext.coverage', 'sphinx.ext.viewcode',
+    'sphinx.ext.napoleon'
 ]
+
+# Napoleon configs
+napoleon_google_docstring = True
+napoleon_numpy_docstring = False
+napoleon_include_init_with_doc = True
+napoleon_include_private_with_doc = False
+napoleon_include_special_with_doc = False
+napoleon_use_admonition_for_examples = False
+napoleon_use_admonition_for_notes = False
+napoleon_use_admonition_for_references = False
+napoleon_use_ivar = False
+napoleon_use_param = True
+napoleon_use_rtype = True
+napoleon_use_keyword = True
+napoleon_custom_sections = None
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
@@ -49,7 +65,7 @@ exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
 #
 # See https://github.com/ryan-roemer/sphinx-bootstrap-theme
 html_theme = 'bootstrap'
-html_theme_path = sphinx_bootstrap_theme.get_html_theme_path()
+# html_theme_path = sphinx_bootstrap_theme.get_html_theme_path()
 
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,

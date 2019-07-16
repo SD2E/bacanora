@@ -1,4 +1,4 @@
-"""Direct processor failures and errors
+"""Errors returned when POSIX-native operations fail.
 """
 
 

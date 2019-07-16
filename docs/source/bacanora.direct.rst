@@ -1,6 +1,11 @@
 bacanora.direct package
 =======================
 
+.. automodule:: bacanora.direct
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 Submodules
 ----------
 
@@ -68,11 +73,3 @@ bacanora.direct.walk module
    :undoc-members:
    :show-inheritance:
 
-
-Module contents
----------------
-
-.. automodule:: bacanora.direct
-   :members:
-   :undoc-members:
-   :show-inheritance:

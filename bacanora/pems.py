@@ -26,7 +26,7 @@ def grant(file_path,
 
     This operation presentl has no POSIX-native equivalent
 
-    Args:
+    Arguments:
         file_path (str): Target path on a storageSystem for the grant
         system_id (str, optional): Tapis storageSystem for file_path
         root_dir (str, optional): Base path if file_path is relative

@@ -22,7 +22,7 @@ __all__ = ['abs_path', 'exists', 'bucket_exists', 'isfile', 'isdir']
 def abs_path(bucket_name, bucket_path, root_dir='/', runtime=None, agave=None):
     """Resolve POSIX path on a TACC data-enabled host for an S3 resource
 
-    Args:
+    Arguments:
         bucket_name (str): A TACC S3 bucket
         bucket_path (str): Path within the bucket
         root_dir (str, optional): Base path if bucket_path is relative
@@ -53,7 +53,7 @@ def exists(bucket_name,
            agave=None):
     """Test for existence of TACC S3 resource
 
-    Args:
+    Arguments:
         bucket_name (str): A TACC S3 bucket
         bucket_path (str): Path within the bucket
         root_dir (str, optional): Base path if bucket_path is relative
@@ -88,7 +88,7 @@ def isfile(bucket_name,
            agave=None):
     """Test if S3 resource points to a file-like object
 
-    Args:
+    Arguments:
         bucket_name (str): A TACC S3 bucket
         bucket_path (str): Path within the bucket
         root_dir (str, optional): Base path if bucket_path is relative
@@ -123,7 +123,7 @@ def isdir(bucket_name,
           agave=None):
     """Test if S3 resource points to a directory-like object
 
-    Args:
+    Arguments:
         bucket_name (str): A TACC S3 bucket
         bucket_path (str): Path within the bucket
         root_dir (str, optional): Base path if bucket_path is relative
@@ -153,7 +153,7 @@ def isdir(bucket_name,
 def bucket_exists(bucket_name, runtime=None, permissive=False, agave=None):
     """Test for existence of TACC S3 bucket
 
-    Args:
+    Arguments:
         bucket_name (str): A TACC S3 bucket
         runtime (str, optional): Override detected Bacanora runtime
         agave (Agave, optional): Tapis (Agave) API client

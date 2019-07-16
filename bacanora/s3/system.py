@@ -21,7 +21,7 @@ def s3_runtime_bases(storage_system, runtime=None, agave=None):
     """Returns POSIX source and destination base paths for a Tapis
     storageSystem S3 upload endpoint.
 
-    Args:
+    Arguments:
         storage_system (str/StorageSystem): A Tapis storageSystem
         runtime (str, optional): A known Bacanora runtime
         agave (Agave, optional): An active Tapis API client
@@ -68,7 +68,7 @@ def corral_base_from_runtime(runtime=None):
 def s3_src_dir_from_system(system_id):
     """Resolve TACC S3 POSIX directory from a Tapis storageSystem
 
-    Args:
+    Arguments:
         system_id (str): Tapis storageSystem identifier
 
     Returns:
@@ -90,7 +90,7 @@ def s3_src_dir_from_system(system_id):
 
 def s3_dest_dir_from_system(system_id):
     """Resolve POSIX destination directory from a Tapis storageSystem
-    Args:
+    Arguments:
         system_id (str): Tapis storageSystem identifier
 
     Returns:
@@ -114,7 +114,7 @@ def s3_runtime_paths(file_path, storage_system, runtime=None, agave=None):
     """Returns POSIX source and destinations for a path on a Tapis
     storageSystem which is supported by dedicated TACC S3 endpoint.
 
-    Args:
+    Arguments:
         file_path (str): A path relative root_dir on a Tapis storageSystem
         storage_system (str/StorageSystem): A Tapis storageSystem
         runtime (str, optional): Override detected Bacanora runtime

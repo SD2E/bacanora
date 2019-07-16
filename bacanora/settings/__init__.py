@@ -1,4 +1,4 @@
-"""Provides environment variable-driven configuration
+"""Provides environment variable-driven configuration.
 """
 import os
 from .helpers import (fix_assets_path, array_from_string, parse_boolean,

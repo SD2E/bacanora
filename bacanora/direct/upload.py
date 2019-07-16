@@ -1,4 +1,4 @@
-"""POSIX implementations of Tapis ``files-upload`` operations
+"""Provides Tapis ``files-upload`` operations
 """
 import os
 import shutil
@@ -31,7 +31,7 @@ def put(file_to_upload,
     """Emulate a Tapis files-upload by copying a file to its physical
     location on the local host. Offers an atomic operations option.
 
-    Args:
+    Arguments:
         file_to_upload (str): Name or relative path of file to upload
         destination_path (str): Upload destination on Tapis storageSystem
         system_id (str, optional): Tapis storageSystem where upload will go

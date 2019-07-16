@@ -1,10 +1,10 @@
-"""Tapis implementations of ``files-get`` operations
+"""Web service implementations of ``files-get`` operations
 """
 import os
 import shutil
 from .. import logger as loggermodule
 from .. import settings
-from ..utils import nanoseconds, microseconds, normalize, normpath
+from ..utils import nanoseconds, microseconds, normalize, normpath, rooted_path
 from ..exceptions import HTTPError, AgaveError
 from .exceptions import TapisOperationFailed
 from .utils import read_tapis_http_error
@@ -20,6 +20,7 @@ __all__ = ['get']
 def get(file_path,
         system_id=DEFAULT_SYSTEM_ID,
         local_filename=None,
+        root_dir='/',
         force=False,
         atomic=True,
         permissive=False,
@@ -27,23 +28,25 @@ def get(file_path,
         **kwargs):
     """Wrapper for Tapis files-get, adding atomic operations
 
-    Args:
-        file_path (str): Path on the storageSystem to download
-        system_id (str, optional): Tapis storageSystem to act upon
-        local_filename (str, optional): Local name of downloaded file
-        force (bool, optional): Force overwrite of an existing file or directory
-        atomic (bool, optional): Whether to download first to a temporary file
-        permissive (bool, optional): Whether to return False or raise an Exception on failure
-        agave (Agave): An active Tapis (Agave) API client
+    Arguments:
+        file_path (str): Path on the storageSystem to download.
+        system_id (str, optional): Tapis storageSystem to act upon.
+        local_filename (str, optional): Local name of downloaded file.
+        root_dir (str, optional): Base path if file_path is relative.
+        force (bool, optional): Force overwrite of an existing file or directory.
+        atomic (bool, optional): Whether to download first to a temporary file.
+        permissive (bool, optional): Whether to return False or raise an Exception on failure.
+        agave (Agave): An active Tapis (Agave) API client.
 
     Returns:
-        str: Name of the downloaded file
+        str: Name of the downloaded file.
 
     Raises:
-        HTTPError: Underlying transport or web service error was encountered
-        TapisOperationFailed: Some other error was encountered
+        HTTPError: Underlying transport or web service error was encountered.
+        TapisOperationFailed: Some other error was encountered.
     """
     try:
+        file_path = rooted_path(file_path, root_dir=root_dir)
         logger.debug('get: {}'.format(file_path))
         if local_filename is None:
             local_filename = os.path.basename(file_path)

@@ -1,5 +1,7 @@
-"""Tapis implementations of ``walk`` and ``listdir`` based on
-recursive ``files-list`` operations
+"""Web service implementations of the ``walk`` operation.
+
+Provides both ``walk`` and ``listdir`` functions via recursive ``files-list``
+web service operations.
 """
 import copy
 import os
@@ -64,7 +66,7 @@ def _walk(directory_path,
           sort=False,
           agave=None,
           **kwargs):
-    """Private function implementing an analogue to os.walk()
+    """Private function to emulate ``os.walk()`` using ``files-list``
     """
     logger.info('_walk: agave://{}{}'.format(system_id, directory_path))
     # If current_listing is not cloned, it will grow without bounds each
@@ -124,9 +126,9 @@ def walk(directory_path,
          page_size=DEFAULT_PAGE_SIZE,
          agave=None,
          **kwargs):
-    """Recursively list contents of a Tapis files directory.
+    """Recursively lists contents of a Tapis files directory.
 
-    Args:
+    Arguments:
         directory_path (str): Full or relative path of directory to walk
         system_id (str, optional): Tapis storageSystem for directory_path
         root_dir (str, optional): Base path if directory_path is relative
@@ -173,9 +175,9 @@ def listdir(directory_path,
             sort=True,
             agave=None,
             **kwargs):
-    """List immediate contents of a Tapis files directory.
+    """Lists immediate contents of a Tapis files directory.
 
-    Args:
+    Arguments:
         directory_path (str): Full or relative path of directory to walk
         system_id (str, optional): Tapis storageSystem for directory_path
         root_dir (str, optional): Base path if directory_path is relative

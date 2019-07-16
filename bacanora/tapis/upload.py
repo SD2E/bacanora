@@ -1,4 +1,4 @@
-"""Tapis implementations of ``files-upload`` operations
+"""Web service implementations of ``files-upload`` operations
 """
 import os
 import shutil
@@ -34,7 +34,7 @@ def put(file_to_upload,
         **kwargs):
     """Wrapper for Tapis files-upload with atomic operations and sync mode.
 
-    Args:
+    Arguments:
         file_to_upload (str): Name or relative path of file to upload
         destination_path (str): Upload destination on Tapis storageSystem
         system_id (str, optional): Tapis storageSystem where upload will go

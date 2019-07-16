@@ -1,4 +1,4 @@
-"""Configures command functions to be handled by the ``tapis`` processor
+"""Configures command functions to be handled by the ``tapis`` web services processor
 """
 from .download import *
 from .pems import grant

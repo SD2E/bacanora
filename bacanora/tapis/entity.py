@@ -12,7 +12,7 @@ def is_appid(textString, useApi=False, agaveClient=None):
     """
     Validate whether textString is an Agave appId
 
-    Positional parameters:
+    Positional Arguments:
     textString: str - the candidate text string
 
     Not implemented:

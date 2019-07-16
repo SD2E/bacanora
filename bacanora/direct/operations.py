@@ -1,4 +1,4 @@
-"""Configures command functions to be handled by the ``direct`` processor
+"""Configures functions that are to be handled by the ``direct`` processor
 """
 from .download import *
 from .manage import *

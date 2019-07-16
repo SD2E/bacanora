@@ -59,7 +59,7 @@ def process(command, *args, **kwargs):
     """Implements multiple dispatch for processing Tapis commands using
     configurable backends.
 
-    Args:
+    Arguments:
         command (str): The command to execute
 
     Raises:

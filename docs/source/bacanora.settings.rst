@@ -1,6 +1,11 @@
 bacanora.settings package
 =========================
 
+.. automodule:: bacanora.settings
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 Submodules
 ----------
 
@@ -52,11 +57,3 @@ bacanora.settings.tenacity module
    :undoc-members:
    :show-inheritance:
 
-
-Module contents
----------------
-
-.. automodule:: bacanora.settings
-   :members:
-   :undoc-members:
-   :show-inheritance:

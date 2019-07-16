@@ -1,6 +1,11 @@
 bacanora package
 ================
 
+.. automodule:: bacanora
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 Subpackages
 -----------
 
@@ -146,11 +151,3 @@ bacanora.walk module
    :undoc-members:
    :show-inheritance:
 
-
-Module contents
----------------
-
-.. automodule:: bacanora
-   :members:
-   :undoc-members:
-   :show-inheritance:

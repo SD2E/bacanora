@@ -23,7 +23,7 @@ def exists(file_path,
 
     Emulates Python ``os.path.exists()``
 
-    Args:
+    Arguments:
         file_path (str): The path from which to fetch attributes
         system_id (str, optional): The Tapis storageSystem for file_path
         root_dir (str, optional): Base path on the storageSystem if file_path is relative
@@ -59,7 +59,7 @@ def isfile(file_path,
 
     Emulates Python ``os.path.isfile()``
 
-    Args:
+    Arguments:
         file_path (str): The path from which to fetch attributes
         system_id (str, optional): The Tapis storageSystem for file_path
         root_dir (str, optional): Base path on the storageSystem if file_path is relative
@@ -95,7 +95,7 @@ def isdir(dir_path,
 
     Emulates Python ``os.path.isdir()``
 
-    Args:
+    Arguments:
         file_path (str): The path from which to fetch attributes
         system_id (str, optional): The Tapis storageSystem for file_path
         root_dir (str, optional): Base path on the storageSystem if file_path is relative

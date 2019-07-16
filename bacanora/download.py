@@ -16,14 +16,17 @@ __all__ = ['get']
 def get(file_path,
         system_id=DEFAULT_SYSTEM_ID,
         local_filename=None,
+        root_dir='/',
         force=False,
         runtime=None,
         atomic=True,
         permissive=False,
         agave=None):
-    """Download a file from a Tapis storageSystem
+    """Download a file from a Tapis storageSystem.
 
-    Args:
+    Extra detail.
+
+    Arguments:
         file_path (str): Path on the storageSystem to download
         system_id (str, optional): Tapis storageSystem to act upon
         local_filename (str, optional): Local name of downloaded file
@@ -44,6 +47,7 @@ def get(file_path,
         file_path=file_path,
         system_id=system_id,
         local_filename=local_filename,
+        root_dir=root_dir,
         force=force,
         runtime=runtime,
         atomic=atomic,

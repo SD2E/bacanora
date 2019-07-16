@@ -1,6 +1,11 @@
 bacanora.s3 package
 ===================
 
+.. automodule:: bacanora.s3
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 Submodules
 ----------
 
@@ -60,11 +65,3 @@ bacanora.s3.system module
    :undoc-members:
    :show-inheritance:
 
-
-Module contents
----------------
-
-.. automodule:: bacanora.s3
-   :members:
-   :undoc-members:
-   :show-inheritance:

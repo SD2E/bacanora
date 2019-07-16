@@ -1,4 +1,4 @@
-"""POSIX implementations of Tapis ``files-list`` operations
+"""Provides ``files-list`` operations
 """
 import os
 import shutil
@@ -24,7 +24,7 @@ def exists(file_path,
            agave=None):
     """Emulate Tapis files-list to check if a path exists on a storageSystem
 
-    Args:
+    Arguments:
         file_path (str): The path to check
         system_id (str, optional): The Tapis storageSystem for file_path
         root_dir (str, optional): Base path on the storageSystem if file_path is relative
@@ -67,7 +67,7 @@ def isfile(file_path,
            agave=None):
     """Emulate Tapis files-list to learn if file_path is a file on a storageSystem
 
-    Args:
+    Arguments:
         file_path (str): The path to check
         system_id (str, optional): The Tapis storageSystem for file_path
         root_dir (str, optional): Base path on the storageSystem if file_path is relative
@@ -110,7 +110,7 @@ def isdir(file_path,
           agave=None):
     """Emulate Tapis files-list to learn if file_path is a directory on a storageSystem
 
-    Args:
+    Arguments:
         file_path (str): The path to check
         system_id (str, optional): The Tapis storageSystem for file_path
         root_dir (str, optional): Base path on the storageSystem if file_path is relative
@@ -159,7 +159,7 @@ def islink(file_path,
         agave=agave)
     """Extend Tapis files-list to learn if file_path is a link on a storageSystem
 
-    Args:
+    Arguments:
         file_path (str): The path to check
         system_id (str, optional): The Tapis storageSystem for file_path
         root_dir (str, optional): Base path on the storageSystem if file_path is relative
@@ -193,7 +193,7 @@ def ismount(file_path,
             agave=None):
     """Extend Tapis files-list to learn if file_path is a mount on a storageSystem
 
-    Args:
+    Arguments:
         file_path (str): The path to check
         system_id (str, optional): The Tapis storageSystem for file_path
         root_dir (str, optional): Base path on the storageSystem if file_path is relative

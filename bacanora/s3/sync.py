@@ -72,7 +72,7 @@ def cmpfiles(posix_src,
              cksum=False):
     """Check whether two POSIX paths exist and are the same
 
-    Args:
+    Arguments:
         posix_src (str): Path to first file
         posix_dest (str): Path to second file
         files_only (bool, optional): Whether to compare directories

@@ -1,6 +1,11 @@
 bacanora.stores package
 =======================
 
+.. automodule:: bacanora.stores
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 Submodules
 ----------
 
@@ -36,11 +41,3 @@ bacanora.stores.types module
    :undoc-members:
    :show-inheritance:
 
-
-Module contents
----------------
-
-.. automodule:: bacanora.stores
-   :members:
-   :undoc-members:
-   :show-inheritance:

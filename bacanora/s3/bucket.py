@@ -1,4 +1,4 @@
-"""Support for mapping TACC S3 buckets onto select Tapis storageSystems
+"""Maps TACC S3 buckets onto select Tapis storageSystems
 """
 import os
 import re
@@ -21,7 +21,7 @@ __all__ = [
 
 def s3_to_tapis(bucket_name, bucket_path):
     """Map a TACC S3 bucket & path to its corresponding Tapis system_id and path
-    Args:
+    Arguments:
         bucket_name (str): A TACC S3 bucket
         bucket_path (str): Absolute path within the bucket
 
@@ -67,7 +67,7 @@ def system_props_from_bucket(bucket_name):
 def from_s3_uri(s3_uri, verify=False):
     """Resolve TACC S3 uri into its bucket and path
 
-    Args:
+    Arguments:
         s3_uri (str): A URI of form s3://tacc-bucket-name/path/to/file.txt
         verify (bool, optional): Validate that the resource exists
 
@@ -93,7 +93,7 @@ def from_s3_uri(s3_uri, verify=False):
 def to_s3_uri(bucket_name, bucket_path, verify=False):
     """Resolve TACC S3 uri into its bucket and path
 
-    Args:
+    Arguments:
         bucket_name (str): A TACC S3 bucket
         bucket_path (str): Absolute path within the bucket
         verify (bool, optional): Validate that the resource exists
