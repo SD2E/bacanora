@@ -4,9 +4,10 @@ Supports multiple configurable backends (direct, tapis, lustre*)
 """
 from deprecated.sphinx import deprecated, versionadded
 from agavepy.agave import Agave
-from bacanora.utils import dynamic_import
+from bacanora.exceptions import AgaveError, HTTPError
 from bacanora.logger import get_logger
 from bacanora.settings import RETRY_MAX_DELAY, RETRY_RERAISE
+from bacanora.utils import dynamic_import
 from tenacity import (retry, retry_if_exception_type, stop_after_delay,
                       wait_exponential)
 
@@ -65,6 +66,7 @@ def process(command, *args, **kwargs):
     Raises:
         ProcessingOperationFailed: The operation was unsuccessful
     """
+    logger.debug('Start of process({})'.format(command))
     kwargs['agave'] = restore_client(kwargs.get('agave', None))
     exceptions = list()
 
@@ -81,16 +83,20 @@ def process(command, *args, **kwargs):
     else:
         procs = COMMAND_PROCESSORS
 
+    backend_not_implemented = 0
+    operation_not_implemented = 0
     for proc in procs:
         try:
-            logger.debug('Attempting processor {}'.format(proc))
+            logger.debug('Trying processor {}'.format(proc))
             if proc not in COMMAND_PROCESSORS:
+                backend_not_implemented = backend_not_implemented + 1
                 raise BackendNotImplemented(
                     'Unknown command processor {}'.format(proc))
             mod = dynamic_import('bacanora.' + proc)
             try:
                 func = getattr(mod, command)
             except Exception:
+                operation_not_implemented = operation_not_implemented + 1
                 raise OperationNotImplemented(
                     '{}.{} not implemented or available'.format(proc, command))
             resp = func(*args, **kwargs)
@@ -101,10 +107,23 @@ def process(command, *args, **kwargs):
                 logger.debug('Result: {}'.format(resp))
                 return resp
             return resp
+        except HTTPError as herr:
+            logger.error('HTTP error encountered: {}'.format(herr))
+            raise
         except Exception as err:
-            logger.error('Exception encountered: {}'.format(err))
+            logger.error('Exception ({}) encountered: {}'.format(
+                type(err), err))
             exceptions.append(err)
-    # print(exceptions[-1])
-    raise ProcessingOperationFailed(
-        'Unable to complete {}. Last error was {}'.format(
-            command, exceptions[-1]))
+    logger.debug('Trying next available processor...')
+
+    if backend_not_implemented == len(procs):
+        raise BackendNotImplemented(
+            'Unable to complete {} using designated backend {}'.format(
+                command, processor))
+    elif operation_not_implemented == len(procs):
+        raise OperationNotImplemented(
+            'Unable to complete {} as it is not implemented'.format(command))
+    else:
+        raise ProcessingOperationFailed(
+            'Unable to complete {}. Last error was {}'.format(
+                command, exceptions[-1]))
