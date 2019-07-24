@@ -9,8 +9,8 @@ from .. import logger as loggermodule
 from .. import settings
 from ..utils import nanoseconds, microseconds, normalize, normpath, rooted_path
 from ..exceptions import HTTPError, AgaveError
-from .exceptions import TapisOperationFailed
-from .utils import read_tapis_http_error
+from .exceptions import HTTPNotFoundError, TapisOperationFailed
+from .utils import read_tapis_http_error, handle_http_error
 
 from . import files
 
@@ -51,8 +51,8 @@ def stat(file_path,
             resp = agave.files.list(
                 filePath=rooted_file_path, systemId=system_id, limit=2)[0]
             return AttrDict(resp)
-        except HTTPError:
-            raise
+        except HTTPError as herr:
+            handle_http_error(herr)
         except Exception as err:
             raise TapisOperationFailed(
                 'Exception encountered with stat#files.list()', err)
@@ -134,11 +134,13 @@ def exists(file_path,
             permissive=False,
             agave=agave)
         return file_path_type in files.FILES_TYPES
+    # We already know if the resource exists because tapis.stat() will throw
+    # HTTPNotFoundError if the response code is 404
+    except HTTPNotFoundError:
+        return False
     except HTTPError as herr:
-        if herr.response.status_code == 404:
-            return False
-        else:
-            raise HTTPError(herr)
+        logger.warning('HTTP error encountered in exists(): {}'.format(herr))
+        raise
     except Exception as err:
         logger.warning('Exception encountered in exists(): {}'.format(err))
         if permissive:

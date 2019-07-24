@@ -17,6 +17,8 @@ logger = logging.getLogger(__name__)
 from agavepy.agave import Agave
 from attrdict import AttrDict
 from ..utils import normalize, normpath
+from requests.exceptions import HTTPError
+from .exceptions import HTTPNotFoundError
 
 MAX_ELAPSED = 300
 MAX_RETRIES = 5
@@ -97,7 +99,7 @@ def read_tapis_http_error(http_error_object):
         code = h.response.status_code
         assert isinstance(code, int)
     except Exception:
-        # we have no idea what the hell happened
+        # we have no idea what the 🔥 happened
         code = 418
 
     # extract HTTP reason
@@ -128,3 +130,11 @@ def read_tapis_http_error(http_error_object):
     httperror = 'HTTPError - {} {}; message: {}; status: {}; version: {}; response.content: {}'
     return httperror.format(code, reason, err_msg, status_msg, version_msg,
                             h.response.content)
+
+
+def handle_http_error(httperror):
+    decorated_http_error = read_tapis_http_error(httperror)
+    if httperror.response.status_code == 404:
+        raise HTTPNotFoundError(httperror)
+    else:
+        raise decorated_http_error

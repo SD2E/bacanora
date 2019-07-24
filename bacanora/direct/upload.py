@@ -62,14 +62,17 @@ def put(file_to_upload,
                 agave=agave)
             logger.debug('put: {} => {}'.format(file_name, posix_path))
             # Ensure remote destination path exists. Tapis files does this
-            # automatically on upload but POSIX does not
-            try:
-                for pp in (os.path.dirname(posix_path), posix_path):
-                    logger.debug('makedirs: {}'.format(pp))
-                    os.makedirs(pp, exist_ok=True)
-            except Exception as exc:
-                raise DirectOperationFailed(
-                    'Unable to create destination {}'.format(posix_path), exc)
+            # automatically on upload but POSIX does not. This is gated behind
+            # the force keyword argument.
+            if force:
+                try:
+                    for pp in (os.path.dirname(posix_path), posix_path):
+                        logger.debug('makedirs: {}'.format(pp))
+                        os.makedirs(pp, exist_ok=True)
+                except Exception as exc:
+                    raise DirectOperationFailed(
+                        'Unable to create destination {}'.format(posix_path),
+                        exc)
 
             # Stage upload to filename-TIMESTAMP then rename into place
             if atomic:

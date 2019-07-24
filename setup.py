@@ -71,19 +71,19 @@ with open("README.rst", "r") as fh:
     long_description = fh.read()
 
 setup(
-    name="bacanora",
-    version=get_version(),
-    author="Matthew Vaughn",
-    author_email="opensource@tacc.cloud",
-    description="",
+    name=about.__title__,
+    version=about.__version__,
+    author=about.__author__,
+    author_email=about.__email__,
+    license=about.__license__,
+    url=about.__uri__,
+    description=about.__summary__,
     long_description=long_description,
     long_description_content_type="text/x-rst",
-    url="https://github.com/SD2E/bacanora",
     install_requires=get_requirements(),
     tests_require=get_requirements() + ['hashids'],
     dependency_links=get_links(),
     packages=find_packages(),
-    license="BSD",
     zip_safe=False,
     classifiers=[
         "Programming Language :: Python :: 3.6",

@@ -8,7 +8,7 @@ from ..utils import nanoseconds, microseconds, normalize, normpath, rooted_path
 from .stat import exists
 from ..exceptions import HTTPError, AgaveError
 from .exceptions import TapisOperationFailed
-from .utils import read_tapis_http_error
+from .utils import read_tapis_http_error, handle_http_error
 
 logger = loggermodule.get_logger(__name__)
 
@@ -62,10 +62,8 @@ def mkdir(path_to_make,
                 },
                 filePath=root_dir)
             return True
-        except HTTPError as h:
-            http_err_resp = read_tapis_http_error(h)
-            logger.error('HTTP Error: {}'.format(http_err_resp))
-            raise HTTPError(http_err_resp)
+        except HTTPError as herr:
+            handle_http_error(herr)
         except Exception as err:
             raise TapisOperationFailed(
                 'Exception encountered with files.manage()#mkdir', err)
@@ -111,7 +109,7 @@ def delete(path_to_delete,
                     'HTTP Error: {} was not found'.format(path_to_delete))
                 return False
             else:
-                raise HTTPError(herr)
+                handle_http_error(herr)
         except Exception as err:
             raise TapisOperationFailed(
                 'Exception encountered with files.manage()#mkdir', err)
@@ -180,6 +178,8 @@ def move(path_to_move,
                     'path': rooted_destination_path
                 },
                 filePath=rooted_path_to_move)
+        except HTTPError as herr:
+            handle_http_error(herr)
         except Exception as err:
             raise TapisOperationFailed(
                 'Exception encountered with files.manage()#move', err)
@@ -284,6 +284,8 @@ def copy(path_to_copy,
                     'path': rooted_destination_path
                 },
                 filePath=rooted_path_to_copy)
+        except HTTPError as herr:
+            handle_http_error(herr)
         except Exception as err:
             raise TapisOperationFailed(
                 'Exception encountered with files.manage()#copy', err)

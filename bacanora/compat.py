@@ -6,6 +6,7 @@ available in the first supported release. These legacy interfaces are
 easily identifiable as they feature a mandatory Agave client as their first
 parameter.
 """
+from agavepy.agave import Agave
 from deprecated.sphinx import deprecated, versionadded, versionchanged
 from . import operations
 from . import settings
@@ -22,14 +23,14 @@ def upload(agave_client,
     """Uploads a file using Agave files.
 
     Arguments:
-        agave_client (Agave): An active Agave (Tapis) client
-        file_to_upload (str): Path of file to upload
-        destination_path (str): Absolute path on destination storage system
-        system_id (str, optional): Storage system where file is located [DEFAULT_STORAGE_SYSTEM]
-        autogrant (bool, optional): Whether to automatically grant world read to uploaded file [False]
+        agave_client (Agave): An active Agave (Tapis) client.
+        file_to_upload (str): Path of file to upload.
+        destination_path (str): Absolute path on destination storage system.
+        system_id (str, optional): Storage system where file is located [DEFAULT_STORAGE_SYSTEM].
+        autogrant (bool, optional): Whether to automatically grant world read to uploaded file [False].
 
     Returns:
-        bool: True on success
+        bool: True on success.
     """
     if autogrant:
         raise NotImplementedError(
@@ -53,10 +54,10 @@ def download(agave_client,
     """Downloads a file from Agave files API.
 
     Arguments:
-        agave_client (Agave): An active Agave (Tapis) client
-        file_to_download (str): Absolute path of file to download
-        local_filename (str, optional): Local name of file once downloaded
-        system_id (str, optional): Storage system where file is located [DEFAULT_STORAGE_SYSTEM]
+        agave_client (Agave): An active Agave (Tapis) client.
+        file_to_download (str): Absolute path of file to download.
+        local_filename (str, optional): Local name of file once downloaded.
+        system_id (str, optional): Storage system where file is located [DEFAULT_STORAGE_SYSTEM].
 
     Returns:
         str: Name of downloaded file
@@ -80,6 +81,7 @@ def exists(agave_client, path_to_test, system_id=DEFAULT_STORAGE_SYSTEM):
         agave_client (Agave): An active Agave (Tapis) client
         path_to_test (str): Agave-absolute path to test
         system_id (str, optional): Storage system where file is located [DEFAULT_STORAGE_SYSTEM]
+
     Returns:
         bool: True on existence
     """
@@ -96,11 +98,12 @@ def isfile(agave_client, path_to_test, system_id=DEFAULT_STORAGE_SYSTEM):
     """Determines if a path points to a file.
 
     Arguments:
-        agave_client (Agave): An active Agave (Tapis) client
-        path_to_test (str): Agave-absolute path to test
-        system_id (str, optional): Storage system where file is located [DEFAULT_STORAGE_SYSTEM]
+        agave_client (Agave): An active Agave (Tapis) client.
+        path_to_test (str): Agave-absolute path to test.
+        system_id (str, optional): Storage system where file is located [DEFAULT_STORAGE_SYSTEM].
+
     Returns:
-        bool: True if target is a file
+        bool: True if target is a file.
     """
     return operations.isfile(
         path_to_test,
@@ -115,11 +118,12 @@ def isdir(agave_client, path_to_test, system_id=DEFAULT_STORAGE_SYSTEM):
     """Determines if a path points to a directory.
 
     Arguments:
-        agave_client (Agave): An active Agave client
-        path_to_test (str): Agave-absolute path to test
-        system_id (str, optional): Storage system where file is located [DEFAULT_STORAGE_SYSTEM]
+        agave_client (Agave): An active Agave client.
+        path_to_test (str): Agave-absolute path to test.
+        system_id (str, optional): Storage system where file is located [DEFAULT_STORAGE_SYSTEM].
+
     Returns:
-        bool: True if target is a directory
+        bool: True if target is a directory.
     """
     return operations.isdir(
         path_to_test,
@@ -134,16 +138,17 @@ def mkdir(agave_client, path_to_make, system_id=DEFAULT_STORAGE_SYSTEM):
     """Makes a new directory on the specified storage system.
 
     Arguments:
-        agave_client (Agave): An active Agave client
-        path_to_make (str): Agave-absolute path to create
-        system_id (str, optional): Storage system where file is located [DEFAULT_STORAGE_SYSTEM]
+        agave_client (Agave): An active Agave client.
+        path_to_make (str): Agave-absolute path to create.
+        system_id (str, optional): Storage system where file is located [DEFAULT_STORAGE_SYSTEM].
+
     Returns:
-        bool: True on success
+        bool: True on success.
     """
     return operations.mkdir(
         path_to_make,
         system_id=system_id,
-        force=False,
+        force=True,
         permissive=False,
         agave=agave_client)
 
@@ -156,11 +161,12 @@ def delete(agave_client,
     """Deletes a path on the specified storage system.
 
     Arguments:
-        agave_client (Agave): An active Agave client
-        path_to_rm (str): Agave-absolute path to remove
-        system_id (str, optional): Storage system where file is located [data-sd2e-community]
+        agave_client (Agave): An active Agave client.
+        path_to_rm (str): Agave-absolute path to remove.
+        system_id (str, optional): Storage system where file is located [data-sd2e-community].
+
     Returns:
-        bool: True on success
+        bool: True on success.
     """
     return operations.delete(
         path_to_rm,

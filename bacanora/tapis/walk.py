@@ -12,7 +12,7 @@ from ..utils import nanoseconds, microseconds, normalize, normpath, rooted_path
 from .stat import exists
 from ..exceptions import HTTPError, AgaveError
 from .exceptions import TapisOperationFailed
-from .utils import read_tapis_http_error
+from .utils import read_tapis_http_error, handle_http_error
 from . import files
 from tenacity import (retry, retry_if_exception_type, stop_after_delay,
                       wait_exponential)

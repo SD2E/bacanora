@@ -9,6 +9,7 @@ DATA_DIR = os.path.join(PARENT, 'tests/data/tapis')
 TMP_DIR = os.path.join(CWD, 'tmp')
 
 from bacanora import tapis
+from bacanora.exceptions import HTTPError, HTTPNotFoundError
 
 
 @pytest.mark.parametrize(
@@ -27,7 +28,7 @@ def test_tapis_get(agave, file_path, system_id, local_filename, test_pass):
     if test_pass:
         exceptable_code()
     else:
-        with pytest.raises(Exception):
+        with pytest.raises(HTTPNotFoundError):
             exceptable_code()
 
 
@@ -50,5 +51,5 @@ def test_tapis_get_httperror(agave, file_path, system_id, local_filename,
     if test_pass:
         exceptable_code()
     else:
-        with pytest.raises(tapis.HTTPError):
+        with pytest.raises(HTTPNotFoundError):
             exceptable_code()

@@ -2,5 +2,6 @@
 """
 from agavepy.agave import AgaveError
 from requests.exceptions import HTTPError
+from bacanora.tapis.exceptions import HTTPNotFoundError
 
-__all__ = ['AgaveError', 'HTTPError']
+__all__ = ['AgaveError', 'HTTPError', 'HTTPNotFoundError']

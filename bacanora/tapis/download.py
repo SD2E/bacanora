@@ -7,7 +7,7 @@ from .. import settings
 from ..utils import nanoseconds, microseconds, normalize, normpath, rooted_path
 from ..exceptions import HTTPError, AgaveError
 from .exceptions import TapisOperationFailed
-from .utils import read_tapis_http_error
+from .utils import read_tapis_http_error, handle_http_error
 
 logger = loggermodule.get_logger(__name__)
 
@@ -84,9 +84,10 @@ def get(file_path,
                 except Exception as err:
                     raise IOError('Rename failed after download', err)
         except HTTPError as h:
-            error_msg = read_tapis_http_error(h)
-            logger.error(error_msg)
-            raise HTTPError(error_msg)
+            handle_http_error(h)
+            # error_msg = read_tapis_http_error(h)
+            # logger.error(error_msg)
+            # raise HTTPError(error_msg)
         except (OSError, IOError) as err:
             logger.error(str(err))
             raise
