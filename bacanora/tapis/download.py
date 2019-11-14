@@ -22,7 +22,7 @@ def get(file_path,
         local_filename=None,
         root_dir='/',
         force=False,
-        atomic=True,
+        atomic=False,
         permissive=False,
         agave=None,
         **kwargs):

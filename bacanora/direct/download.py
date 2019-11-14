@@ -22,7 +22,7 @@ def get(file_path,
         local_filename=None,
         force=False,
         runtime=None,
-        atomic=True,
+        atomic=False,
         permissive=False,
         agave=None):
     """Emulate a Tapis download by copying a path from its resolved physical

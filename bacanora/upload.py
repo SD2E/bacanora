@@ -19,7 +19,7 @@ def put(file_to_upload,
         root_dir='/',
         force=False,
         runtime=None,
-        atomic=True,
+        atomic=False,
         sync=False,
         permissive=False,
         agave=None):

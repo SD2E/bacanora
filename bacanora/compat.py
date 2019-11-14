@@ -41,7 +41,7 @@ def upload(agave_client,
         system_id=system_id,
         root_dir='/',
         force=True,
-        atomic=True,
+        atomic=False,
         permissive=False,
         agave=agave_client)
 
@@ -68,7 +68,7 @@ def download(agave_client,
         local_filename=local_filename,
         root_dir='/',
         force=False,
-        atomic=True,
+        atomic=False,
         permissive=False,
         agave=agave_client)
 

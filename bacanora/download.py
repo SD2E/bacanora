@@ -19,7 +19,7 @@ def get(file_path,
         root_dir='/',
         force=False,
         runtime=None,
-        atomic=True,
+        atomic=False,
         permissive=False,
         agave=None):
     """Download a file from a Tapis storageSystem.

@@ -25,7 +25,7 @@ def put(file_to_upload,
         runtime=None,
         force=False,
         sync=False,
-        atomic=True,
+        atomic=False,
         permissive=False,
         agave=None):
     """Emulate a Tapis files-upload by copying a file to its physical
