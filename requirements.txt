@@ -4,3 +4,5 @@ requests>=2.20.0
 tenacity>=5.0.2
 hashids
 deprecated
+six
+PyMongo
