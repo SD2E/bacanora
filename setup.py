@@ -84,6 +84,7 @@ setup(
     tests_require=get_requirements() + ['hashids'],
     dependency_links=get_links(),
     packages=find_packages(),
+    package_data={'': ['*.json']},
     zip_safe=False,
     classifiers=[
         "Programming Language :: Python :: 3.6",
