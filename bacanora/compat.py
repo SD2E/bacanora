@@ -13,6 +13,7 @@ from . import settings
 
 DEFAULT_STORAGE_SYSTEM = settings.STORAGE_SYSTEM
 
+__all__ = ['upload', 'download']
 
 @deprecated(version='1.0.0', reason="Use bacanora.files.put instead")
 def upload(agave_client,

@@ -14,4 +14,7 @@ from . import files
 from .processors import (ProcessingOperationFailed, OperationNotImplemented,
                          BackendNotImplemented)
 
+# legacy functions
+from .compat import upload, download
+
 logger = get_logger(__name__)
