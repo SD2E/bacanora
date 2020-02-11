@@ -246,7 +246,7 @@ class StorageSystem(str):
         return os.path.join(runtime_path, path)
 
 
-def abspath(self, filepath, storage_system=None, validate=False, agave=None):
+def abspath(filepath, storage_system=None, validate=False, agave=None):
     """Resolve absolute path on host filesystem for an Agave path"""
     normalized_path = normalize(filepath)
     if os.environ.get('STORAGE_SYSTEM_PREFIX_OVERRIDE', None) is not None:
