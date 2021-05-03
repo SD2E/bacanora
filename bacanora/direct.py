@@ -16,8 +16,8 @@ class UnknownStorageSystem(DirectOperationFailed):
     pass
 
 class StorageSystems():
-    prefixes = {'data-sd2e-community': {'hpc': '/work/projects/SD2E-Community/prod/data',
-                                        'abaco': '/work/projects/SD2E-Community/prod/data',
+    prefixes = {'data-sd2e-community': {'hpc': '/work2/projects/SD2E-Community/prod/data',
+                                        'abaco': '/work2/projects/SD2E-Community/prod/data',
                                         'jupyter': os.path.join(
                                             os.path.expanduser('~'), 'sd2e-community')}}
 
